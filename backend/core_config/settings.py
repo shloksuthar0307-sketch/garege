@@ -73,12 +73,20 @@ CHANNEL_LAYERS = {
     },
 }
 
+DB_SCHEMA = os.environ.get('DB_SCHEMA', None)
+
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL', f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
         conn_max_age=600
     )
 }
+
+# If a specific DB_SCHEMA is provided, enforce it at the database connection level
+if DB_SCHEMA and 'postgresql' in DATABASES['default']['ENGINE']:
+    DATABASES['default']['OPTIONS'] = {
+        'options': f'-c search_path={DB_SCHEMA}'
+    }
 
 
 AUTH_PASSWORD_VALIDATORS = [
