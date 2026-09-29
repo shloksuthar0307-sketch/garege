@@ -4,6 +4,20 @@ import django.db.models.deletion
 from django.db import migrations, models
 
 
+def add_org_and_branch(apps, schema_editor):
+    User = apps.get_model('accounts', 'User')
+    db_table = User._meta.db_table
+    with schema_editor.connection.cursor() as cursor:
+        columns = [c.name for c in schema_editor.connection.introspection.get_table_description(cursor, db_table)]
+    
+    if 'branch_id' not in columns:
+        field = User._meta.get_field('branch')
+        schema_editor.add_field(User, field)
+        
+    if 'organization_id' not in columns:
+        field = User._meta.get_field('organization')
+        schema_editor.add_field(User, field)
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -12,14 +26,21 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='user',
-            name='branch',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='users', to='organizations.branch'),
-        ),
-        migrations.AddField(
-            model_name='user',
-            name='organization',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='users', to='organizations.organization'),
-        ),
+        migrations.SeparateDatabaseAndState(
+            database_operations=[
+                migrations.RunPython(add_org_and_branch, reverse_code=migrations.RunPython.noop),
+            ],
+            state_operations=[
+                migrations.AddField(
+                    model_name='user',
+                    name='branch',
+                    field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='users', to='organizations.branch'),
+                ),
+                migrations.AddField(
+                    model_name='user',
+                    name='organization',
+                    field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='users', to='organizations.organization'),
+                ),
+            ],
+        )
     ]

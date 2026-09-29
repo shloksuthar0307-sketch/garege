@@ -3,6 +3,15 @@
 from django.db import migrations, models
 
 
+def add_phone_number(apps, schema_editor):
+    User = apps.get_model('accounts', 'User')
+    db_table = User._meta.db_table
+    with schema_editor.connection.cursor() as cursor:
+        columns = [c.name for c in schema_editor.connection.introspection.get_table_description(cursor, db_table)]
+    if 'phone_number' not in columns:
+        field = User._meta.get_field('phone_number')
+        schema_editor.add_field(User, field)
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -10,9 +19,16 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='user',
-            name='phone_number',
-            field=models.CharField(blank=True, max_length=20, null=True),
-        ),
+        migrations.SeparateDatabaseAndState(
+            database_operations=[
+                migrations.RunPython(add_phone_number, reverse_code=migrations.RunPython.noop),
+            ],
+            state_operations=[
+                migrations.AddField(
+                    model_name='user',
+                    name='phone_number',
+                    field=models.CharField(blank=True, max_length=20, null=True),
+                ),
+            ],
+        )
     ]
