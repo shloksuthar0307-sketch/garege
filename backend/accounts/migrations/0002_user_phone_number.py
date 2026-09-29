@@ -9,7 +9,8 @@ def add_phone_number(apps, schema_editor):
     with schema_editor.connection.cursor() as cursor:
         columns = [c.name for c in schema_editor.connection.introspection.get_table_description(cursor, db_table)]
     if 'phone_number' not in columns:
-        field = User._meta.get_field('phone_number')
+        field = models.CharField(blank=True, max_length=20, null=True)
+        field.contribute_to_class(User, 'phone_number')
         schema_editor.add_field(User, field)
 
 class Migration(migrations.Migration):

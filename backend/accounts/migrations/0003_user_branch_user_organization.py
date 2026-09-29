@@ -11,11 +11,13 @@ def add_org_and_branch(apps, schema_editor):
         columns = [c.name for c in schema_editor.connection.introspection.get_table_description(cursor, db_table)]
     
     if 'branch_id' not in columns:
-        field = User._meta.get_field('branch')
+        field = models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='users', to='organizations.branch')
+        field.contribute_to_class(User, 'branch')
         schema_editor.add_field(User, field)
         
     if 'organization_id' not in columns:
-        field = User._meta.get_field('organization')
+        field = models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='users', to='organizations.organization')
+        field.contribute_to_class(User, 'organization')
         schema_editor.add_field(User, field)
 
 class Migration(migrations.Migration):
