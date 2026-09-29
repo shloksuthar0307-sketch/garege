@@ -14,7 +14,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('auth', '0012_alter_user_first_name_max_length'),
-        ('organizations', '0001_initial'),
     ]
 
     operations = [
@@ -33,9 +32,7 @@ class Migration(migrations.Migration):
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
                 ('role', models.CharField(choices=[('SUPER_ADMIN', 'Super Admin'), ('ORG_ADMIN', 'Organization Admin'), ('BRANCH_MANAGER', 'Branch Manager'), ('SERVICE_ADVISOR', 'Service Advisor'), ('TECHNICIAN', 'Technician'), ('INVENTORY_MANAGER', 'Inventory Manager'), ('CUSTOMER', 'Customer')], default='CUSTOMER', max_length=50)),
-                ('branch', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='users', to='organizations.branch')),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
-                ('organization', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='users', to='organizations.organization')),
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
             ],
             options={
