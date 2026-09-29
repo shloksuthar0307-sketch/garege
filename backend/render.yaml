@@ -1,0 +1,53 @@
+services:
+  - type: web
+    name: jango-backend
+    env: python
+    rootDir: backend
+    buildCommand: "bash build.sh"
+    startCommand: "daphne core_config.asgi:application --port $PORT --bind 0.0.0.0"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: jango-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "*"
+      - key: CELERY_BROKER_URL
+        fromService:
+          type: redis
+          name: jango-redis
+          property: connectionString
+      
+  - type: redis
+    name: jango-redis
+    ipAllowList: []
+
+  - type: worker
+    name: jango-celery
+    env: python
+    rootDir: backend
+    buildCommand: "bash build.sh"
+    startCommand: "celery -A core_config worker -l info"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: jango-db
+          property: connectionString
+      - key: CELERY_BROKER_URL
+        fromService:
+          type: redis
+          name: jango-redis
+          property: connectionString
+
+databases:
+  - name: jango-db
+    databaseName: jango
+    user: jango_user
