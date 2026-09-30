@@ -10,9 +10,12 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from .serializers import CustomerRegistrationSerializer, CustomTokenObtainPairSerializer
 
 class CustomerRegisterView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = CustomerRegistrationSerializer(data=request.data)
         if serializer.is_valid():
