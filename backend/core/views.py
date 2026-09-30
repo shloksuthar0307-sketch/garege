@@ -7,6 +7,7 @@ from .models import Vehicle, ServiceOrder
 from .serializers import VehicleSerializer, ServiceOrderSerializer
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def health_check(request):
     return Response({'status': 'ok', 'message': 'API is running successfully'})
 
