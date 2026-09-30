@@ -29,12 +29,28 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
     def validate(self, attrs):
-        data = super().validate(attrs)
+        # Explicit validation for missing fields
+        username = attrs.get('username')
+        password = attrs.get('password')
+        
+        if not username or not password:
+            raise exceptions.ValidationError(
+                {"detail": _("Both username and password are required.")}
+            )
+
+        # Catch default AuthenticationFailed to provide a more user-friendly message
+        try:
+            data = super().validate(attrs)
+        except exceptions.AuthenticationFailed:
+            raise exceptions.AuthenticationFailed(
+                {"detail": _("Invalid username or password. Please try again.")},
+                code='invalid_credentials'
+            )
 
         # Custom Validation Logic
         if not self.user.is_active:
             raise exceptions.AuthenticationFailed(
-                _('User account is disabled.'),
+                {"detail": _("User account is disabled. Please contact support.")},
                 code='user_inactive',
             )
 
