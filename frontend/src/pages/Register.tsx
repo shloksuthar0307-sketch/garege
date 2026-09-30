@@ -41,6 +41,7 @@ export default function Register() {
         body: JSON.stringify({ 
           username: formData.username, 
           password: formData.password,
+          confirm_password: formData.confirmPassword,
           email: formData.email,
           first_name: formData.firstName,
           last_name: formData.lastName,
@@ -66,10 +67,20 @@ export default function Register() {
       } else {
         // Handle validation errors from serializer properly
         let errMsg = 'Registration failed. Please try again.';
-        if (data.detail) errMsg = data.detail;
-        else if (data.error) errMsg = data.error;
-        else if (data.username) errMsg = `Username: ${data.username[0]}`;
-        else if (data.email) errMsg = `Email: ${data.email[0]}`;
+        if (data.detail) {
+          errMsg = data.detail;
+        } else if (data.error) {
+          errMsg = data.error;
+        } else if (typeof data === 'object') {
+          // Extract the first validation error dynamically
+          const firstErrorKey = Object.keys(data)[0];
+          if (firstErrorKey && Array.isArray(data[firstErrorKey])) {
+            const formattedKey = firstErrorKey.replace('_', ' ').toUpperCase();
+            errMsg = `${formattedKey}: ${data[firstErrorKey][0]}`;
+          } else if (firstErrorKey && typeof data[firstErrorKey] === 'string') {
+             errMsg = data[firstErrorKey];
+          }
+        }
         setError(errMsg);
       }
     } catch (err) {

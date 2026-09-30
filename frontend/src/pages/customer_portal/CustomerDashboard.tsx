@@ -12,6 +12,15 @@ import RecommendedHelp from './components/RecommendedHelp';
 import VehicleSummary from './components/VehicleSummary';
 import SmartAlerts from './components/SmartAlerts';
 
+// New Features Imports
+import QuickActionsShortcuts from './components/QuickActionsShortcuts';
+import GarageVisitSection from './components/GarageVisitSection';
+import ServiceEvidenceAndParts from './components/ServiceEvidenceAndParts';
+import VehicleAnalysisSection from './components/VehicleAnalysisSection';
+import VehicleDocumentsAndReminders from './components/VehicleDocumentsAndReminders';
+import ServiceCostAndAdvisor from './components/ServiceCostAndAdvisor';
+import CustomerServiceHistory from './components/CustomerServiceHistory';
+
 export default function CustomerDashboard() {
   const [loading, setLoading] = useState(true);
   const [showBookingModal, setShowBookingModal] = useState(false);
@@ -70,7 +79,7 @@ export default function CustomerDashboard() {
           transition={{ delay: 0.1 }}
           className="flex flex-wrap items-center gap-3"
         >
-          <button onClick={() => setShowBookingModal(true)} className="flex items-center gap-2 px-6 py-2.5 bg-[#35D07F] hover:bg-[#2bb46c] text-black rounded-xl text-xs font-bold tracking-widest uppercase transition-all shadow-[0_0_15px_rgba(53,208,127,0.3)]">
+          <button id="book_service_btn" onClick={() => setShowBookingModal(true)} className="flex items-center gap-2 px-6 py-2.5 bg-[#35D07F] hover:bg-[#2bb46c] text-black rounded-xl text-xs font-bold tracking-widest uppercase transition-all shadow-[0_0_15px_rgba(53,208,127,0.3)]">
             <Plus size={16} /> Book Service
           </button>
           <button onClick={() => setShowPaymentModal(true)} className="flex items-center gap-2 px-6 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-xs font-bold tracking-widest uppercase transition-all">
@@ -174,7 +183,7 @@ export default function CustomerDashboard() {
       </AnimatePresence>
 
       {/* ROW 1: Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {['Total Spent: ₹1,24,500', 'Active Repairs: 1', 'Outstanding Balance: ₹8,500'].map((metric, i) => (
           <motion.div 
             key={i}
@@ -187,18 +196,28 @@ export default function CustomerDashboard() {
         ))}
       </div>
 
+      <QuickActionsShortcuts />
+
       {/* ROW 2: Repairs & Appointments */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <div id="live_service" className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
         <div className="xl:col-span-2">
           <ActiveRepairTracker loading={loading} />
         </div>
-        <div className="xl:col-span-1">
+        <div className="xl:col-span-1 flex flex-col gap-6">
           <UpcomingAppointments loading={loading} />
+          <div id="garage">
+            <GarageVisitSection />
+          </div>
         </div>
       </div>
 
+      <ServiceEvidenceAndParts />
+      <div id="support">
+        <ServiceCostAndAdvisor />
+      </div>
+
       {/* ROW 3: Invoices & Analytics */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
         <div className="xl:col-span-1">
           <RecentInvoices loading={loading} />
         </div>
@@ -208,10 +227,14 @@ export default function CustomerDashboard() {
       </div>
 
       {/* ROW 4: Team Activity & Help */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <TeamActivity loading={loading} />
         <RecommendedHelp loading={loading} />
       </div>
+
+      <div id="analysis"><VehicleAnalysisSection /></div>
+      <div id="documents" className="scroll-mt-4"><VehicleDocumentsAndReminders /></div>
+      <div id="history" className="scroll-mt-4"><CustomerServiceHistory /></div>
 
       {/* ROW 5: Vehicle Summary */}
       <VehicleSummary loading={loading} />
