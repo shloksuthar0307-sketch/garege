@@ -1,10 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.http import HttpResponseRedirect
 from rest_framework_simplejwt.views import TokenRefreshView
 from accounts.views import CustomTokenObtainPairView, CustomerRegisterView
 from core.views import health_check
 
 urlpatterns = [
+    path('', lambda r: HttpResponseRedirect('/api/v1/health/')),
     path('admin/', admin.site.urls),
     
     # API Health
