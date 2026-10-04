@@ -10,6 +10,7 @@ urlpatterns = [
     path('issues/<uuid:issue_id>/evidence/', views.technician_add_evidence, name='tech-add-evidence'),
     path('work-orders/<uuid:pk>/repairs/', views.technician_repair_tasks, name='tech-repair-tasks'),
     path('repairs/<uuid:task_id>/progress/', views.technician_update_repair_progress, name='tech-repair-progress'),
+    path('work-orders/<uuid:pk>/photos/', views.technician_upload_photo, name='tech-upload-photo'),
 
     # Labor
     path('labor/', views.technician_log_labor, name='tech-log-labor'),

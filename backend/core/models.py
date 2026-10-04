@@ -34,14 +34,17 @@ class VehicleHealthCategory(models.Model):
 
 class ServiceOrder(models.Model):
     STATUS_CHOICES = (
+        ('PENDING', 'Pending Request'),
+        ('CONFIRMED', 'Confirmed'),
         ('CHECKED_IN', 'Checked In'),
-        ('DIAGNOSIS', 'Diagnosis'),
+        ('DIAGNOSIS', 'Diagnosis & Inspection'),
         ('AWAITING_APPROVAL', 'Awaiting Approval'),
         ('AWAITING_PARTS', 'Parts Pending'),
-        ('IN_WORKSHOP', 'In Workshop'),
+        ('IN_WORKSHOP', 'In Workshop (In Progress)'),
         ('QUALITY_CHECK', 'Quality Check'),
         ('READY_FOR_PICKUP', 'Ready for Pickup'),
         ('COMPLETED', 'Completed'),
+        ('CLOSED', 'Closed'),
         ('CANCELLED', 'Cancelled'),
     )
     
@@ -56,6 +59,44 @@ class ServiceOrder(models.Model):
     advisor = models.CharField(max_length=100, blank=True, null=True)
     branch = models.ForeignKey('organizations.Branch', on_delete=models.SET_NULL, null=True, blank=True, related_name='service_orders')
     bay = models.CharField(max_length=50, blank=True, null=True)
+    
+    # Validation logic for status transitions
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        if self.pk:
+            try:
+                old_instance = ServiceOrder.objects.get(pk=self.pk)
+                old_status = old_instance.status
+            except ServiceOrder.DoesNotExist:
+                old_status = None
+                
+            new_status = self.status
+            
+            # Simple state machine validation
+            valid_transitions = {
+                'PENDING': ['CONFIRMED', 'CANCELLED'],
+                'CONFIRMED': ['CHECKED_IN', 'CANCELLED'],
+                'CHECKED_IN': ['DIAGNOSIS', 'CANCELLED'],
+                'DIAGNOSIS': ['AWAITING_APPROVAL', 'IN_WORKSHOP', 'CANCELLED'],
+                'AWAITING_APPROVAL': ['AWAITING_PARTS', 'IN_WORKSHOP', 'CANCELLED'],
+                'AWAITING_PARTS': ['IN_WORKSHOP', 'CANCELLED'],
+                'IN_WORKSHOP': ['QUALITY_CHECK', 'CANCELLED'],
+                'QUALITY_CHECK': ['READY_FOR_PICKUP', 'IN_WORKSHOP'],
+                'READY_FOR_PICKUP': ['COMPLETED'],
+                'COMPLETED': ['CLOSED'],
+                'CLOSED': [],
+                'CANCELLED': []
+            }
+            
+            
+            if old_status and old_status != new_status and new_status not in valid_transitions.get(old_status, []):
+                raise ValidationError({'status': f"Invalid transition from {old_status} to {new_status}"})
+                
+        super().clean()
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
     
     # Costs
     parts_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -104,6 +145,7 @@ class VehicleDocument(models.Model):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='documents')
     title = models.CharField(max_length=255)
     subtitle = models.CharField(max_length=255, blank=True, null=True)
+    file = models.FileField(upload_to='vehicle_documents/', null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
 class Appointment(models.Model):
@@ -191,6 +233,7 @@ class Estimate(models.Model):
     status = models.CharField(max_length=50, default='DRAFT') # DRAFT, SENT, VIEWED, APPROVED, DECLINED, EXPIRED
     sent_date = models.DateTimeField(blank=True, null=True)
     approved_date = models.DateTimeField(blank=True, null=True)
+    approved_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='approved_estimates')
     created_at = models.DateTimeField(auto_now_add=True)
     validity_days = models.IntegerField(default=7)
 
@@ -202,6 +245,10 @@ class EstimateItem(models.Model):
     quantity = models.DecimalField(max_digits=10, decimal_places=2, default=1)
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    def save(self, *args, **kwargs):
+        self.total_price = self.quantity * self.unit_price
+        super().save(*args, **kwargs)
 
 class CustomerCommunication(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -258,7 +305,8 @@ class Issue(models.Model):
 class IssueEvidence(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name='evidence')
-    file_url = models.URLField(max_length=500)
+    file = models.FileField(upload_to='issue_evidence/', null=True, blank=True)
+    file_url = models.URLField(max_length=500, blank=True, null=True)
     file_type = models.CharField(max_length=50) # image, video, document
     description = models.CharField(max_length=255, blank=True, null=True)
     technician = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
@@ -610,3 +658,6 @@ class AIUsageLog(models.Model):
     processing_status = models.CharField(max_length=50)
     token_usage = models.IntegerField(default=0)
     estimated_cost = models.DecimalField(max_digits=10, decimal_places=4, default=0)
+
+
+

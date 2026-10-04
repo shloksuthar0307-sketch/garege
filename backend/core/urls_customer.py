@@ -7,9 +7,10 @@ from .views import (
     CustomerProfileViewSet,
     SupportTicketViewSet,
     PaymentMethodViewSet,
+    AppointmentViewSet,
     customer_dashboard
 )
-from .views_advisor import ConversationViewSet, MessageViewSet
+from .views_advisor import ConversationViewSet, MessageViewSet, SystemNotificationViewSet, EstimateViewSet
 
 router = DefaultRouter()
 router.register(r'vehicles', VehicleViewSet, basename='customer-vehicles')
@@ -18,6 +19,9 @@ router.register(r'service-records', ServiceOrderViewSet, basename='customer-serv
 router.register(r'service-orders', ServiceOrderViewSet, basename='customer-service-orders')
 router.register(r'conversations', ConversationViewSet, basename='customer-conversations')
 router.register(r'messages', MessageViewSet, basename='customer-messages')
+router.register(r'appointments', AppointmentViewSet, basename='customer-appointments')
+router.register(r'notifications', SystemNotificationViewSet, basename='customer-notifications')
+router.register(r'estimates', EstimateViewSet, basename='customer-estimates')
 
 # Also register other endpoints if needed for customer dashboard
 router.register(r'profile', CustomerProfileViewSet, basename='customer-profile')

@@ -70,11 +70,11 @@ export default function ManagerAppointments() {
     <div className="max-w-7xl mx-auto space-y-6">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-light text-white tracking-wide">Appointments</h1>
-          <p className="text-slate-400 text-sm mt-1">Manage incoming customer bookings and schedules.</p>
+          <h1 className="text-3xl font-light text-[var(--text-primary)] tracking-wide">Appointments</h1>
+          <p className="text-[var(--text-muted)] text-sm mt-1">Manage incoming customer bookings and schedules.</p>
         </div>
         <div className="flex gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-lg text-sm transition-colors border border-white/10">
+          <button className="flex items-center gap-2 px-4 py-2 bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] text-[var(--text-primary)] rounded-lg text-sm transition-colors border border-[var(--border-default)]">
             <CalendarIcon size={16} /> Today
           </button>
           <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-[#35D07F] hover:bg-[#2EB86F] text-black rounded-lg text-sm font-bold transition-colors">
@@ -85,18 +85,18 @@ export default function ManagerAppointments() {
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Calendar Sidebar */}
-        <div className="bg-[#111112] border border-white/5 rounded-2xl p-6 h-fit">
+        <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-6 h-fit">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg text-white font-medium">September 2026</h2>
-            <div className="flex gap-2 text-slate-400">
-              <button className="hover:text-white transition-colors"><ChevronLeft size={20} /></button>
-              <button className="hover:text-white transition-colors"><ChevronRight size={20} /></button>
+            <h2 className="text-lg text-[var(--text-primary)] font-medium">September 2026</h2>
+            <div className="flex gap-2 text-[var(--text-muted)]">
+              <button className="hover:text-[var(--text-primary)] transition-colors"><ChevronLeft size={20} /></button>
+              <button className="hover:text-[var(--text-primary)] transition-colors"><ChevronRight size={20} /></button>
             </div>
           </div>
           
           <div className="grid grid-cols-7 gap-1 text-center mb-2">
             {days.map(d => (
-              <div key={d} className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">{d}</div>
+              <div key={d} className="text-[10px] uppercase tracking-widest text-[var(--text-muted)] font-bold">{d}</div>
             ))}
           </div>
           
@@ -113,7 +113,7 @@ export default function ManagerAppointments() {
                 <button 
                   key={date}
                   className={`aspect-square rounded-full flex flex-col items-center justify-center text-sm transition-colors relative
-                    ${isToday ? 'bg-[#35D07F] text-black font-bold' : 'text-slate-300 hover:bg-white/10'}
+                    ${isToday ? 'bg-[#35D07F] text-black font-bold' : 'text-[var(--text-secondary)] hover:bg-[var(--bg-surface-active)]'}
                   `}
                 >
                   {date}
@@ -129,16 +129,16 @@ export default function ManagerAppointments() {
         {/* Appointments List */}
         <div className="lg:col-span-2 space-y-4">
           <div className="flex justify-between items-center mb-2">
-            <h2 className="text-xl text-white font-light">Today's Schedule</h2>
-            <span className="text-sm text-slate-500">{appointments.length} appointments</span>
+            <h2 className="text-xl text-[var(--text-primary)] font-light">Today's Schedule</h2>
+            <span className="text-sm text-[var(--text-muted)]">{appointments.length} appointments</span>
           </div>
 
           {loading ? (
-            <div className="bg-[#111112] border border-white/5 rounded-2xl p-8 text-center text-slate-500">
+            <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-8 text-center text-[var(--text-muted)]">
               Loading schedule...
             </div>
           ) : appointments.length === 0 ? (
-            <div className="bg-[#111112] border border-white/5 rounded-2xl p-8 text-center text-slate-500">
+            <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-8 text-center text-[var(--text-muted)]">
               No appointments scheduled for today.
             </div>
           ) : (
@@ -147,36 +147,36 @@ export default function ManagerAppointments() {
               const timeString = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
               
               return (
-                <div key={apt.id} className="bg-[#111112] border border-white/5 hover:border-white/10 rounded-2xl p-5 transition-all group flex gap-6 items-center">
-                  <div className="flex flex-col items-center justify-center min-w-[80px] pr-6 border-r border-white/10">
-                    <span className="text-lg text-white font-medium">{timeString}</span>
-                    <span className="text-[10px] text-slate-500 tracking-widest uppercase mt-1">Arrival</span>
+                <div key={apt.id} className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] hover:border-[var(--border-default)] rounded-2xl p-5 transition-all group flex gap-6 items-center">
+                  <div className="flex flex-col items-center justify-center min-w-[80px] pr-6 border-r border-[var(--border-default)]">
+                    <span className="text-lg text-[var(--text-primary)] font-medium">{timeString}</span>
+                    <span className="text-[10px] text-[var(--text-muted)] tracking-widest uppercase mt-1">Arrival</span>
                   </div>
                   
                   <div className="flex-1 grid grid-cols-2 gap-4">
                     <div>
-                      <div className="flex items-center gap-2 text-white font-medium mb-1">
-                        <User size={14} className="text-slate-400" />
-                        {apt.customer_details?.name || 'Walk-in Customer'}
+                      <div className="flex items-center gap-2 text-[var(--text-primary)] font-medium mb-1">
+                        <User size={14} className="text-[var(--text-muted)]" />
+                        {apt.customer?.first_name ? `${apt.customer.first_name} ${apt.customer.last_name}` : apt.customer_details?.name || 'Walk-in Customer'}
                       </div>
-                      <div className="text-xs text-slate-500 pl-5">
-                        {apt.customer_details?.phone || 'No phone provided'}
+                      <div className="text-xs text-[var(--text-muted)] pl-5">
+                        {apt.customer?.phone_number || apt.customer_details?.phone || 'No phone provided'}
                       </div>
                     </div>
                     
                     <div>
-                      <div className="flex items-center gap-2 text-white font-medium mb-1">
-                        <Car size={14} className="text-slate-400" />
-                        {apt.vehicle_details?.make} {apt.vehicle_details?.model}
+                      <div className="flex items-center gap-2 text-[var(--text-primary)] font-medium mb-1">
+                        <Car size={14} className="text-[var(--text-muted)]" />
+                        {apt.vehicle?.make || apt.vehicle_details?.make || 'Unknown'} {apt.vehicle?.model || apt.vehicle_details?.model || 'Vehicle'}
                       </div>
-                      <div className="text-xs text-slate-500 pl-5">
+                      <div className="text-xs text-[var(--text-muted)] pl-5">
                         {apt.service_type}
                       </div>
                     </div>
                   </div>
                   
                   <div className="flex flex-col items-end gap-3">
-                    <button className="text-slate-500 hover:text-white transition-colors">
+                    <button className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
                       <MoreVertical size={16} />
                     </button>
                     <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase ${
@@ -196,45 +196,45 @@ export default function ManagerAppointments() {
 
       {/* New Booking Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#111112] border border-white/10 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
-            <div className="flex justify-between items-center p-6 border-b border-white/5">
-              <h2 className="text-xl font-light text-white tracking-wide">New Booking</h2>
-              <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-white transition-colors">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--bg-overlay)] backdrop-blur-sm">
+          <div className="bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
+            <div className="flex justify-between items-center p-6 border-b border-[var(--border-subtle)]">
+              <h2 className="text-xl font-light text-[var(--text-primary)] tracking-wide">New Booking</h2>
+              <button onClick={() => setIsModalOpen(false)} className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
                 <X size={20} />
               </button>
             </div>
             
             <form onSubmit={handleCreateBooking} className="p-6 space-y-5">
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-2">Service Type</label>
+                <label className="block text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-2">Service Type</label>
                 <input 
                   type="text" 
                   value={formData.service_type}
                   onChange={(e) => setFormData({...formData, service_type: e.target.value})}
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F]"
+                  className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                   placeholder="e.g., Annual Maintenance"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-2">Date & Time</label>
+                <label className="block text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-2">Date & Time</label>
                 <input 
                   type="datetime-local" 
                   value={formData.date_time}
                   onChange={(e) => setFormData({...formData, date_time: e.target.value})}
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] [color-scheme:dark]"
+                  className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] [color-scheme:dark]"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-2">Status</label>
+                <label className="block text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-2">Status</label>
                 <select 
                   value={formData.status}
                   onChange={(e) => setFormData({...formData, status: e.target.value})}
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F]"
+                  className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                 >
                   <option value="REQUESTED">Requested</option>
                   <option value="CONFIRMED">Confirmed</option>
@@ -247,11 +247,11 @@ export default function ManagerAppointments() {
                 Note: Currently selecting specific customers/vehicles is limited in quick-booking mode. Using defaults for new entries.
               </div>
 
-              <div className="pt-4 flex justify-end gap-3 border-t border-white/5">
+              <div className="pt-4 flex justify-end gap-3 border-t border-[var(--border-subtle)]">
                 <button 
                   type="button" 
                   onClick={() => setIsModalOpen(false)}
-                  className="px-6 py-3 rounded-lg text-sm font-medium text-white hover:bg-white/5 transition-colors"
+                  className="px-6 py-3 rounded-lg text-sm font-medium text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
                 >
                   Cancel
                 </button>
@@ -270,4 +270,5 @@ export default function ManagerAppointments() {
     </div>
   );
 }
+
 

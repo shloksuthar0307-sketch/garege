@@ -56,7 +56,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return data
 from rest_framework import serializers
-from core.models import CustomerProfile
+from core.models import CustomerProfile, AuditLog, SystemNotification
 from organizations.models import Branch, Organization
 
 class CustomerRegistrationSerializer(serializers.ModelSerializer):
@@ -65,10 +65,11 @@ class CustomerRegistrationSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
+    branch_id = serializers.UUIDField(required=False, write_only=True, allow_null=True)
 
     class Meta:
         model = User
-        fields = ['username', 'password', 'confirm_password', 'email', 'first_name', 'last_name', 'phone_number']
+        fields = ['username', 'password', 'confirm_password', 'email', 'first_name', 'last_name', 'phone_number', 'branch_id']
 
     def validate_email(self, value):
         if value and User.objects.filter(email=value).exists():
@@ -92,10 +93,16 @@ class CustomerRegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Remove confirm_password as it's not a model field
         validated_data.pop('confirm_password', None)
+        branch_id = validated_data.pop('branch_id', None)
         
-        # Pick the first organization and branch as default for new customers
-        org = Organization.objects.first()
-        branch = Branch.objects.filter(organization=org).first() if org else Branch.objects.first()
+        org = None
+        branch = None
+        if branch_id:
+            try:
+                branch = Branch.objects.get(id=branch_id)
+                org = branch.organization
+            except Branch.DoesNotExist:
+                raise serializers.ValidationError({"branch_id": "Invalid branch selected."})
 
         user = User.objects.create_user(
             username=validated_data['username'],
@@ -109,4 +116,20 @@ class CustomerRegistrationSerializer(serializers.ModelSerializer):
             branch=branch
         )
         CustomerProfile.objects.create(user=user)
+        
+        # Create audit log
+        AuditLog.objects.create(
+            actor=user,
+            action="Customer Registration",
+            new_value=f"Registered as {user.username}"
+        )
+        
+        # Create notification for the user
+        SystemNotification.objects.create(
+            user=user,
+            notification_type="SYSTEM",
+            title="Welcome to RepairTrace!",
+            message="Your account has been successfully created. You can now add your vehicles and book service appointments."
+        )
+        
         return user

@@ -60,13 +60,13 @@ export default function Login() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-white/5 border border-white/10 p-8 rounded-2xl backdrop-blur-xl"
+          className="bg-[var(--bg-surface-hover)] border border-[var(--border-default)] p-8 rounded-2xl backdrop-blur-xl"
         >
           <div className="flex justify-center mb-8">
              <img src="/images/logo.png" alt="TR Logo" className="w-16 h-16 drop-shadow-2xl" />
           </div>
           
-          <h2 className="text-2xl font-light text-white text-center mb-8 tracking-wide">
+          <h2 className="text-2xl font-light text-[var(--text-primary)] text-center mb-8 tracking-wide">
             SERVICE PORTAL
           </h2>
           
@@ -83,7 +83,7 @@ export default function Login() {
                 type="text" 
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors font-light"
+                className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors font-light"
                 required
               />
             </div>
@@ -94,7 +94,7 @@ export default function Login() {
                 type="password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors font-light"
+                className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors font-light"
                 required
               />
             </div>
@@ -122,4 +122,5 @@ export default function Login() {
     </div>
   );
 }
+
 

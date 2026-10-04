@@ -32,7 +32,7 @@ export default function PublicVehicleHistory() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#020202] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--bg-root)] text-[var(--text-primary)] flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
       </div>
     );
@@ -40,8 +40,8 @@ export default function PublicVehicleHistory() {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen bg-[#020202] text-white flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-[#111112] border border-white/10 rounded-2xl p-8 text-center">
+      <div className="min-h-screen bg-[var(--bg-root)] text-[var(--text-primary)] flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-2xl p-8 text-center">
           <div className="w-16 h-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
             <ShieldCheck size={32} />
           </div>
@@ -61,9 +61,9 @@ export default function PublicVehicleHistory() {
   const { vehicle, history } = data;
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white">
+    <div className="min-h-screen bg-[var(--bg-root)] text-[var(--text-primary)]">
       {/* Header */}
-      <div className="bg-[#111112] border-b border-white/5 pt-12 pb-8 px-4">
+      <div className="bg-[var(--bg-secondary)] border-b border-[var(--border-subtle)] pt-12 pb-8 px-4">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center gap-4 text-emerald-400 mb-6 bg-emerald-400/10 w-fit px-4 py-2 rounded-full text-sm font-medium">
             <ShieldCheck size={18} />
@@ -88,18 +88,18 @@ export default function PublicVehicleHistory() {
           <div className="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
             {history.map((record: any, index: number) => (
               <div key={index} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-[#020202] bg-[#111112] text-white/50 group-hover:text-white group-hover:bg-[#35D07F] transition-colors shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_0_1px_#35D07F]">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-[#020202] bg-[var(--bg-secondary)] text-white/50 group-hover:text-[var(--text-primary)] group-hover:bg-[#35D07F] transition-colors shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_0_1px_#35D07F]">
                   <Wrench size={16} />
                 </div>
                 
-                <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-[#111112] border border-white/5 p-6 rounded-2xl hover:border-white/20 transition-colors">
+                <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-[var(--bg-secondary)] border border-[var(--border-subtle)] p-6 rounded-2xl hover:border-[var(--border-strong)] transition-colors">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2 text-white/60 text-sm">
                       <Clock size={14} />
                       {record.date ? format(new Date(record.date), 'MMM d, yyyy') : 'Unknown Date'}
                     </div>
                     {record.mileage && (
-                      <div className="text-sm font-medium bg-white/5 px-2 py-1 rounded">
+                      <div className="text-sm font-medium bg-[var(--bg-surface-hover)] px-2 py-1 rounded">
                         {record.mileage.toLocaleString()} mi
                       </div>
                     )}
@@ -112,7 +112,7 @@ export default function PublicVehicleHistory() {
                   </p>
 
                   {record.facility && (
-                    <div className="flex items-center gap-2 text-sm text-white/50 border-t border-white/5 pt-4 mt-4">
+                    <div className="flex items-center gap-2 text-sm text-white/50 border-t border-[var(--border-subtle)] pt-4 mt-4">
                       <FileText size={14} />
                       {record.facility}
                     </div>
@@ -122,7 +122,7 @@ export default function PublicVehicleHistory() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12 bg-[#111112] border border-white/5 rounded-2xl">
+          <div className="text-center py-12 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl">
             <History className="mx-auto text-white/20 mb-4" size={48} />
             <h3 className="text-xl font-medium mb-2">No History Found</h3>
             <p className="text-white/50">There are no service records available for this vehicle yet.</p>
@@ -132,4 +132,5 @@ export default function PublicVehicleHistory() {
     </div>
   );
 }
+
 

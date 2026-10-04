@@ -1,13 +1,21 @@
 export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
 
+export function getAuthHeaders() {
+  const token = localStorage.getItem('accessToken');
+  return {
+    'Content-Type': 'application/json',
+    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+  };
+}
+
 export async function fetchVehicles() {
-  const response = await fetch(`${API_BASE_URL}/vehicles/`);
+  const response = await fetch(`${API_BASE_URL}/vehicles/`, { headers: getAuthHeaders() });
   if (!response.ok) throw new Error('Failed to fetch vehicles');
   return response.json();
 }
 
 export async function fetchVehicle(id: string) {
-  const response = await fetch(`${API_BASE_URL}/vehicles/${id}/`);
+  const response = await fetch(`${API_BASE_URL}/vehicles/${id}/`, { headers: getAuthHeaders() });
   if (!response.ok) throw new Error('Failed to fetch vehicle');
   return response.json();
 }
@@ -15,9 +23,7 @@ export async function fetchVehicle(id: string) {
 export async function updateVehicle(id: string, data: any) {
   const response = await fetch(`${API_BASE_URL}/vehicles/${id}/`, {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify(data),
   });
   if (!response.ok) throw new Error('Failed to update vehicle');
@@ -29,7 +35,7 @@ export async function fetchServiceHistory(id: string, search: string, type: stri
   if (search) url.searchParams.append('search', search);
   if (type && type !== 'All') url.searchParams.append('type', type);
   
-  const response = await fetch(url.toString());
+  const response = await fetch(url.toString(), { headers: getAuthHeaders() });
   if (!response.ok) throw new Error('Failed to fetch service history');
   return response.json();
 }

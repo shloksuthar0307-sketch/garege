@@ -88,7 +88,7 @@ export function ConnectionStatus() {
           {queue.length > 0 && (
             <button 
               onClick={processQueue}
-              className="ml-2 flex items-center gap-1 hover:text-white transition-colors"
+              className="ml-2 flex items-center gap-1 hover:text-[var(--text-primary)] transition-colors"
             >
               <RefreshCw size={14} /> Sync {queue.length}
             </button>
@@ -98,4 +98,5 @@ export function ConnectionStatus() {
     </div>
   );
 }
+
 

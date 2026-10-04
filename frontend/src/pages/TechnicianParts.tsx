@@ -82,7 +82,7 @@ export default function TechnicianParts() {
     });
   };
 
-  const usePart = (reqId: string) => {
+  const handleUsePart = (reqId: string) => {
     setRequests(current => current.map(req => 
       req.id === reqId ? { ...req, status: 'USED' } : req
     ));
@@ -91,38 +91,38 @@ export default function TechnicianParts() {
 
   return (
     <div className="space-y-8 pb-24 max-w-6xl mx-auto">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#111112] border border-white/5 p-6 rounded-2xl">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] p-6 rounded-2xl">
         <div>
-          <h1 className="text-2xl font-light text-white">Parts Inventory</h1>
-          <p className="text-sm text-slate-500 mt-1">Browse, request, and use parts for your assigned work orders.</p>
+          <h1 className="text-2xl font-light text-[var(--text-primary)]">Parts Inventory</h1>
+          <p className="text-sm text-[var(--text-muted)] mt-1">Browse, request, and use parts for your assigned work orders.</p>
         </div>
         <div className="flex items-center gap-4 w-full md:w-auto">
           <div className="relative flex-1 md:w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" size={18} />
             <input 
               type="text" 
               placeholder="Search by part # or name..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-black/50 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-white focus:outline-none focus:border-[#35D07F] transition-colors text-sm"
+              className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg pl-10 pr-4 py-2 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors text-sm"
             />
           </div>
         </div>
       </div>
 
       {requests.length > 0 && (
-        <div className="bg-[#111112] border border-white/5 rounded-2xl p-6">
-          <h3 className="text-xs font-bold text-white uppercase tracking-widest mb-4">My Parts Requests</h3>
+        <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-6">
+          <h3 className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-widest mb-4">My Parts Requests</h3>
           <div className="space-y-3">
             {requests.map(req => (
-              <div key={req.id} className="flex items-center justify-between bg-black/50 border border-white/5 p-4 rounded-xl">
+              <div key={req.id} className="flex items-center justify-between bg-[var(--bg-input)] border border-[var(--border-subtle)] p-4 rounded-xl">
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-slate-400">
+                  <div className="w-10 h-10 rounded-lg bg-[var(--bg-surface-hover)] flex items-center justify-center text-[var(--text-muted)]">
                     <Package size={20} />
                   </div>
                   <div>
-                    <div className="text-white text-sm font-medium">{req.part.name} (x{req.qty})</div>
-                    <div className="text-xs text-slate-500">For: {req.workOrder} &bull; Req ID: {req.id}</div>
+                    <div className="text-[var(--text-primary)] text-sm font-medium">{req.part.name} (x{req.qty})</div>
+                    <div className="text-xs text-[var(--text-muted)]">For: {req.workOrder} &bull; Req ID: {req.id}</div>
                   </div>
                 </div>
                 
@@ -138,7 +138,7 @@ export default function TechnicianParts() {
                         <CheckCircle2 size={14} /> Approved
                       </span>
                       <button 
-                        onClick={() => usePart(req.id)}
+                        onClick={() => handleUsePart(req.id)}
                         className="bg-[#35D07F] hover:bg-[#2EB86F] text-black px-4 py-2 rounded text-xs font-bold uppercase tracking-widest transition-colors"
                       >
                         Use Part
@@ -146,7 +146,7 @@ export default function TechnicianParts() {
                     </div>
                   )}
                   {req.status === 'USED' && (
-                    <span className="flex items-center gap-2 text-slate-500 text-xs font-bold uppercase tracking-widest">
+                    <span className="flex items-center gap-2 text-[var(--text-muted)] text-xs font-bold uppercase tracking-widest">
                       <CheckCircle2 size={14} /> Installed
                     </span>
                   )}
@@ -158,12 +158,12 @@ export default function TechnicianParts() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredParts.map((part) => (
+        {filteredParts.map((part: any) => (
           <motion.div 
             key={part.id}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-[#111112] border border-white/5 rounded-2xl p-6 flex flex-col justify-between group hover:border-white/20 transition-colors"
+            className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-6 flex flex-col justify-between group hover:border-[var(--border-strong)] transition-colors"
           >
             <div>
               <div className="flex justify-between items-start mb-4">
@@ -177,15 +177,15 @@ export default function TechnicianParts() {
                 )}
               </div>
               
-              <div className="text-xs font-mono text-slate-500 mb-1">{part.part_number}</div>
-              <h3 className="text-lg text-white font-medium mb-1">{part.name}</h3>
-              <div className="text-xs text-slate-500 uppercase tracking-widest">{part.category} &bull; {part.location}</div>
+              <div className="text-xs font-mono text-[var(--text-muted)] mb-1">{part.part_number}</div>
+              <h3 className="text-lg text-[var(--text-primary)] font-medium mb-1">{part.name}</h3>
+              <div className="text-xs text-[var(--text-muted)] uppercase tracking-widest">{part.category} &bull; {part.location}</div>
             </div>
 
-            <div className="mt-6 pt-6 border-t border-white/5 flex items-center justify-between">
+            <div className="mt-6 pt-6 border-t border-[var(--border-subtle)] flex items-center justify-between">
               <div>
-                <div className="text-[10px] text-slate-500 uppercase tracking-widest mb-1">In Stock</div>
-                <div className="text-xl font-light text-white">{part.stock} <span className="text-sm text-slate-500">units</span></div>
+                <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest mb-1">In Stock</div>
+                <div className="text-xl font-light text-[var(--text-primary)]">{part.stock} <span className="text-sm text-[var(--text-muted)]">units</span></div>
               </div>
               <button 
                 onClick={() => setRequestModalData(part)}
@@ -200,16 +200,16 @@ export default function TechnicianParts() {
 
       <AnimatePresence>
         {requestModalData && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
+          <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[var(--bg-overlay)] backdrop-blur-sm px-4">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-[#111112] border border-white/10 rounded-2xl w-full max-w-md overflow-hidden"
+              className="bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-2xl w-full max-w-md overflow-hidden"
             >
-              <div className="p-4 border-b border-white/10 flex justify-between items-center">
-                <h2 className="text-white font-medium">Request Parts</h2>
-                <button onClick={() => setRequestModalData(null)} className="text-slate-400 hover:text-white">
+              <div className="p-4 border-b border-[var(--border-default)] flex justify-between items-center">
+                <h2 className="text-[var(--text-primary)] font-medium">Request Parts</h2>
+                <button onClick={() => setRequestModalData(null)} className="text-[var(--text-muted)] hover:text-[var(--text-primary)]">
                   <X size={20} />
                 </button>
               </div>
@@ -217,30 +217,30 @@ export default function TechnicianParts() {
                 
                 <div>
                   <div className="text-xs font-mono text-[#35D07F] mb-1">{requestModalData.part_number}</div>
-                  <h3 className="text-lg text-white font-medium">{requestModalData.name}</h3>
-                  <div className="text-xs text-slate-500 mt-1">Available Stock: {requestModalData.stock}</div>
+                  <h3 className="text-lg text-[var(--text-primary)] font-medium">{requestModalData.name}</h3>
+                  <div className="text-xs text-[var(--text-muted)] mt-1">Available Stock: {requestModalData.stock}</div>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-bold tracking-widest uppercase text-slate-500 mb-2">Quantity Needed</label>
+                    <label className="block text-xs font-bold tracking-widest uppercase text-[var(--text-muted)] mb-2">Quantity Needed</label>
                     <input 
                       type="number" 
                       min="1" 
                       max={requestModalData.stock}
                       value={qty}
                       onChange={(e) => setQty(parseInt(e.target.value) || 1)}
-                      className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#35D07F]"
+                      className="w-full bg-black border border-[var(--border-default)] rounded-xl px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold tracking-widest uppercase text-slate-500 mb-2">Assign to Work Order</label>
+                    <label className="block text-xs font-bold tracking-widest uppercase text-[var(--text-muted)] mb-2">Assign to Work Order</label>
                     <select 
                       value={workOrder}
                       onChange={(e) => setWorkOrder(e.target.value)}
-                      className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] appearance-none"
+                      className="w-full bg-black border border-[var(--border-default)] rounded-xl px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] appearance-none"
                     >
-                      <option value="WO-2023-0891">WO-2023-0891 (Porsche 911)</option>
+                      <option value="WO-2023-0891">WO-2023-0891 (Your Vehicle)</option>
                       <option value="WO-2023-0892">WO-2023-0892 (BMW M4)</option>
                       <option value="WO-2023-0895">WO-2023-0895 (Audi RS6)</option>
                     </select>
@@ -262,4 +262,5 @@ export default function TechnicianParts() {
     </div>
   );
 }
+
 

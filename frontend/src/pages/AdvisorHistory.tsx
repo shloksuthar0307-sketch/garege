@@ -83,18 +83,18 @@ export default function AdvisorHistory() {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 shrink-0">
         <div>
-          <h1 className="text-3xl font-light text-white tracking-tight">Service History</h1>
-          <p className="text-sm text-slate-500 mt-1">Search and view past service records, invoices, and detailed reports.</p>
+          <h1 className="text-3xl font-light text-[var(--text-primary)] tracking-tight">Service History</h1>
+          <p className="text-sm text-[var(--text-muted)] mt-1">Search and view past service records, invoices, and detailed reports.</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="relative w-full md:w-80">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
             <input 
               type="text" 
               placeholder="Search by Reg No, Customer, Order ID..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-[#111112] border border-white/10 rounded-xl pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-[#35D07F] transition-colors"
+              className="w-full bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-xl pl-9 pr-4 py-2 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors"
             />
           </div>
           <FilterPopover 
@@ -112,59 +112,59 @@ export default function AdvisorHistory() {
       </div>
 
       {/* History Data Table */}
-      <div className="flex-1 overflow-hidden bg-[#111112] border border-white/5 rounded-2xl flex flex-col">
+      <div className="flex-1 overflow-hidden bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl flex flex-col">
         <div className="overflow-x-auto custom-scrollbar flex-1">
           <table className="w-full text-left border-collapse">
-            <thead className="bg-[#1A1A1B] sticky top-0 z-10 border-b border-white/5">
+            <thead className="bg-[#1A1A1B] sticky top-0 z-10 border-b border-[var(--border-subtle)]">
               <tr>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Order ID</th>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Date</th>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Vehicle</th>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Customer</th>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Service Type</th>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Status</th>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">Actions</th>
+                <th className="p-4 text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Order ID</th>
+                <th className="p-4 text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Date</th>
+                <th className="p-4 text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Vehicle</th>
+                <th className="p-4 text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Customer</th>
+                <th className="p-4 text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Service Type</th>
+                <th className="p-4 text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Status</th>
+                <th className="p-4 text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
               {isLoading ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-slate-500">Loading history...</td>
+                  <td colSpan={7} className="p-8 text-center text-[var(--text-muted)]">Loading history...</td>
                 </tr>
               ) : filteredHistory.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-slate-500">No records found matching your search.</td>
+                  <td colSpan={7} className="p-8 text-center text-[var(--text-muted)]">No records found matching your search.</td>
                 </tr>
               ) : (
                 filteredHistory.map((service: any) => (
                   <tr key={service.id} className="hover:bg-white/[0.02] transition-colors group">
                     <td className="p-4">
-                      <span className="text-xs font-mono text-white bg-white/5 px-2 py-1 rounded">
+                      <span className="text-xs font-mono text-[var(--text-primary)] bg-[var(--bg-surface-hover)] px-2 py-1 rounded">
                         {service.order_number || (typeof service.id === 'string' ? service.id.substring(0, 8) : service.id)}
                       </span>
                     </td>
                     <td className="p-4">
-                      <div className="flex items-center gap-2 text-sm text-slate-300">
-                        <Calendar size={14} className="text-slate-500" />
+                      <div className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
+                        <Calendar size={14} className="text-[var(--text-muted)]" />
                         {new Date(service.date_created).toLocaleDateString()}
                       </div>
                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
-                        <Car size={14} className="text-slate-500" />
+                        <Car size={14} className="text-[var(--text-muted)]" />
                         <div>
-                          <p className="text-sm text-white font-medium">{service.vehicle?.make} {service.vehicle?.model}</p>
-                          <p className="text-[10px] font-mono text-slate-500">{service.vehicle?.registration_number}</p>
+                          <p className="text-sm text-[var(--text-primary)] font-medium">{service.vehicle?.make} {service.vehicle?.model}</p>
+                          <p className="text-[10px] font-mono text-[var(--text-muted)]">{service.vehicle?.registration_number}</p>
                         </div>
                       </div>
                     </td>
                     <td className="p-4">
-                      <div className="text-sm text-white font-medium">
+                      <div className="text-sm text-[var(--text-primary)] font-medium">
                         {service.customer?.first_name || service.customer?.username || 'N/A'}
                       </div>
                     </td>
                     <td className="p-4">
-                      <span className="text-xs px-2 py-1 bg-white/5 text-slate-300 rounded border border-white/10">
+                      <span className="text-xs px-2 py-1 bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] rounded border border-[var(--border-default)]">
                         {service.type || 'Service'}
                       </span>
                     </td>
@@ -194,10 +194,11 @@ export default function AdvisorHistory() {
       </div>
 
       <ServiceOrderDrawer 
-        orderId={selectedServiceId} 
+        serviceId={selectedServiceId} 
         onClose={() => setSelectedServiceId(null)} 
       />
     </div>
   );
 }
+
 

@@ -68,7 +68,7 @@ export const FloatingLaborTimer: React.FC = () => {
         {isRunning ? (
           <button 
             onClick={pauseTimer}
-            className={`flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors ${greasyHandsMode ? 'p-4 text-xl' : 'py-2 px-3 text-sm'}`}
+            className={`flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-[var(--text-primary)] rounded-lg font-medium transition-colors ${greasyHandsMode ? 'p-4 text-xl' : 'py-2 px-3 text-sm'}`}
           >
             <Pause size={greasyHandsMode ? 24 : 16} />
             Pause
@@ -76,7 +76,7 @@ export const FloatingLaborTimer: React.FC = () => {
         ) : (
           <button 
             onClick={resumeTimer}
-            className={`flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors ${greasyHandsMode ? 'p-4 text-xl' : 'py-2 px-3 text-sm'}`}
+            className={`flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-[var(--text-primary)] rounded-lg font-medium transition-colors ${greasyHandsMode ? 'p-4 text-xl' : 'py-2 px-3 text-sm'}`}
           >
             <Play size={greasyHandsMode ? 24 : 16} />
             Resume
@@ -84,7 +84,7 @@ export const FloatingLaborTimer: React.FC = () => {
         )}
         <button 
           onClick={stopJob}
-          className={`flex-1 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors ${greasyHandsMode ? 'p-4 text-xl' : 'py-2 px-3 text-sm'}`}
+          className={`flex-1 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-[var(--text-primary)] rounded-lg font-medium transition-colors ${greasyHandsMode ? 'p-4 text-xl' : 'py-2 px-3 text-sm'}`}
         >
           <Square size={greasyHandsMode ? 24 : 16} />
           Stop
@@ -93,4 +93,5 @@ export const FloatingLaborTimer: React.FC = () => {
     </div>
   );
 };
+
 

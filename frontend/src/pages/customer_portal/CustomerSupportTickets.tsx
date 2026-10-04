@@ -18,7 +18,7 @@ const AUTO_RESPONSES = [
 
 export default function CustomerSupportTickets() {
   const [tickets, setTickets] = useState(INITIAL_TICKETS);
-  const [activeTicketId, setActiveTicketId] = useState(INITIAL_TICKETS[0].id);
+  const [activeTicketId, setActiveTicketId] = useState(INITIAL_TICKETS.length > 0 ? INITIAL_TICKETS[0].id : null);
   const [searchQuery, setSearchQuery] = useState('');
   const [replyText, setReplyText] = useState('');
   
@@ -46,8 +46,8 @@ export default function CustomerSupportTickets() {
     switch (status) {
       case 'Open': return 'text-[#35D07F] border-[#35D07F]/30 bg-[#35D07F]/10';
       case 'Pending': return 'text-amber-400 border-amber-500/30 bg-amber-500/10';
-      case 'Resolved': return 'text-slate-400 border-slate-500/30 bg-slate-500/10';
-      default: return 'text-slate-400 border-slate-500/30 bg-slate-500/10';
+      case 'Resolved': return 'text-[var(--text-muted)] border-slate-500/30 bg-slate-500/10';
+      default: return 'text-[var(--text-muted)] border-slate-500/30 bg-slate-500/10';
     }
   };
 
@@ -176,11 +176,11 @@ export default function CustomerSupportTickets() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 shrink-0">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-          <h1 className="text-3xl font-bold tracking-widest uppercase text-white mb-2 flex items-center gap-3">
+          <h1 className="text-3xl font-bold tracking-widest uppercase text-[var(--text-primary)] mb-2 flex items-center gap-3">
             <MessageSquare className="text-[#35D07F]" size={28} />
             Support Helpdesk
           </h1>
-          <p className="text-slate-400 text-xs tracking-widest uppercase">
+          <p className="text-[var(--text-muted)] text-xs tracking-widest uppercase">
             Manage your support tickets and speak with a service advisor.
           </p>
         </motion.div>
@@ -201,16 +201,16 @@ export default function CustomerSupportTickets() {
         {/* Left Pane: Ticket List */}
         <motion.div 
           initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
-          className="lg:col-span-4 bg-[#0A0A0B]/80 backdrop-blur-md border border-white/5 rounded-2xl flex flex-col overflow-hidden"
+          className="lg:col-span-4 bg-[var(--bg-primary)]/80 backdrop-blur-md border border-[var(--border-subtle)] rounded-2xl flex flex-col overflow-hidden"
         >
           {/* List Search Header */}
-          <div className="p-4 border-b border-white/5 bg-white/[0.02]">
+          <div className="p-4 border-b border-[var(--border-subtle)] bg-white/[0.02]">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" size={16} />
               <input 
                 type="text" 
                 placeholder="SEARCH TICKETS..." 
-                className="w-full pl-10 pr-4 py-2.5 bg-black/50 border border-white/10 rounded-xl text-xs text-white uppercase tracking-widest focus:border-[#35D07F] outline-none transition-all"
+                className="w-full pl-10 pr-4 py-2.5 bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl text-xs text-[var(--text-primary)] uppercase tracking-widest focus:border-[#35D07F] outline-none transition-all"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -223,31 +223,31 @@ export default function CustomerSupportTickets() {
               <div 
                 key={ticket.id}
                 onClick={() => setActiveTicketId(ticket.id)}
-                className={`p-5 border-b border-white/5 cursor-pointer transition-all ${
+                className={`p-5 border-b border-[var(--border-subtle)] cursor-pointer transition-all ${
                   activeTicketId === ticket.id 
-                    ? 'bg-white/10 border-l-2 border-l-[#35D07F]' 
-                    : 'hover:bg-white/5 border-l-2 border-l-transparent'
+                    ? 'bg-[var(--bg-surface-active)] border-l-2 border-l-[#35D07F]' 
+                    : 'hover:bg-[var(--bg-surface-hover)] border-l-2 border-l-transparent'
                 }`}
               >
                 <div className="flex justify-between items-start mb-2">
-                  <span className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">{ticket.id}</span>
+                  <span className="text-[var(--text-muted)] text-[10px] uppercase tracking-widest font-bold">{ticket.id}</span>
                   <span className={`px-2 py-0.5 border rounded flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest ${getStatusColor(ticket.status)}`}>
                     {getStatusIcon(ticket.status)} {ticket.status}
                   </span>
                 </div>
-                <h3 className={`text-sm font-bold tracking-wider mb-2 line-clamp-1 ${activeTicketId === ticket.id ? 'text-[#35D07F]' : 'text-white'}`}>
+                <h3 className={`text-sm font-bold tracking-wider mb-2 line-clamp-1 ${activeTicketId === ticket.id ? 'text-[#35D07F]' : 'text-[var(--text-primary)]'}`}>
                   {ticket.subject}
                 </h3>
                 <div className="flex justify-between items-center text-[10px] uppercase tracking-widest font-bold">
-                  <span className="text-slate-500">{ticket.lastUpdated}</span>
-                  <span className={`px-2 py-0.5 rounded bg-white/5 ${ticket.priority === 'High' ? 'text-rose-400' : 'text-slate-400'}`}>
+                  <span className="text-[var(--text-muted)]">{ticket.lastUpdated}</span>
+                  <span className={`px-2 py-0.5 rounded bg-[var(--bg-surface-hover)] ${ticket.priority === 'High' ? 'text-rose-400' : 'text-[var(--text-muted)]'}`}>
                     {ticket.priority} Priority
                   </span>
                 </div>
               </div>
             ))}
             {filteredTickets.length === 0 && (
-              <div className="p-8 text-center text-slate-500 text-[10px] font-bold tracking-widest uppercase">
+              <div className="p-8 text-center text-[var(--text-muted)] text-[10px] font-bold tracking-widest uppercase">
                 No tickets match your search.
               </div>
             )}
@@ -257,15 +257,15 @@ export default function CustomerSupportTickets() {
         {/* Right Pane: Chat Interface */}
         <motion.div 
           initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
-          className="lg:col-span-8 bg-[#0A0A0B]/80 backdrop-blur-md border border-white/5 rounded-2xl flex flex-col overflow-hidden relative"
+          className="lg:col-span-8 bg-[var(--bg-primary)]/80 backdrop-blur-md border border-[var(--border-subtle)] rounded-2xl flex flex-col overflow-hidden relative"
         >
           {activeTicket ? (
             <>
               {/* Chat Header */}
-              <div className="p-6 border-b border-white/5 bg-white/[0.02] flex justify-between items-start sm:items-center flex-col sm:flex-row gap-4 shrink-0">
+              <div className="p-6 border-b border-[var(--border-subtle)] bg-white/[0.02] flex justify-between items-start sm:items-center flex-col sm:flex-row gap-4 shrink-0">
                 <div>
-                  <h2 className="text-xl font-bold tracking-widest text-white mb-1">{activeTicket.subject}</h2>
-                  <p className="text-slate-400 text-[10px] uppercase tracking-widest font-bold flex items-center gap-2">
+                  <h2 className="text-xl font-bold tracking-widest text-[var(--text-primary)] mb-1">{activeTicket.subject}</h2>
+                  <p className="text-[var(--text-muted)] text-[10px] uppercase tracking-widest font-bold flex items-center gap-2">
                     {activeTicket.id} • Last updated {activeTicket.lastUpdated}
                   </p>
                 </div>
@@ -275,7 +275,7 @@ export default function CustomerSupportTickets() {
                       setTickets(tickets.map(t => t.id === activeTicket.id ? {...t, status: 'Resolved'} : t));
                       toast.success('Ticket marked as resolved', { style: { background: '#1A1A1B', color: '#fff' }});
                     }}
-                    className="px-4 py-2 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl text-[10px] font-bold tracking-widest uppercase transition-all"
+                    className="px-4 py-2 bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] text-[var(--text-primary)] border border-[var(--border-default)] rounded-xl text-[10px] font-bold tracking-widest uppercase transition-all"
                   >
                     Mark as Resolved
                   </button>
@@ -284,7 +284,7 @@ export default function CustomerSupportTickets() {
 
               {/* Chat Messages */}
               <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-black/20">
-                {activeTicket.messages.map(msg => {
+                {activeTicket.messages.map((msg: any) => {
                   const isCustomer = msg.sender === 'customer';
                   return (
                     <div key={msg.id} className={`flex w-full ${isCustomer ? 'justify-end' : 'justify-start'}`}>
@@ -299,13 +299,13 @@ export default function CustomerSupportTickets() {
                         {/* Bubble */}
                         <div className={`flex flex-col ${isCustomer ? 'items-end' : 'items-start'}`}>
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="text-slate-300 text-[10px] font-bold uppercase tracking-widest">{msg.name}</span>
-                            <span className="text-slate-500 text-[9px] uppercase tracking-widest">{msg.time}</span>
+                            <span className="text-[var(--text-secondary)] text-[10px] font-bold uppercase tracking-widest">{msg.name}</span>
+                            <span className="text-[var(--text-muted)] text-[9px] uppercase tracking-widest">{msg.time}</span>
                           </div>
                           <div className={`p-4 rounded-2xl text-sm leading-relaxed ${
                             isCustomer 
                               ? 'bg-[#35D07F] text-black rounded-tr-sm' 
-                              : 'bg-white/10 text-white rounded-tl-sm border border-white/5'
+                              : 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] rounded-tl-sm border border-[var(--border-subtle)]'
                           }`}>
                             {msg.text}
                           </div>
@@ -324,9 +324,9 @@ export default function CustomerSupportTickets() {
                       </div>
                       <div className="flex flex-col items-start">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-slate-300 text-[10px] font-bold uppercase tracking-widest">Advisor Typing</span>
+                          <span className="text-[var(--text-secondary)] text-[10px] font-bold uppercase tracking-widest">Advisor Typing</span>
                         </div>
-                        <div className="p-4 rounded-2xl bg-white/10 border border-white/5 rounded-tl-sm flex items-center gap-1.5 h-[52px]">
+                        <div className="p-4 rounded-2xl bg-[var(--bg-surface-active)] border border-[var(--border-subtle)] rounded-tl-sm flex items-center gap-1.5 h-[52px]">
                           <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.2, repeat: Infinity, delay: 0 }} className="w-1.5 h-1.5 bg-slate-400 rounded-full" />
                           <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.2, repeat: Infinity, delay: 0.2 }} className="w-1.5 h-1.5 bg-slate-400 rounded-full" />
                           <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.2, repeat: Infinity, delay: 0.4 }} className="w-1.5 h-1.5 bg-slate-400 rounded-full" />
@@ -341,10 +341,10 @@ export default function CustomerSupportTickets() {
               </div>
 
               {/* Chat Input */}
-              <div className="p-4 border-t border-white/5 bg-white/[0.02] shrink-0">
+              <div className="p-4 border-t border-[var(--border-subtle)] bg-white/[0.02] shrink-0">
                 {activeTicket.status === 'Resolved' ? (
                   <div className="text-center p-4">
-                    <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">This ticket has been resolved and closed.</p>
+                    <p className="text-[var(--text-muted)] text-xs font-bold uppercase tracking-widest">This ticket has been resolved and closed.</p>
                     <button 
                       onClick={() => setShowNewTicketModal(true)}
                       className="mt-2 text-[#35D07F] text-[10px] uppercase tracking-widest underline underline-offset-4"
@@ -354,13 +354,13 @@ export default function CustomerSupportTickets() {
                   </div>
                 ) : (
                   <div className="relative flex items-center">
-                    <button className="absolute left-3 text-slate-500 hover:text-white transition-colors">
+                    <button className="absolute left-3 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
                       <Paperclip size={18} />
                     </button>
                     <input 
                       type="text" 
                       placeholder="TYPE YOUR MESSAGE..." 
-                      className="w-full pl-12 pr-16 py-4 bg-black/50 border border-white/10 rounded-xl text-sm text-white placeholder:uppercase placeholder:tracking-widest focus:border-[#35D07F] outline-none transition-all"
+                      className="w-full pl-12 pr-16 py-4 bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl text-sm text-[var(--text-primary)] placeholder:uppercase placeholder:tracking-widest focus:border-[#35D07F] outline-none transition-all"
                       value={replyText}
                       onChange={(e) => setReplyText(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleSendReply()}
@@ -376,7 +376,7 @@ export default function CustomerSupportTickets() {
               </div>
             </>
           ) : (
-            <div className="flex-1 flex items-center justify-center text-slate-500 text-xs uppercase tracking-widest">
+            <div className="flex-1 flex items-center justify-center text-[var(--text-muted)] text-xs uppercase tracking-widest">
               Select a ticket to view conversation
             </div>
           )}
@@ -390,59 +390,59 @@ export default function CustomerSupportTickets() {
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div 
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} 
-              className="absolute inset-0 bg-black/80 backdrop-blur-sm" 
+              className="absolute inset-0 bg-[var(--bg-overlay)] backdrop-blur-sm" 
               onClick={() => setShowNewTicketModal(false)} 
             />
             <motion.div 
               initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }} 
-              className="bg-[#0A0A0B] border border-white/10 p-8 rounded-2xl z-10 w-full max-w-lg shadow-2xl relative"
+              className="bg-[var(--bg-primary)] border border-[var(--border-default)] p-8 rounded-2xl z-10 w-full max-w-lg shadow-2xl relative"
             >
-              <button onClick={() => setShowNewTicketModal(false)} className="absolute top-6 right-6 text-slate-400 hover:text-white transition-colors">
+              <button onClick={() => setShowNewTicketModal(false)} className="absolute top-6 right-6 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
                 <X size={20} />
               </button>
               
-              <h2 className="text-white text-xl font-bold tracking-widest uppercase mb-2 flex items-center gap-3">
+              <h2 className="text-[var(--text-primary)] text-xl font-bold tracking-widest uppercase mb-2 flex items-center gap-3">
                 <MessageSquare className="text-[#35D07F]" size={24} /> New Support Ticket
               </h2>
-              <p className="text-slate-400 text-[10px] uppercase tracking-widest mb-8">
+              <p className="text-[var(--text-muted)] text-[10px] uppercase tracking-widest mb-8">
                 Submit an inquiry and a service advisor will assist you.
               </p>
               
               <form onSubmit={handleCreateTicket}>
                 <div className="mb-5">
-                  <label className="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2 block">Subject</label>
+                  <label className="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-widest mb-2 block">Subject</label>
                   <input 
                     type="text" 
                     placeholder="Brief description of the issue"
                     value={newTicketForm.subject}
                     onChange={(e) => setNewTicketForm({...newTicketForm, subject: e.target.value})}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-3.5 text-white text-sm outline-none focus:border-[#35D07F] transition-colors" 
+                    className="w-full bg-[var(--bg-surface-hover)] border border-[var(--border-default)] rounded-xl p-3.5 text-[var(--text-primary)] text-sm outline-none focus:border-[#35D07F] transition-colors" 
                   />
                 </div>
                 
                 <div className="mb-5">
-                  <label className="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2 block">Priority</label>
+                  <label className="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-widest mb-2 block">Priority</label>
                   <div className="relative">
                     <select 
                       value={newTicketForm.priority}
                       onChange={(e) => setNewTicketForm({...newTicketForm, priority: e.target.value})}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-3.5 text-white text-sm outline-none focus:border-[#35D07F] transition-colors appearance-none cursor-pointer"
+                      className="w-full bg-[var(--bg-surface-hover)] border border-[var(--border-default)] rounded-xl p-3.5 text-[var(--text-primary)] text-sm outline-none focus:border-[#35D07F] transition-colors appearance-none cursor-pointer"
                     >
-                      <option value="Normal" className="bg-[#111112]">Normal Priority</option>
-                      <option value="High" className="bg-[#111112]">High Priority</option>
+                      <option value="Normal" className="bg-[var(--bg-secondary)]">Normal Priority</option>
+                      <option value="High" className="bg-[var(--bg-secondary)]">High Priority</option>
                     </select>
-                    <ChevronRight size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 rotate-90 pointer-events-none" />
+                    <ChevronRight size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] rotate-90 pointer-events-none" />
                   </div>
                 </div>
 
                 <div className="mb-8">
-                  <label className="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2 block">Message</label>
+                  <label className="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-widest mb-2 block">Message</label>
                   <textarea 
                     rows={4} 
                     placeholder="How can we help you today?" 
                     value={newTicketForm.message}
                     onChange={(e) => setNewTicketForm({...newTicketForm, message: e.target.value})}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-3.5 text-white text-sm outline-none focus:border-[#35D07F] transition-colors resize-none placeholder:text-slate-600"
+                    className="w-full bg-[var(--bg-surface-hover)] border border-[var(--border-default)] rounded-xl p-3.5 text-[var(--text-primary)] text-sm outline-none focus:border-[#35D07F] transition-colors resize-none placeholder:text-slate-600"
                   ></textarea>
                 </div>
 
@@ -460,4 +460,5 @@ export default function CustomerSupportTickets() {
     </div>
   );
 }
+
 

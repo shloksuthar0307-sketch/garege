@@ -16,13 +16,14 @@ export default function CustomerDashboard() {
   // Large desktops get the immersive 3D Experience
   return (
     <Suspense fallback={
-      <div className="w-full h-screen bg-[#020202] flex flex-col items-center justify-center text-white space-y-4">
+      <div className="w-full h-screen bg-[var(--bg-root)] flex flex-col items-center justify-center text-[var(--text-primary)] space-y-4">
         <div className="w-16 h-16 border-4 border-[#35D07F]/20 border-t-[#35D07F] rounded-full animate-spin"></div>
-        <p className="text-xs tracking-widest uppercase text-slate-500 font-bold">Loading 3D Environment</p>
+        <p className="text-xs tracking-widest uppercase text-[var(--text-muted)] font-bold">Loading 3D Environment</p>
       </div>
     }>
       <CustomerDashboard3D />
     </Suspense>
   );
 }
+
 

@@ -22,7 +22,7 @@ export function ServiceReportDrawer() {
   return (
     <>
       <div 
-        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 transition-opacity pointer-events-auto"
+        className="fixed inset-0 bg-[var(--bg-input)] backdrop-blur-sm z-50 transition-opacity pointer-events-auto"
         onClick={() => setReportOpen(false)}
       />
       
@@ -31,14 +31,14 @@ export function ServiceReportDrawer() {
         animate={{ x: 0 }}
         exit={{ x: '100%' }}
         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-[#0a0a0c]/90 backdrop-blur-2xl border-l border-white/10 z-50 overflow-y-auto text-white shadow-2xl flex flex-col pointer-events-auto"
+        className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-[#0a0a0c]/90 backdrop-blur-2xl border-l border-[var(--border-default)] z-50 overflow-y-auto text-[var(--text-primary)] shadow-2xl flex flex-col pointer-events-auto"
       >
-        <div className="sticky top-0 bg-[#0a0a0c]/80 backdrop-blur-xl border-b border-white/10 p-6 flex justify-between items-center z-10">
+        <div className="sticky top-0 bg-[#0a0a0c]/80 backdrop-blur-xl border-b border-[var(--border-default)] p-6 flex justify-between items-center z-10">
           <div>
             <h3 className="text-[10px] font-sans tracking-[0.2em] uppercase text-white/50 mb-1">Service Report</h3>
             <h2 className="text-lg font-medium tracking-wide">SRV-2026-0842</h2>
           </div>
-          <button onClick={() => setReportOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors text-white/70 hover:text-white">
+          <button onClick={() => setReportOpen(false)} className="p-2 hover:bg-[var(--bg-surface-active)] rounded-full transition-colors text-white/70 hover:text-[var(--text-primary)]">
             <X size={20} />
           </button>
         </div>
@@ -49,7 +49,7 @@ export function ServiceReportDrawer() {
             <div className="grid grid-cols-2 gap-6">
               <div>
                 <h4 className="text-[9px] font-sans tracking-widest uppercase text-white/40 mb-2">Vehicle</h4>
-                <p className="text-sm font-medium">Porsche 718 Cayman</p>
+                <p className="text-sm font-medium">Your Vehicle</p>
               </div>
               <div>
                 <h4 className="text-[9px] font-sans tracking-widest uppercase text-white/40 mb-2">Status</h4>
@@ -64,7 +64,7 @@ export function ServiceReportDrawer() {
 
           {/* Cost Breakdown */}
           <section>
-            <h3 className="text-[10px] font-sans tracking-[0.2em] uppercase text-white/50 mb-6 border-b border-white/10 pb-2">Cost Breakdown</h3>
+            <h3 className="text-[10px] font-sans tracking-[0.2em] uppercase text-white/50 mb-6 border-b border-[var(--border-default)] pb-2">Cost Breakdown</h3>
             
             <div className="space-y-6">
               <div>
@@ -84,7 +84,7 @@ export function ServiceReportDrawer() {
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-white/10 flex justify-between items-end">
+              <div className="pt-4 border-t border-[var(--border-default)] flex justify-between items-end">
                 <h4 className="text-[10px] font-sans tracking-widest uppercase text-white/50">Estimated Total</h4>
                 <span className="text-2xl font-light">$850.00</span>
               </div>
@@ -93,7 +93,7 @@ export function ServiceReportDrawer() {
 
           {/* Checklist */}
           <section>
-            <h3 className="text-[10px] font-sans tracking-[0.2em] uppercase text-white/50 mb-6 border-b border-white/10 pb-2">Repair Checklist</h3>
+            <h3 className="text-[10px] font-sans tracking-[0.2em] uppercase text-white/50 mb-6 border-b border-[var(--border-default)] pb-2">Repair Checklist</h3>
             <div className="space-y-4">
               {CHECKLIST.map((item) => (
                 <div key={item.id} className="flex items-start gap-3">
@@ -101,7 +101,7 @@ export function ServiceReportDrawer() {
                   {item.status === 'in-progress' && <div className="w-4 h-4 rounded-full border-2 border-amber-500 border-t-transparent animate-spin mt-0.5 shrink-0" />}
                   {item.status === 'pending' && <Circle size={16} className="text-white/20 mt-0.5 shrink-0" />}
                   
-                  <span className={`text-sm font-light ${item.status === 'completed' ? 'text-white/40 line-through' : item.status === 'in-progress' ? 'text-white' : 'text-white/60'}`}>
+                  <span className={`text-sm font-light ${item.status === 'completed' ? 'text-white/40 line-through' : item.status === 'in-progress' ? 'text-[var(--text-primary)]' : 'text-white/60'}`}>
                     {item.text}
                   </span>
                 </div>
@@ -111,10 +111,10 @@ export function ServiceReportDrawer() {
 
           {/* Photos */}
           <section>
-            <h3 className="text-[10px] font-sans tracking-[0.2em] uppercase text-white/50 mb-6 border-b border-white/10 pb-2">Mechanic Photos</h3>
+            <h3 className="text-[10px] font-sans tracking-[0.2em] uppercase text-white/50 mb-6 border-b border-[var(--border-default)] pb-2">Mechanic Photos</h3>
             <div className="grid grid-cols-2 gap-4">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="group relative aspect-square rounded-xl overflow-hidden border border-white/10 bg-white/5 cursor-pointer">
+                <div key={i} className="group relative aspect-square rounded-xl overflow-hidden border border-[var(--border-default)] bg-[var(--bg-surface-hover)] cursor-pointer">
                   <div className="absolute inset-0 flex items-center justify-center text-white/20 font-light text-sm group-hover:scale-110 transition-transform">
                     Photo {i}
                   </div>
@@ -130,4 +130,5 @@ export function ServiceReportDrawer() {
     </>
   );
 }
+
 

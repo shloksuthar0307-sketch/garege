@@ -11,6 +11,7 @@ class ManagerVehicleSerializer(serializers.ModelSerializer):
 
 class ManagerServiceOrderSerializer(serializers.ModelSerializer):
     vehicle_details = ManagerVehicleSerializer(source='vehicle', read_only=True)
+    customer_id = serializers.UUIDField(source='vehicle.owner.id', read_only=True)
     
     class Meta:
         model = ServiceOrder
@@ -31,6 +32,8 @@ class ManagerInventoryPartSerializer(serializers.ModelSerializer):
 
 class ManagerInvoiceSerializer(serializers.ModelSerializer):
     customer_name = serializers.CharField(source='customer.get_full_name', read_only=True)
+    branch = serializers.PrimaryKeyRelatedField(read_only=True)
+    invoice_number = serializers.CharField(read_only=True)
     class Meta:
         model = Invoice
         fields = '__all__'

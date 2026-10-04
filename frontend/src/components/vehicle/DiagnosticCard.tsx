@@ -35,11 +35,11 @@ export function DiagnosticCard() {
         animate={{ opacity: 1, x: 0, scale: 1 }}
         exit={{ opacity: 0, x: 50, scale: 0.95 }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        className="fixed right-8 top-32 w-80 bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl p-6 text-white shadow-2xl z-40 pointer-events-auto"
+        className="fixed right-8 top-32 w-80 bg-[var(--bg-overlay)] backdrop-blur-xl border border-[var(--border-default)] rounded-2xl p-6 text-[var(--text-primary)] shadow-2xl z-40 pointer-events-auto"
       >
         <button 
           onClick={handleClose}
-          className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors"
+          className="absolute top-4 right-4 text-white/40 hover:text-[var(--text-primary)] transition-colors"
         >
           <X size={16} />
         </button>
@@ -65,7 +65,7 @@ export function DiagnosticCard() {
             <p className="text-sm font-light text-white/90 leading-relaxed">{data.recommendation}</p>
           </div>
 
-          <div className="pt-4 border-t border-white/10 flex justify-between items-center">
+          <div className="pt-4 border-t border-[var(--border-default)] flex justify-between items-center">
             <div>
               <h4 className="text-[9px] font-sans tracking-widest uppercase text-white/40 mb-1">Estimated Cost</h4>
               <p className="text-xl font-light">${data.cost}</p>
@@ -79,4 +79,5 @@ export function DiagnosticCard() {
     </AnimatePresence>
   );
 }
+
 

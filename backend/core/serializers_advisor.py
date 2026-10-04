@@ -48,6 +48,8 @@ class AdvisorAppointmentSerializer(serializers.ModelSerializer):
         fields = ['id', 'customer', 'vehicle', 'service_type', 'date_time', 'status', 'created_at']
 
 class VehicleDamageSerializer(serializers.ModelSerializer):
+    vehicle = AdvisorVehicleSerializer(read_only=True)
+    
     class Meta:
         model = VehicleDamage
         fields = '__all__'
@@ -68,7 +70,7 @@ class EstimateSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Estimate
-        fields = ['id', 'service_order', 'advisor', 'subtotal', 'tax', 'discount', 'total', 'status', 'sent_date', 'approved_date', 'created_at', 'validity_days', 'items']
+        fields = ['id', 'service_order', 'advisor', 'subtotal', 'tax', 'discount', 'total', 'status', 'sent_date', 'approved_date', 'approved_by', 'created_at', 'validity_days', 'items']
         read_only_fields = ['subtotal', 'tax', 'total']
 
 class CustomerCommunicationSerializer(serializers.ModelSerializer):
@@ -129,14 +131,17 @@ class ConversationSerializer(serializers.ModelSerializer):
     
     def get_unread_count(self, obj):
         request = self.context.get('request')
-        if request and request.user.is_authenticated:
-            return obj.messages.exclude(sender=request.user).filter(is_read=False).count()
-        return obj.messages.filter(is_read=False).count()
+        user = request.user if request and request.user.is_authenticated else None
+        messages = obj.messages.all()
+        if user:
+            return sum(1 for m in messages if not m.is_read and m.sender_id != user.id)
+        return sum(1 for m in messages if not m.is_read)
 
     def get_latest_message(self, obj):
-        last_msg = obj.messages.order_by('-created_at').first()
-        if last_msg:
-            return MessageSerializer(last_msg).data
+        messages = list(obj.messages.all())
+        if messages:
+            messages.sort(key=lambda m: m.created_at, reverse=True)
+            return MessageSerializer(messages[0]).data
         return None
 
 from .models import SystemNotification

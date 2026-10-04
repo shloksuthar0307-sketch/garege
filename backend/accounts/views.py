@@ -12,6 +12,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from .serializers import CustomerRegistrationSerializer, CustomTokenObtainPairSerializer
+from organizations.models import Branch
+
+class BranchListView(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        branches = Branch.objects.select_related('organization').all()
+        data = [{'id': str(b.id), 'name': b.name, 'organization_name': b.organization.name} for b in branches]
+        return Response(data)
 
 class CustomerRegisterView(APIView):
     permission_classes = [AllowAny]

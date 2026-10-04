@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Car, CheckSquare, X } from 'lucide-react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { advisorApi } from '../../api/advisor';
 import toast from 'react-hot-toast';
 import { TechnicianSelector } from '../technicians/TechnicianSelector';
@@ -15,6 +15,7 @@ export default function VehicleCheckIn({ onClose }: { onClose: () => void }) {
     requireInspection: true
   });
   
+  const { data: appointments } = useQuery({ queryKey: ['advisor-appointments'], queryFn: advisorApi.getAppointments });
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -22,6 +23,7 @@ export default function VehicleCheckIn({ onClose }: { onClose: () => void }) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['advisor-active-services'] });
       queryClient.invalidateQueries({ queryKey: ['advisor-stats'] });
+      queryClient.invalidateQueries({ queryKey: ['advisor-appointments'] });
       toast.success('Vehicle successfully checked in!');
       onClose();
     },
@@ -31,14 +33,23 @@ export default function VehicleCheckIn({ onClose }: { onClose: () => void }) {
   });
 
   const handleCheckIn = () => {
-    // In a real app, you would pass actual vehicle/customer IDs
-    // For now we'll send a mock payload to the backend
+    if (!formData.bookingId || formData.bookingId === 'walkin') {
+      toast.error('Walk-in or invalid booking ID not implemented yet.');
+      return;
+    }
+    const selectedAppointment = appointments?.find((a: any) => a.id === formData.bookingId);
+    if (!selectedAppointment || !selectedAppointment.vehicle?.id) {
+      toast.error('Vehicle information missing from appointment.');
+      return;
+    }
+
     mutation.mutate({
-      vehicle_id: 'mock-vehicle-id', // Needs valid UUID if backend enforces it, else we need to handle it
-      title: 'General Service',
+      vehicle_id: selectedAppointment.vehicle.id,
+      title: formData.concern || 'General Service',
       type: 'Maintenance',
       status: 'CHECKED_IN',
-      order_number: 'RT-' + Math.floor(1000 + Math.random() * 9000)
+      technician: formData.tech,
+      appointment_id: formData.bookingId
     });
   };
 
@@ -47,16 +58,16 @@ export default function VehicleCheckIn({ onClose }: { onClose: () => void }) {
       initial={{ opacity: 0, scale: 0.95, y: 20 }} 
       animate={{ opacity: 1, scale: 1, y: 0 }} 
       exit={{ opacity: 0, scale: 0.95, y: 20 }}
-      className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-[#111112] border border-white/10 rounded-2xl z-[101] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+      className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-2xl z-[101] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
     >
-      <div className="flex items-center justify-between p-6 border-b border-white/5 bg-white/[0.02] shrink-0">
+      <div className="flex items-center justify-between p-6 border-b border-[var(--border-subtle)] bg-white/[0.02] shrink-0">
         <div>
-          <h2 className="text-xl font-light text-white flex items-center gap-2">
+          <h2 className="text-xl font-light text-[var(--text-primary)] flex items-center gap-2">
             <Car size={20} className="text-[#35D07F]" /> Vehicle Check-In
           </h2>
-          <p className="text-xs text-slate-500 mt-1 uppercase tracking-widest">Transition from Booked to Received</p>
+          <p className="text-xs text-[var(--text-muted)] mt-1 uppercase tracking-widest">Transition from Booked to Received</p>
         </div>
-        <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors">
+        <button onClick={onClose} className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
           <X size={20} />
         </button>
       </div>
@@ -65,15 +76,18 @@ export default function VehicleCheckIn({ onClose }: { onClose: () => void }) {
         {/* Lookup Booking */}
         <div className="flex gap-4">
           <div className="flex-1 space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Select Booking / Customer</label>
+            <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Select Booking / Customer</label>
             <select 
               value={formData.bookingId} 
               onChange={e => setFormData({...formData, bookingId: e.target.value})}
-              className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+              className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
             >
               <option value="">-- Select --</option>
-              <option value="1">BK-1042: Shlok Mehta - Porsche 718 Cayman</option>
-              <option value="2">BK-1043: Rahul Dravid - BMW M4</option>
+              {appointments?.map((app: any) => (
+                <option key={app.id} value={app.id}>
+                  {app.service_type} - {app.customer?.first_name} {app.customer?.last_name} ({app.vehicle?.make} {app.vehicle?.model})
+                </option>
+              ))}
               <option value="walkin">Walk-in Customer (New Booking)</option>
             </select>
           </div>
@@ -82,16 +96,16 @@ export default function VehicleCheckIn({ onClose }: { onClose: () => void }) {
         <div className="grid grid-cols-2 gap-6">
           {/* Mileage */}
           <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Current Mileage (KM)</label>
+            <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Current Mileage (KM)</label>
             <input 
               type="number" placeholder="e.g. 45000"
               value={formData.mileage} onChange={e => setFormData({...formData, mileage: e.target.value})}
-              className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+              className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
             />
           </div>
           {/* Assign Technician */}
           <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Assign Technician</label>
+            <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Assign Technician</label>
             <TechnicianSelector 
               value={formData.tech} 
               onChange={(val) => setFormData({...formData, tech: val})} 
@@ -100,35 +114,35 @@ export default function VehicleCheckIn({ onClose }: { onClose: () => void }) {
 
           {/* Customer Concerns */}
           <div className="space-y-2 col-span-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Customer Concerns / Instructions</label>
+            <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Customer Concerns / Instructions</label>
             <textarea 
               rows={3} placeholder="Any specific issues mentioned by the customer..."
               value={formData.concern} onChange={e => setFormData({...formData, concern: e.target.value})}
-              className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F] resize-none"
+              className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] resize-none"
             ></textarea>
           </div>
 
           {/* Inspection Options */}
-          <div className="col-span-2 bg-[#0A0A0B] border border-white/5 rounded-xl p-4">
+          <div className="col-span-2 bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-xl p-4">
             <label className="flex items-start gap-3 cursor-pointer group">
               <div 
                 className={`mt-0.5 w-5 h-5 rounded border flex items-center justify-center transition-colors 
-                  ${formData.requireInspection ? 'border-[#35D07F] bg-[#35D07F]/10' : 'border-white/20 bg-white/5 group-hover:border-[#35D07F]'}`}
+                  ${formData.requireInspection ? 'border-[#35D07F] bg-[#35D07F]/10' : 'border-[var(--border-strong)] bg-[var(--bg-surface-hover)] group-hover:border-[#35D07F]'}`}
                 onClick={() => setFormData({...formData, requireInspection: !formData.requireInspection})}
               >
                 {formData.requireInspection && <CheckSquare size={14} className="text-[#35D07F]" />}
               </div>
               <div onClick={() => setFormData({...formData, requireInspection: !formData.requireInspection})}>
-                <div className="text-sm font-medium text-white">Require Multi-Point Inspection</div>
-                <div className="text-xs text-slate-500 mt-1">Technician must complete a digital inspection before starting repairs.</div>
+                <div className="text-sm font-medium text-[var(--text-primary)]">Require Multi-Point Inspection</div>
+                <div className="text-xs text-[var(--text-muted)] mt-1">Technician must complete a digital inspection before starting repairs.</div>
               </div>
             </label>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-between items-center p-6 border-t border-white/5 bg-white/[0.02] shrink-0">
-        <button onClick={onClose} className="px-6 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
+      <div className="flex justify-between items-center p-6 border-t border-[var(--border-subtle)] bg-white/[0.02] shrink-0">
+        <button onClick={onClose} className="px-6 py-2.5 rounded-xl text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors">
           Cancel
         </button>
         <button 
@@ -142,4 +156,5 @@ export default function VehicleCheckIn({ onClose }: { onClose: () => void }) {
     </motion.div>
   );
 }
+
 

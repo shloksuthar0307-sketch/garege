@@ -109,7 +109,7 @@ export default function EditVehicleModal({ isOpen, onClose, vehicle }: { isOpen:
 
           <div className="p-6 border-t border-gray-100 flex gap-3">
             <button onClick={onClose} className="flex-1 px-4 py-2.5 rounded-lg border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors">Cancel</button>
-            <button onClick={handleSubmit} disabled={mutation.isPending} className="flex-1 px-4 py-2.5 rounded-lg bg-black text-white text-sm font-medium hover:bg-gray-900 transition-colors disabled:opacity-50">
+            <button onClick={handleSubmit} disabled={mutation.isPending} className="flex-1 px-4 py-2.5 rounded-lg bg-black text-[var(--text-primary)] text-sm font-medium hover:bg-gray-900 transition-colors disabled:opacity-50">
               {mutation.isPending ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
@@ -118,4 +118,5 @@ export default function EditVehicleModal({ isOpen, onClose, vehicle }: { isOpen:
     </AnimatePresence>
   );
 }
+
 

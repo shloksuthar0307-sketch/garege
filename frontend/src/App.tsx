@@ -20,6 +20,7 @@ import AdminFinance from './pages/AdminFinance';
 import AdminAnalytics from './pages/AdminAnalytics';
 import AdminUsers from './pages/AdminUsers';
 import AdminAuditLogs from './pages/AdminAuditLogs';
+import AdminBranches from './pages/AdminBranches';
 import { CustomerPortal } from './pages/CustomerPortal';
 import CustomerDashboard from './pages/CustomerDashboard';
 import TechnicianDashboard from './pages/TechnicianDashboard';
@@ -181,10 +182,10 @@ function App() {
 
             {/* Fallback for unbuilt legacy customer pages to prevent blank screens */}
             <Route path="/customer-legacy/*" element={
-              <div className="w-full h-screen bg-[#020202] flex items-center justify-center text-white flex-col gap-4">
+              <div className="w-full h-screen bg-[var(--bg-root)] flex items-center justify-center text-[var(--text-primary)] flex-col gap-4">
                 <h1 className="text-4xl font-light tracking-widest uppercase">Coming Soon</h1>
                 <p className="text-white/50 tracking-widest text-xs uppercase">This module is under construction</p>
-                <a href="/customer/dashboard" className="mt-8 border border-white/20 px-6 py-2 text-xs tracking-widest uppercase hover:bg-white hover:text-black transition-colors">Return to Dashboard</a>
+                <a href="/customer/dashboard" className="mt-8 border border-[var(--border-strong)] px-6 py-2 text-xs tracking-widest uppercase hover:bg-white hover:text-black transition-colors">Return to Dashboard</a>
               </div>
             } />
           </Route>
@@ -214,12 +215,12 @@ function App() {
               <Route path="history" element={<TechnicianHistory />} />
               <Route path="profile" element={<TechnicianProfile />} />
               <Route path="*" element={
-                <div className="w-full h-[80vh] flex items-center justify-center text-white flex-col gap-4 bg-[#111112] border border-white/5 rounded-2xl">
-                  <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-4">
+                <div className="w-full h-[80vh] flex items-center justify-center text-[var(--text-primary)] flex-col gap-4 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl">
+                  <div className="w-20 h-20 rounded-full bg-[var(--bg-surface-hover)] flex items-center justify-center mb-4">
                     <Wrench size={40} className="text-[#35D07F]" />
                   </div>
                   <h1 className="text-3xl font-light tracking-widest uppercase">Under Construction</h1>
-                  <p className="text-slate-500 tracking-widest text-xs uppercase max-w-md text-center">
+                  <p className="text-[var(--text-muted)] tracking-widest text-xs uppercase max-w-md text-center">
                     This technician module is currently being built. Please return to the dashboard to continue your workflow.
                   </p>
                   <a href="/technician/dashboard" className="mt-6 bg-[#35D07F]/10 text-[#35D07F] border border-[#35D07F]/20 px-8 py-3 rounded-xl text-xs font-bold tracking-widest uppercase hover:bg-[#35D07F]/20 transition-colors">
@@ -242,12 +243,11 @@ function App() {
               <Route path="repairs" element={<AdminRepairs />} />
               <Route path="inspections" element={<AdminInspections />} />
               <Route path="issues" element={<AdminIssues />} />
-              <Route path="estimates" element={<AdminEstimates />} />
               <Route path="approvals" element={<AdminApprovals />} />
               <Route path="vehicles" element={<AdminVehicles />} />
               <Route path="customers" element={<AdminCustomers />} />
               <Route path="invoices" element={<AdminInvoices />} />
-              <Route path="*" element={<div className="p-8 text-white">Under Construction</div>} />
+              <Route path="*" element={<div className="p-8 text-[var(--text-primary)]">Under Construction</div>} />
             </Route>
           </Route>
 
@@ -274,6 +274,7 @@ function App() {
               <Route path="analytics" element={<AdminAnalytics />} />
               <Route path="users" element={<AdminUsers />} />
               <Route path="audit" element={<AdminAuditLogs />} />
+              <Route path="branches" element={<AdminBranches />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
           </Route>
@@ -295,7 +296,7 @@ function App() {
               <Route path="service-orders" element={<ManagerServiceOrders />} />
               <Route path="inventory" element={<ManagerInventory />} />
               <Route path="appointments" element={<ManagerAppointments />} />
-              <Route path="*" element={<div className="p-8 text-white">Manager Module Under Construction</div>} />
+              <Route path="*" element={<div className="p-8 text-[var(--text-primary)]">Manager Module Under Construction</div>} />
             </Route>
           </Route>
 
@@ -321,4 +322,5 @@ function App() {
 }
 
 export default App;
+
 

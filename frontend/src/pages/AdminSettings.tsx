@@ -36,8 +36,8 @@ export default function AdminSettings() {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
-          <h1 className="text-3xl font-light text-white tracking-tight">System Settings</h1>
-          <p className="text-sm text-slate-500 mt-1">Configure global preferences and platform rules.</p>
+          <h1 className="text-3xl font-light text-[var(--text-primary)] tracking-tight">System Settings</h1>
+          <p className="text-sm text-[var(--text-muted)] mt-1">Configure global preferences and platform rules.</p>
         </div>
         <button 
           onClick={() => toast.success("Settings saved successfully!")}
@@ -59,9 +59,9 @@ export default function AdminSettings() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={'w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ' + (isActive ? 'bg-[#35D07F]/10 text-[#35D07F]' : 'text-slate-400 hover:bg-white/5 hover:text-white')}
+                className={'w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ' + (isActive ? 'bg-[#35D07F]/10 text-[#35D07F]' : 'text-[var(--text-muted)] hover:bg-[var(--bg-surface-hover)] hover:text-[var(--text-primary)]')}
               >
-                <Icon size={18} className={isActive ? 'text-[#35D07F]' : 'text-slate-500'} />
+                <Icon size={18} className={isActive ? 'text-[#35D07F]' : 'text-[var(--text-muted)]'} />
                 {tab.label}
               </button>
             );
@@ -75,13 +75,13 @@ export default function AdminSettings() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-[#111112] border border-white/5 rounded-2xl p-6 md:p-8"
+            className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-6 md:p-8"
           >
             
             {activeTab === 'general' && (
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-lg font-medium text-white mb-4">Garage Profile</h2>
+                  <h2 className="text-lg font-medium text-[var(--text-primary)] mb-4">Garage Profile</h2>
                   <div className="flex items-center gap-6 mb-6">
                     <div 
                       onClick={() => {
@@ -92,55 +92,55 @@ export default function AdminSettings() {
                         input.onchange = () => toast("Logo upload is disabled in this demo.", { icon: "??" });
                         input.click();
                       }}
-                      className="w-24 h-24 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center flex-col gap-2 cursor-pointer hover:border-[#35D07F]/50 transition-colors"
+                      className="w-24 h-24 rounded-2xl bg-[var(--bg-input)] border border-[var(--border-default)] flex items-center justify-center flex-col gap-2 cursor-pointer hover:border-[#35D07F]/50 transition-colors"
                     >
-                      <Upload size={20} className="text-slate-500" />
-                      <span className="text-[10px] text-slate-500 uppercase tracking-widest">Logo</span>
+                      <Upload size={20} className="text-[var(--text-muted)]" />
+                      <span className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest">Logo</span>
                     </div>
                     <div>
-                      <p className="text-sm text-slate-300 mb-2">Upload your company logo.</p>
-                      <p className="text-xs text-slate-500">Recommended size: 512x512px (PNG, SVG)</p>
+                      <p className="text-sm text-[var(--text-secondary)] mb-2">Upload your company logo.</p>
+                      <p className="text-xs text-[var(--text-muted)]">Recommended size: 512x512px (PNG, SVG)</p>
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">Company Name</label>
-                      <input type="text" defaultValue="RepairTrace Motors" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#35D07F]" />
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">Company Name</label>
+                      <input type="text" defaultValue="RepairTrace Motors" className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]" />
                     </div>
                     <div>
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">Contact Email</label>
-                      <input type="email" defaultValue="support@repairtrace.com" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#35D07F]" />
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">Contact Email</label>
+                      <input type="email" defaultValue="support@repairtrace.com" className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]" />
                     </div>
                     <div>
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">Phone Number</label>
-                      <input type="text" defaultValue="+91 98765 43210" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#35D07F]" />
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">Phone Number</label>
+                      <input type="text" defaultValue="+91 98765 43210" className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]" />
                     </div>
                     <div>
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">GST / Tax ID</label>
-                      <input type="text" defaultValue="22AAAAA0000A1Z5" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#35D07F]" />
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">GST / Tax ID</label>
+                      <input type="text" defaultValue="22AAAAA0000A1Z5" className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]" />
                     </div>
                     <div className="md:col-span-2">
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">Business Address</label>
-                      <textarea rows={3} defaultValue="123 Automotive Park, Industrial Area\nMumbai, Maharashtra 400001" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#35D07F] resize-none" />
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">Business Address</label>
+                      <textarea rows={3} defaultValue="123 Automotive Park, Industrial Area\nMumbai, Maharashtra 400001" className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] resize-none" />
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-8 border-t border-white/5">
-                  <h2 className="text-lg font-medium text-white mb-4">Business Hours</h2>
+                <div className="pt-8 border-t border-[var(--border-subtle)]">
+                  <h2 className="text-lg font-medium text-[var(--text-primary)] mb-4">Business Hours</h2>
                   <div className="space-y-3">
                     {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map(day => (
                       <div key={day} className="flex items-center gap-4">
-                        <div className="w-32 text-sm text-slate-400">{day}</div>
-                        <input type="time" defaultValue="09:00" className="bg-black/50 border border-white/10 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none focus:border-[#35D07F]" />
-                        <span className="text-slate-500">to</span>
-                        <input type="time" defaultValue="19:00" className="bg-black/50 border border-white/10 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none focus:border-[#35D07F]" />
+                        <div className="w-32 text-sm text-[var(--text-muted)]">{day}</div>
+                        <input type="time" defaultValue="09:00" className="bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-3 py-1.5 text-[var(--text-primary)] text-sm focus:outline-none focus:border-[#35D07F]" />
+                        <span className="text-[var(--text-muted)]">to</span>
+                        <input type="time" defaultValue="19:00" className="bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-3 py-1.5 text-[var(--text-primary)] text-sm focus:outline-none focus:border-[#35D07F]" />
                       </div>
                     ))}
                     <div className="flex items-center gap-4">
                       <div className="w-32 text-sm text-rose-400">Sunday</div>
-                      <div className="text-sm text-slate-500 bg-white/5 px-4 py-1.5 rounded-lg">Closed</div>
+                      <div className="text-sm text-[var(--text-muted)] bg-[var(--bg-surface-hover)] px-4 py-1.5 rounded-lg">Closed</div>
                     </div>
                   </div>
                 </div>
@@ -150,11 +150,11 @@ export default function AdminSettings() {
             {activeTab === 'finance' && (
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-lg font-medium text-white mb-4">Currency & Taxes</h2>
+                  <h2 className="text-lg font-medium text-[var(--text-primary)] mb-4">Currency & Taxes</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">Default Currency</label>
-                      <select className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#35D07F] appearance-none">
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">Default Currency</label>
+                      <select className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] appearance-none">
                         <option value="INR">? Indian Rupee (INR)</option>
                         <option value="USD">$ US Dollar (USD)</option>
                         <option value="EUR"> Euro (EUR)</option>
@@ -162,26 +162,26 @@ export default function AdminSettings() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">Default Tax Rate (%)</label>
-                      <input type="number" defaultValue="18" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#35D07F]" />
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">Default Tax Rate (%)</label>
+                      <input type="number" defaultValue="18" className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]" />
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-8 border-t border-white/5">
-                  <h2 className="text-lg font-medium text-white mb-4">Invoice Configuration</h2>
+                <div className="pt-8 border-t border-[var(--border-subtle)]">
+                  <h2 className="text-lg font-medium text-[var(--text-primary)] mb-4">Invoice Configuration</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">Invoice Prefix</label>
-                      <input type="text" defaultValue="RT-INV-" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#35D07F]" />
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">Invoice Prefix</label>
+                      <input type="text" defaultValue="RT-INV-" className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]" />
                     </div>
                     <div>
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">Estimate Prefix</label>
-                      <input type="text" defaultValue="RT-EST-" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#35D07F]" />
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">Estimate Prefix</label>
+                      <input type="text" defaultValue="RT-EST-" className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]" />
                     </div>
                     <div className="md:col-span-2">
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">Invoice Footer Notes</label>
-                      <textarea rows={2} defaultValue="Thank you for trusting RepairTrace. All repairs come with a 6-month warranty." className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#35D07F] resize-none" />
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">Invoice Footer Notes</label>
+                      <textarea rows={2} defaultValue="Thank you for trusting RepairTrace. All repairs come with a 6-month warranty." className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] resize-none" />
                     </div>
                   </div>
                 </div>
@@ -191,18 +191,18 @@ export default function AdminSettings() {
             {activeTab === 'service' && (
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-lg font-medium text-white mb-4">Service & Workflow</h2>
+                  <h2 className="text-lg font-medium text-[var(--text-primary)] mb-4">Service & Workflow</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">Automated Inspections</label>
-                      <div className="flex items-center gap-3 bg-black/50 border border-white/10 rounded-lg px-4 py-2.5">
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">Automated Inspections</label>
+                      <div className="flex items-center gap-3 bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-2.5">
                         <input type="checkbox" defaultChecked className="w-4 h-4 accent-[#35D07F]" />
-                        <span className="text-sm text-white">Enable AI-assisted damage detection</span>
+                        <span className="text-sm text-[var(--text-primary)]">Enable AI-assisted damage detection</span>
                       </div>
                     </div>
                     <div>
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">Default Warranty Period</label>
-                      <select className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#35D07F] appearance-none">
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">Default Warranty Period</label>
+                      <select className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] appearance-none">
                         <option value="3">3 Months</option>
                         <option value="6">6 Months</option>
                         <option value="12">12 Months</option>
@@ -216,7 +216,7 @@ export default function AdminSettings() {
             {activeTab === 'notifications' && (
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-lg font-medium text-white mb-4">Communication Channels</h2>
+                  <h2 className="text-lg font-medium text-[var(--text-primary)] mb-4">Communication Channels</h2>
                   <div className="space-y-4">
                     {[
                       { title: 'Email Notifications', desc: 'Send estimates and invoices via email', on: true },
@@ -224,14 +224,14 @@ export default function AdminSettings() {
                       { title: 'WhatsApp Integration', desc: 'Use WhatsApp Business API for messaging', on: false },
                       { title: 'Push Notifications', desc: 'App notifications for staff and technicians', on: true }
                     ].map(item => (
-                      <div key={item.title} className="flex items-center justify-between bg-black/50 border border-white/10 rounded-xl p-4">
+                      <div key={item.title} className="flex items-center justify-between bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl p-4">
                         <div>
-                          <h4 className="text-sm font-medium text-white">{item.title}</h4>
-                          <p className="text-xs text-slate-500">{item.desc}</p>
+                          <h4 className="text-sm font-medium text-[var(--text-primary)]">{item.title}</h4>
+                          <p className="text-xs text-[var(--text-muted)]">{item.desc}</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input type="checkbox" className="sr-only peer" defaultChecked={item.on} />
-                          <div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#35D07F]"></div>
+                          <div className="w-11 h-6 bg-[var(--bg-surface-active)] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#35D07F]"></div>
                         </label>
                       </div>
                     ))}
@@ -243,19 +243,19 @@ export default function AdminSettings() {
             {activeTab === 'security' && (
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-lg font-medium text-white mb-4">Access & Security</h2>
+                  <h2 className="text-lg font-medium text-[var(--text-primary)] mb-4">Access & Security</h2>
                   <div className="space-y-6">
                     <div>
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">Two-Factor Authentication (2FA)</label>
-                      <select className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#35D07F] appearance-none">
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">Two-Factor Authentication (2FA)</label>
+                      <select className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] appearance-none">
                         <option value="optional">Optional for all users</option>
                         <option value="admin">Required for Admins & Managers</option>
                         <option value="all">Required for all staff</option>
                       </select>
                     </div>
                     <div>
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">Session Timeout</label>
-                      <select className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#35D07F] appearance-none">
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">Session Timeout</label>
+                      <select className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] appearance-none">
                         <option value="15">15 Minutes of inactivity</option>
                         <option value="30">30 Minutes of inactivity</option>
                         <option value="60">1 Hour of inactivity</option>
@@ -270,25 +270,25 @@ export default function AdminSettings() {
             {activeTab === 'storage' && (
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-lg font-medium text-white mb-4">Device Local Storage</h2>
+                  <h2 className="text-lg font-medium text-[var(--text-primary)] mb-4">Device Local Storage</h2>
                   
-                  <div className="mb-6 p-4 bg-white/5 border border-white/10 rounded-xl flex items-center justify-between">
+                  <div className="mb-6 p-4 bg-[var(--bg-surface-hover)] border border-[var(--border-default)] rounded-xl flex items-center justify-between">
                     <div>
-                      <span className="block text-xs text-slate-400 mb-1">Local Browser Storage Used</span>
-                      <span className="text-2xl font-light text-white">
+                      <span className="block text-xs text-[var(--text-muted)] mb-1">Local Browser Storage Used</span>
+                      <span className="text-2xl font-light text-[var(--text-primary)]">
                         {(storageData.usage / (1024 * 1024)).toFixed(2)} MB 
-                        <span className="text-sm text-slate-500"> / {(storageData.quota / (1024 * 1024 * 1024)).toFixed(2)} GB</span>
+                        <span className="text-sm text-[var(--text-muted)]"> / {(storageData.quota / (1024 * 1024 * 1024)).toFixed(2)} GB</span>
                       </span>
                       {!storageData.supported && <span className="block text-[10px] text-amber-500 mt-1">Storage API not supported on this browser.</span>}
                     </div>
-                    <div className="w-1/2 h-2 bg-black rounded-full overflow-hidden border border-white/5 hidden md:block">
+                    <div className="w-1/2 h-2 bg-black rounded-full overflow-hidden border border-[var(--border-subtle)] hidden md:block">
                       <div className="h-full bg-[#35D07F]" style={{ width: `${Math.min(100, (storageData.usage / storageData.quota) * 100)}%` }}></div>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">Request Persistent Storage</label>
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">Request Persistent Storage</label>
                       <button 
                         onClick={() => setShowStorageModal(true)}
                         className="w-full flex justify-center bg-[#35D07F]/10 text-[#35D07F] border border-[#35D07F]/20 hover:bg-[#35D07F]/20 rounded-lg px-4 py-2.5 font-bold tracking-widest uppercase text-xs transition-colors"
@@ -297,7 +297,7 @@ export default function AdminSettings() {
                       </button>
                     </div>
                     <div>
-                      <label className="block text-[10px] tracking-widest uppercase text-slate-500 mb-2">Clear Local Cache</label>
+                      <label className="block text-[10px] tracking-widest uppercase text-[var(--text-muted)] mb-2">Clear Local Cache</label>
                       <button 
                         onClick={() => toast.success("Local cache cleared successfully.")}
                         className="w-full flex justify-center bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 rounded-lg px-4 py-2.5 font-bold tracking-widest uppercase text-xs transition-colors"
@@ -316,23 +316,23 @@ export default function AdminSettings() {
 
       {/* Storage Permission Modal */}
       {showStorageModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--bg-overlay)] backdrop-blur-sm">
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#1A1A1B] border border-white/10 p-6 rounded-2xl shadow-2xl max-w-sm w-full relative"
+            className="bg-[#1A1A1B] border border-[var(--border-default)] p-6 rounded-2xl shadow-2xl max-w-sm w-full relative"
           >
             <div className="w-12 h-12 bg-[#35D07F]/10 rounded-full flex items-center justify-center mb-4 border border-[#35D07F]/20">
               <HardDrive size={20} className="text-[#35D07F]" />
             </div>
-            <h3 className="text-lg font-medium text-white mb-2">Request Persistent Storage</h3>
-            <p className="text-sm text-slate-400 mb-6">
+            <h3 className="text-lg font-medium text-[var(--text-primary)] mb-2">Request Persistent Storage</h3>
+            <p className="text-sm text-[var(--text-muted)] mb-6">
               To ensure your offline data and cached files are not automatically cleared by the browser, RepairTrace requires persistent storage permission.
             </p>
             <div className="flex gap-3">
               <button 
                 onClick={() => setShowStorageModal(false)}
-                className="flex-1 px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl text-sm font-medium transition-colors"
+                className="flex-1 px-4 py-2 bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] text-[var(--text-primary)] rounded-xl text-sm font-medium transition-colors"
               >
                 Cancel
               </button>
@@ -363,4 +363,5 @@ export default function AdminSettings() {
     </div>
   );
 }
+
 

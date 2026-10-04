@@ -34,6 +34,7 @@ export default function TechnicianInspection() {
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [isEvidenceModalOpen, setEvidenceModalOpen] = useState(false);
   const [activeCategoryForEvidence, setActiveCategoryForEvidence] = useState<string>('');
+  const [evidenceFiles, setEvidenceFiles] = useState<Record<string, File[]>>({});
 
   const [aiFile, setAiFile] = useState<File | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -90,9 +91,30 @@ export default function TechnicianInspection() {
 
 
   const reportIssueMutation = useMutation({
-    mutationFn: (data: any) => technicianApi.reportIssue(id!, data),
+    mutationFn: async (data: any) => {
+      const issueResponse = await technicianApi.reportIssue(id!, data);
+      
+      const category = data.component;
+      if (evidenceFiles[category] && evidenceFiles[category].length > 0) {
+        for (const file of evidenceFiles[category]) {
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('file_type', file.type.startsWith('video/') ? 'video' : 'image');
+          formData.append('description', 'Technician evidence');
+          
+          await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1'}/technician/issues/${issueResponse.id}/evidence/`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            },
+            body: formData
+          });
+        }
+      }
+      return issueResponse;
+    },
     onSuccess: () => {
-      toast.success('Issue reported successfully');
+      toast.success('Issue reported successfully with evidence!');
       setEvidenceModalOpen(false);
     }
   });
@@ -122,9 +144,9 @@ export default function TechnicianInspection() {
 
   if (orderLoading) {
     return (
-      <div className="p-8 text-white flex flex-col items-center justify-center h-[50vh] gap-4">
+      <div className="p-8 text-[var(--text-primary)] flex flex-col items-center justify-center h-[50vh] gap-4">
         <div className="w-8 h-8 border-2 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-slate-400 text-sm uppercase tracking-widest">Loading Inspection Data...</p>
+        <p className="text-[var(--text-muted)] text-sm uppercase tracking-widest">Loading Inspection Data...</p>
       </div>
     );
   }
@@ -135,9 +157,9 @@ export default function TechnicianInspection() {
         <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center text-red-500">
           <AlertCircle size={24} />
         </div>
-        <p className="text-white text-lg">Inspection Not Found</p>
-        <p className="text-slate-500 text-sm max-w-md text-center mb-4">The service order you are trying to access does not exist or has been removed.</p>
-        <button onClick={() => navigate('/technician')} className="bg-white/5 hover:bg-white/10 text-white px-6 py-2 rounded-lg text-sm transition-colors">Return to Dashboard</button>
+        <p className="text-[var(--text-primary)] text-lg">Inspection Not Found</p>
+        <p className="text-[var(--text-muted)] text-sm max-w-md text-center mb-4">The service order you are trying to access does not exist or has been removed.</p>
+        <button onClick={() => navigate('/technician')} className="bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] text-[var(--text-primary)] px-6 py-2 rounded-lg text-sm transition-colors">Return to Dashboard</button>
       </div>
     );
   }
@@ -148,25 +170,25 @@ export default function TechnicianInspection() {
       {/* AI VEHICLE INSPECTION */}
       <div className="bg-gradient-to-r from-blue-900/20 to-indigo-900/10 border border-blue-500/20 rounded-2xl p-6 mb-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg text-white font-medium flex items-center gap-2">
+          <h2 className="text-lg text-[var(--text-primary)] font-medium flex items-center gap-2">
             <span className="text-blue-400">?</span> AI Vehicle Inspection
           </h2>
         </div>
         
-        <div className="border-2 border-dashed border-white/10 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:border-blue-500/30 transition-colors bg-[#0A0A0B] relative">
+        <div className="border-2 border-dashed border-[var(--border-default)] rounded-xl p-8 flex flex-col items-center justify-center text-center hover:border-blue-500/30 transition-colors bg-[var(--bg-primary)] relative">
           <input type="file" accept="image/*" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onChange={handleAiUpload} disabled={isAnalyzing} />
           {isAnalyzing ? (
             <div className="flex flex-col items-center">
               <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-4" />
               <p className="text-blue-400 font-medium">Analyzing vehicle...</p>
-              <p className="text-xs text-slate-500 mt-1">Detecting visible damage...</p>
+              <p className="text-xs text-[var(--text-muted)] mt-1">Detecting visible damage...</p>
             </div>
           ) : (
             <>
               <Upload className="w-8 h-8 text-blue-500 mb-3" />
-              <p className="text-white font-medium">Drag & Drop vehicle photos</p>
-              <p className="text-slate-500 text-sm mb-4">or</p>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+              <p className="text-[var(--text-primary)] font-medium">Drag & Drop vehicle photos</p>
+              <p className="text-[var(--text-muted)] text-sm mb-4">or</p>
+              <button className="bg-blue-600 hover:bg-blue-700 text-[var(--text-primary)] px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                 + Upload Photos
               </button>
             </>
@@ -175,24 +197,24 @@ export default function TechnicianInspection() {
 
         {aiFindings.length > 0 && (
           <div className="mt-6 space-y-4">
-            <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider">AI Findings</h3>
+            <h3 className="text-sm font-semibold text-[var(--text-secondary)] uppercase tracking-wider">AI Findings</h3>
             {aiFindings.map(finding => (
               <div key={finding.id} className="bg-[#1a1a1c] border border-blue-500/30 rounded-xl p-4">
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <div className="text-white font-medium">{finding.vehicle_area} - {finding.issue_type}</div>
-                    <div className="text-xs text-slate-400 mt-1">Confidence: {(finding.confidence * 100).toFixed(0)}%</div>
+                    <div className="text-[var(--text-primary)] font-medium">{finding.vehicle_area} - {finding.issue_type}</div>
+                    <div className="text-xs text-[var(--text-muted)] mt-1">Confidence: {(finding.confidence * 100).toFixed(0)}%</div>
                   </div>
                   <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${finding.severity === 'high' ? 'bg-red-500/20 text-red-400' : 'bg-amber-500/20 text-amber-400'}`}>
                     {finding.severity} Severity
                   </span>
                 </div>
-                <p className="text-sm text-slate-300 mb-4">{finding.description}</p>
+                <p className="text-sm text-[var(--text-secondary)] mb-4">{finding.description}</p>
                 <div className="flex items-center gap-2 text-xs">
                   <span className="text-blue-400 font-medium">AI: Needs technician review</span>
                   <div className="ml-auto flex gap-2">
                     <button onClick={() => handleConfirmAi(finding.id)} className="bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 px-3 py-1.5 rounded transition-colors font-medium">Confirm</button>
-                    <button className="bg-white/5 hover:bg-white/10 text-white px-3 py-1.5 rounded transition-colors font-medium">Edit</button>
+                    <button className="bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] text-[var(--text-primary)] px-3 py-1.5 rounded transition-colors font-medium">Edit</button>
                     <button onClick={() => setAiFindings(prev => prev.filter(f => f.id !== finding.id))} className="bg-red-500/10 text-red-400 hover:bg-red-500/20 px-3 py-1.5 rounded transition-colors font-medium">Reject</button>
                   </div>
                 </div>
@@ -203,30 +225,30 @@ export default function TechnicianInspection() {
       </div>
 
         {/* Header Info */}
-      <div className="bg-[#111112] border border-white/10 rounded-2xl p-6">
+      <div className="bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-2xl p-6">
         <div className="flex justify-between items-start mb-4">
           <div>
-            <h1 className="text-2xl font-light text-white">Digital Inspection</h1>
+            <h1 className="text-2xl font-light text-[var(--text-primary)]">Digital Inspection</h1>
             <div className="text-sm font-mono text-[#35D07F] mt-1">{order?.order_number}</div>
           </div>
           <div className="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">
             {order?.status}
           </div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-white/5 text-sm">
-          <div><span className="block text-[10px] text-slate-500 uppercase tracking-widest">Vehicle</span> <span className="text-white">{order?.vehicle?.make} {order?.vehicle?.model}</span></div>
-          <div><span className="block text-[10px] text-slate-500 uppercase tracking-widest">Reg</span> <span className="text-white font-mono">{order?.vehicle?.registration_number}</span></div>
-          <div><span className="block text-[10px] text-slate-500 uppercase tracking-widest">Customer ID</span> <span className="text-white">{order?.vehicle?.owner || '-'}</span></div>
-          <div><span className="block text-[10px] text-slate-500 uppercase tracking-widest">Advisor</span> <span className="text-white">{order?.advisor || 'Unassigned'}</span></div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-[var(--border-subtle)] text-sm">
+          <div><span className="block text-[10px] text-[var(--text-muted)] uppercase tracking-widest">Vehicle</span> <span className="text-[var(--text-primary)]">{order?.vehicle?.make} {order?.vehicle?.model}</span></div>
+          <div><span className="block text-[10px] text-[var(--text-muted)] uppercase tracking-widest">Reg</span> <span className="text-[var(--text-primary)] font-mono">{order?.vehicle?.registration_number}</span></div>
+          <div><span className="block text-[10px] text-[var(--text-muted)] uppercase tracking-widest">Customer ID</span> <span className="text-[var(--text-primary)]">{order?.vehicle?.owner || '-'}</span></div>
+          <div><span className="block text-[10px] text-[var(--text-muted)] uppercase tracking-widest">Advisor</span> <span className="text-[var(--text-primary)]">{order?.advisor || 'Unassigned'}</span></div>
         </div>
       </div>
 
       {/* Checklist */}
       <div className="space-y-4">
-        <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-2">Multi-Point Checklist</h2>
+        <h2 className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest ml-2">Multi-Point Checklist</h2>
         
         {CATEGORIES.map(category => (
-          <div key={category} className="bg-[#111112] border border-white/5 rounded-2xl overflow-hidden transition-colors">
+          <div key={category} className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl overflow-hidden transition-colors">
             
             {/* Accordion Header */}
             <div 
@@ -234,15 +256,15 @@ export default function TechnicianInspection() {
               onClick={() => setExpandedCat(expandedCat === category ? null : category)}
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-[var(--bg-surface-hover)] flex items-center justify-center">
                   {conditions[category] === 'Good' && <CheckCircle2 size={16} className="text-[#35D07F]" />}
                   {conditions[category] === 'Needs Attention' && <AlertTriangle size={16} className="text-amber-400" />}
                   {conditions[category] === 'Critical' && <XOctagon size={16} className="text-rose-400" />}
                   {!conditions[category] && <div className="w-2 h-2 rounded-full bg-slate-600" />}
                 </div>
-                <span className="text-lg text-white font-medium">{category}</span>
+                <span className="text-lg text-[var(--text-primary)] font-medium">{category}</span>
               </div>
-              <ChevronDown size={20} className={'text-slate-500 transition-transform ' + (expandedCat === category ? 'rotate-180' : '')} />
+              <ChevronDown size={20} className={'text-[var(--text-muted)] transition-transform ' + (expandedCat === category ? 'rotate-180' : '')} />
             </div>
 
             {/* Accordion Body */}
@@ -254,27 +276,27 @@ export default function TechnicianInspection() {
                   exit={{ height: 0, opacity: 0 }}
                   className="overflow-hidden"
                 >
-                  <div className="p-4 pt-0 border-t border-white/5 bg-black/20">
+                  <div className="p-4 pt-0 border-t border-[var(--border-subtle)] bg-black/20">
                     
                     {/* Condition Toggles */}
                     <div className="grid grid-cols-3 gap-3 my-4">
                       <button 
                         onClick={() => handleConditionSelect(category, 'Good')}
-                        className={'py-4 rounded-xl flex flex-col items-center justify-center gap-2 border-2 transition-colors ' + (conditions[category] === 'Good' ? 'bg-[#35D07F]/10 border-[#35D07F] text-[#35D07F]' : 'bg-[#0A0A0B] border-white/5 text-slate-400 hover:border-white/20')}
+                        className={'py-4 rounded-xl flex flex-col items-center justify-center gap-2 border-2 transition-colors ' + (conditions[category] === 'Good' ? 'bg-[#35D07F]/10 border-[#35D07F] text-[#35D07F]' : 'bg-[var(--bg-primary)] border-[var(--border-subtle)] text-[var(--text-muted)] hover:border-[var(--border-strong)]')}
                       >
                         <CheckCircle2 size={24} />
                         <span className="text-[10px] font-bold uppercase tracking-widest">Good</span>
                       </button>
                       <button 
                         onClick={() => handleConditionSelect(category, 'Needs Attention')}
-                        className={'py-4 rounded-xl flex flex-col items-center justify-center gap-2 border-2 transition-colors ' + (conditions[category] === 'Needs Attention' ? 'bg-amber-400/10 border-amber-400 text-amber-400' : 'bg-[#0A0A0B] border-white/5 text-slate-400 hover:border-white/20')}
+                        className={'py-4 rounded-xl flex flex-col items-center justify-center gap-2 border-2 transition-colors ' + (conditions[category] === 'Needs Attention' ? 'bg-amber-400/10 border-amber-400 text-amber-400' : 'bg-[var(--bg-primary)] border-[var(--border-subtle)] text-[var(--text-muted)] hover:border-[var(--border-strong)]')}
                       >
                         <AlertTriangle size={24} />
                         <span className="text-[10px] font-bold uppercase tracking-widest text-center">Needs<br/>Attention</span>
                       </button>
                       <button 
                         onClick={() => handleConditionSelect(category, 'Critical')}
-                        className={'py-4 rounded-xl flex flex-col items-center justify-center gap-2 border-2 transition-colors ' + (conditions[category] === 'Critical' ? 'bg-rose-400/10 border-rose-400 text-rose-400' : 'bg-[#0A0A0B] border-white/5 text-slate-400 hover:border-white/20')}
+                        className={'py-4 rounded-xl flex flex-col items-center justify-center gap-2 border-2 transition-colors ' + (conditions[category] === 'Critical' ? 'bg-rose-400/10 border-rose-400 text-rose-400' : 'bg-[var(--bg-primary)] border-[var(--border-subtle)] text-[var(--text-muted)] hover:border-[var(--border-strong)]')}
                       >
                         <XOctagon size={24} />
                         <span className="text-[10px] font-bold uppercase tracking-widest">Critical</span>
@@ -287,7 +309,7 @@ export default function TechnicianInspection() {
                         <div className={greasyHandsMode ? "flex flex-col gap-2" : "flex gap-2 items-start"}>
                           <textarea 
                             placeholder="Add technician notes about the issue..."
-                            className="w-full bg-[#0A0A0B] border border-white/10 rounded-xl p-4 text-sm text-white focus:border-[#35D07F] focus:outline-none resize-none flex-1"
+                            className="w-full bg-[var(--bg-primary)] border border-[var(--border-default)] rounded-xl p-4 text-sm text-[var(--text-primary)] focus:border-[#35D07F] focus:outline-none resize-none flex-1"
                             rows={greasyHandsMode ? 5 : 3}
                             value={notes[category] || ''}
                             onChange={(e) => setNotes(prev => ({...prev, [category]: e.target.value}))}
@@ -298,12 +320,24 @@ export default function TechnicianInspection() {
                         </div>
                         
                         <div className="flex gap-3">
-                          <button 
-                            onClick={() => { setActiveCategoryForEvidence(category); setEvidenceModalOpen(true); }}
-                            className="flex-1 bg-white/5 hover:bg-white/10 text-white py-3 rounded-xl flex items-center justify-center gap-2 text-xs font-bold tracking-widest uppercase transition-colors"
-                          >
-                            <Camera size={16} /> Add Media Evidence
-                          </button>
+                          <label className="flex-1 bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] text-[var(--text-primary)] py-3 rounded-xl flex items-center justify-center gap-2 text-xs font-bold tracking-widest uppercase transition-colors cursor-pointer">
+                            <Camera size={16} /> 
+                            {evidenceFiles[category]?.length ? `${evidenceFiles[category].length} File(s) Added` : 'Add Media Evidence'}
+                            <input 
+                              type="file" 
+                              className="hidden" 
+                              multiple 
+                              accept="image/*,video/*"
+                              onChange={(e) => {
+                                if (e.target.files && e.target.files.length > 0) {
+                                  setEvidenceFiles(prev => ({
+                                    ...prev,
+                                    [category]: [...(prev[category] || []), ...Array.from(e.target.files!)]
+                                  }));
+                                }
+                              }} 
+                            />
+                          </label>
                           
                           <button 
                             onClick={() => handleSaveIssue(category)}
@@ -326,9 +360,9 @@ export default function TechnicianInspection() {
       </div>
 
       {/* Floating Action Bar */}
-      <div className="fixed bottom-0 left-0 lg:left-72 right-0 bg-[#0A0A0B]/90 backdrop-blur-xl border-t border-white/10 p-4 flex justify-between items-center z-40">
-        <div className="text-xs text-slate-400 hidden sm:block">
-          <span className="text-white font-bold">{Object.keys(conditions).length}</span> / {CATEGORIES.length} Checked
+      <div className="fixed bottom-0 left-0 lg:left-72 right-0 bg-[var(--bg-primary)]/90 backdrop-blur-xl border-t border-[var(--border-default)] p-4 flex justify-between items-center z-40">
+        <div className="text-xs text-[var(--text-muted)] hidden sm:block">
+          <span className="text-[var(--text-primary)] font-bold">{Object.keys(conditions).length}</span> / {CATEGORIES.length} Checked
         </div>
         <button 
           onClick={async () => {
@@ -360,48 +394,48 @@ export default function TechnicianInspection() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }} 
               animate={{ opacity: 1, scale: 1, y: 0 }} 
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="fixed left-4 right-4 top-1/4 md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-[#111112] border border-white/10 rounded-2xl z-[101] shadow-2xl overflow-hidden flex flex-col"
+              className="fixed left-4 right-4 top-1/4 md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-2xl z-[101] shadow-2xl overflow-hidden flex flex-col"
             >
               <div className="p-6 text-center space-y-6">
                 <div>
-                  <h2 className="text-xl font-light text-white mb-1">Upload Evidence</h2>
-                  <p className="text-xs text-slate-500 uppercase tracking-widest">Category: {activeCategoryForEvidence}</p>
+                  <h2 className="text-xl font-light text-[var(--text-primary)] mb-1">Upload Evidence</h2>
+                  <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest">Category: {activeCategoryForEvidence}</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <button onClick={() => {
                     toast.success('Photo attached! (Mock)');
                     setEvidenceModalOpen(false);
-                  }} className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-8 flex flex-col items-center justify-center gap-4 transition-colors group">
+                  }} className="bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] border border-[var(--border-default)] rounded-2xl p-8 flex flex-col items-center justify-center gap-4 transition-colors group">
                     <div className="w-16 h-16 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Camera size={32} />
                     </div>
-                    <span className="text-sm font-bold text-white tracking-widest uppercase">Take Photo</span>
+                    <span className="text-sm font-bold text-[var(--text-primary)] tracking-widest uppercase">Take Photo</span>
                   </button>
                   
                   <button onClick={() => {
                     toast.success('Video attached! (Mock)');
                     setEvidenceModalOpen(false);
-                  }} className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-8 flex flex-col items-center justify-center gap-4 transition-colors group">
+                  }} className="bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] border border-[var(--border-default)] rounded-2xl p-8 flex flex-col items-center justify-center gap-4 transition-colors group">
                     <div className="w-16 h-16 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Video size={32} />
                     </div>
-                    <span className="text-sm font-bold text-white tracking-widest uppercase">Record Video</span>
+                    <span className="text-sm font-bold text-[var(--text-primary)] tracking-widest uppercase">Record Video</span>
                   </button>
                 </div>
 
                 <button onClick={() => {
                   toast.success('Evidence selected! (Mock)');
                   setEvidenceModalOpen(false);
-                }} className="w-full bg-[#0A0A0B] border border-white/10 hover:border-white/30 text-white py-4 rounded-xl flex items-center justify-center gap-2 text-xs font-bold tracking-widest uppercase transition-colors">
+                }} className="w-full bg-[var(--bg-primary)] border border-[var(--border-default)] hover:border-white/30 text-[var(--text-primary)] py-4 rounded-xl flex items-center justify-center gap-2 text-xs font-bold tracking-widest uppercase transition-colors">
                   <Upload size={16} /> Choose from Library
                 </button>
               </div>
 
-              <div className="p-4 border-t border-white/5 bg-white/[0.02]">
+              <div className="p-4 border-t border-[var(--border-subtle)] bg-white/[0.02]">
                 <button 
                   onClick={() => setEvidenceModalOpen(false)}
-                  className="w-full bg-white/5 hover:bg-white/10 text-white py-3 rounded-xl text-xs font-bold tracking-widest uppercase transition-colors"
+                  className="w-full bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] text-[var(--text-primary)] py-3 rounded-xl text-xs font-bold tracking-widest uppercase transition-colors"
                 >
                   Cancel
                 </button>
@@ -413,5 +447,6 @@ export default function TechnicianInspection() {
     </div>
   );
 }
+
 
 

@@ -15,12 +15,11 @@ from .serializers_technician import (
 from django.shortcuts import get_object_or_404
 from datetime import timedelta
 
-class IsTechnicianUser(permissions.BasePermission):
-    def has_permission(self, request, view):
-        return bool(request.user and request.user.is_authenticated and request.user.role == 'TECHNICIAN')
+from accounts.permissions import IsTechnician
+from core.utils import get_scoped_queryset
 
 @api_view(['GET'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def technician_dashboard_stats(request):
     # Only get assigned orders. In a real app we'd filter by assignments.
     # For now, let's filter by technician username if assigned directly, or assume they see ones in IN_PROGRESS/PENDING
@@ -45,21 +44,19 @@ def technician_dashboard_stats(request):
     })
 
 @api_view(['GET'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def technician_service_orders(request):
     # Get jobs assigned or available for technician
     orders = ServiceOrder.objects.exclude(status='CANCELLED').select_related('vehicle')
-    if request.user.branch:
-        orders = orders.filter(branch=request.user.branch)
+    orders = get_scoped_queryset(orders, request.user)
     serializer = TechnicianServiceOrderListSerializer(orders, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def technician_service_order_detail(request, pk):
     qs = ServiceOrder.objects.select_related('vehicle')
-    if request.user.branch:
-        qs = qs.filter(branch=request.user.branch)
+    qs = get_scoped_queryset(qs, request.user)
     order = get_object_or_404(qs, pk=pk)
     serializer = TechnicianServiceOrderDetailSerializer(order)
     data = serializer.data
@@ -68,11 +65,10 @@ def technician_service_order_detail(request, pk):
     return Response(data)
 
 @api_view(['GET', 'POST'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def technician_inspection(request, pk):
     qs = ServiceOrder.objects.all()
-    if request.user.branch:
-        qs = qs.filter(branch=request.user.branch)
+    qs = get_scoped_queryset(qs, request.user)
     order = get_object_or_404(qs, pk=pk)
     
     if request.method == 'GET':
@@ -102,11 +98,10 @@ def technician_inspection(request, pk):
         return Response({'detail': 'Inspection already exists'}, status=400)
 
 @api_view(['POST'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def technician_report_issue(request, pk):
     qs = ServiceOrder.objects.all()
-    if request.user.branch:
-        qs = qs.filter(branch=request.user.branch)
+    qs = get_scoped_queryset(qs, request.user)
     order = get_object_or_404(qs, pk=pk)
     data = request.data
     issue = Issue.objects.create(
@@ -132,24 +127,31 @@ def technician_report_issue(request, pk):
     return Response(serializer.data, status=201)
 
 @api_view(['POST'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def technician_add_evidence(request, issue_id):
     issue_qs = Issue.objects.all()
-    if request.user.branch:
-        issue_qs = issue_qs.filter(service_order__branch=request.user.branch)
+    issue_qs = get_scoped_queryset(issue_qs, request.user, branch_lookup='service_order__branch')
     issue = get_object_or_404(issue_qs, pk=issue_id)
-    # Simulate file upload with URL for now
-    file_url = request.data.get('file_url', 'https://example.com/evidence.jpg')
+    
+    file_obj = request.FILES.get('file')
+    if not file_obj:
+        return Response({'error': 'No file uploaded'}, status=status.HTTP_400_BAD_REQUEST)
+        
     file_type = request.data.get('file_type', 'image')
     description = request.data.get('description', '')
     
     evidence = IssueEvidence.objects.create(
         issue=issue,
-        file_url=file_url,
+        file=file_obj,
         file_type=file_type,
         description=description,
         technician=request.user
     )
+    
+    # Optionally set file_url if needed for backward compatibility
+    if evidence.file:
+        evidence.file_url = evidence.file.url
+        evidence.save()
     
     ServiceTimelineEvent.objects.create(
         service_order=issue.service_order,
@@ -160,22 +162,20 @@ def technician_add_evidence(request, issue_id):
     return Response({'id': evidence.id, 'file_url': evidence.file_url}, status=201)
 
 @api_view(['GET'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def technician_repair_tasks(request, pk):
     qs = ServiceOrder.objects.all()
-    if request.user.branch:
-        qs = qs.filter(branch=request.user.branch)
+    qs = get_scoped_queryset(qs, request.user)
     order = get_object_or_404(qs, pk=pk)
     tasks = order.repair_tasks.all().prefetch_related('progress_updates')
     serializer = TechnicianRepairTaskSerializer(tasks, many=True)
     return Response(serializer.data)
 
 @api_view(['POST'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def technician_update_repair_progress(request, task_id):
     task_qs = RepairTask.objects.all()
-    if request.user.branch:
-        task_qs = task_qs.filter(service_order__branch=request.user.branch)
+    task_qs = get_scoped_queryset(task_qs, request.user, branch_lookup='service_order__branch')
     task = get_object_or_404(task_qs, pk=task_id)
     percentage = request.data.get('percentage', task.progress_updates.last().percentage if task.progress_updates.exists() else 0)
     note = request.data.get('note', '')
@@ -189,18 +189,50 @@ def technician_update_repair_progress(request, task_id):
     )
     
     if status and status != task.status:
+        if status == 'IN_PROGRESS' and hasattr(task.service_order, 'service_estimate'):
+            if task.service_order.service_estimate.status != 'APPROVED':
+                return Response({'error': 'Repair work cannot begin until the estimate is approved.'}, status=400)
+                
         task.status = status
         if status == 'COMPLETED':
             task.completed_at = timezone.now()
         elif status == 'IN_PROGRESS' and not task.started_at:
             task.started_at = timezone.now()
         task.save()
-        
         ServiceTimelineEvent.objects.create(
             service_order=task.service_order,
             title=f"Task '{task.name}' status changed to {status}",
             time=timezone.now()
         )
+        
+        # Notify Customer
+        from .models import SystemNotification
+        if task.service_order.vehicle and task.service_order.vehicle.owner:
+            SystemNotification.objects.create(
+                user=task.service_order.vehicle.owner,
+                notification_type='INFO',
+                title='Repair Update',
+                message=f"Task '{task.name}' is now {status.replace('_', ' ')}.",
+                action_url='/customer/dashboard'
+            )
+        
+    # Recalculate aggregate progress
+    order = task.service_order
+    tasks = order.repair_tasks.all()
+    if tasks.exists():
+        total_pct = sum([t.progress_updates.last().percentage if t.progress_updates.exists() else 0 for t in tasks])
+        order.progress = int(total_pct / tasks.count())
+        
+        # If all tasks are completed, change order status to QUALITY_CHECK if it was IN_WORKSHOP
+        all_completed = all(t.status == 'COMPLETED' for t in tasks)
+        if all_completed and order.status == 'IN_WORKSHOP':
+            order.status = 'QUALITY_CHECK'
+            
+        order.save(update_fields=['progress', 'status'])
+        
+        # Broadcast the update
+        from core.signals import broadcast_dashboard_update
+        broadcast_dashboard_update(order, 'SERVICE_ORDER_UPDATED', f"Repair progress updated to {order.progress}%")
         
     return Response({'detail': 'Progress updated'})
 
@@ -214,12 +246,11 @@ from .serializers_technician import (
 
 
 @api_view(['POST'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def technician_log_labor(request):
     job_id = request.data.get('job_id')
     qs = ServiceOrder.objects.all()
-    if request.user.branch:
-        qs = qs.filter(branch=request.user.branch)
+    qs = get_scoped_queryset(qs, request.user)
     order = get_object_or_404(qs, pk=job_id)
     duration_ms = request.data.get('duration_ms', 0)
     
@@ -247,11 +278,10 @@ def technician_log_labor(request):
     return Response({'status': 'success', 'labor_session_id': session.id}, status=200)
 
 @api_view(['POST'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def labor_session_start(request, task_id):
     task_qs = RepairTask.objects.all()
-    if request.user.branch:
-        task_qs = task_qs.filter(service_order__branch=request.user.branch)
+    task_qs = get_scoped_queryset(task_qs, request.user, branch_lookup='service_order__branch')
     task = get_object_or_404(task_qs, pk=task_id)
     session = LaborSession.objects.create(
         technician=request.user,
@@ -262,7 +292,7 @@ def labor_session_start(request, task_id):
     return Response(LaborSessionSerializer(session).data, status=201)
 
 @api_view(['POST'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def labor_session_pause(request, session_id):
     session = get_object_or_404(LaborSession, pk=session_id, technician=request.user)
     if session.status == 'ACTIVE':
@@ -273,7 +303,7 @@ def labor_session_pause(request, session_id):
     return Response(LaborSessionSerializer(session).data)
 
 @api_view(['POST'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def labor_session_resume(request, session_id):
     session = get_object_or_404(LaborSession, pk=session_id, technician=request.user)
     if session.status == 'PAUSED':
@@ -282,7 +312,7 @@ def labor_session_resume(request, session_id):
     return Response(LaborSessionSerializer(session).data)
 
 @api_view(['POST'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def labor_session_stop(request, session_id):
     session = get_object_or_404(LaborSession, pk=session_id, technician=request.user)
     session.status = 'COMPLETED'
@@ -291,19 +321,19 @@ def labor_session_stop(request, session_id):
     return Response(LaborSessionSerializer(session).data)
 
 @api_view(['GET'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def labor_session_active(request):
     sessions = LaborSession.objects.filter(technician=request.user, status='ACTIVE')
     return Response(LaborSessionSerializer(sessions, many=True).data)
 
 @api_view(['GET'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def labor_session_history(request):
     sessions = LaborSession.objects.filter(technician=request.user).order_by('-created_at')
     return Response(LaborSessionSerializer(sessions, many=True).data)
 
 @api_view(['POST'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def diagnostic_run_scan(request):
     vehicle_id = request.data.get('vehicle_id')
     vehicle = get_object_or_404(__import__('core.models').models.Vehicle, pk=vehicle_id)
@@ -318,24 +348,23 @@ def diagnostic_run_scan(request):
     return Response(DiagnosticScanSerializer(scan).data, status=201)
 
 @api_view(['POST'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def diagnostic_save_results(request, scan_id):
     scan_qs = DiagnosticScan.objects.all()
-    if request.user.branch:
-        scan_qs = scan_qs.filter(service_order__branch=request.user.branch)
+    scan_qs = get_scoped_queryset(scan_qs, request.user, branch_lookup='service_order__branch')
     scan = get_object_or_404(scan_qs, pk=scan_id)
     scan.notes = request.data.get('notes', scan.notes)
     scan.save()
     return Response(DiagnosticScanSerializer(scan).data)
 
 @api_view(['GET'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def notification_list(request):
     notifications = TechnicianNotification.objects.filter(recipient=request.user).order_by('-created_at')
     return Response(TechnicianNotificationSerializer(notifications, many=True).data)
 
 @api_view(['POST'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def notification_mark_read(request, notification_id):
     notification = get_object_or_404(TechnicianNotification, pk=notification_id, recipient=request.user)
     notification.is_read = True
@@ -344,14 +373,14 @@ def notification_mark_read(request, notification_id):
     return Response(TechnicianNotificationSerializer(notification).data)
 
 @api_view(['POST'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def notification_mark_all_read(request):
     notifications = TechnicianNotification.objects.filter(recipient=request.user, is_read=False)
     notifications.update(is_read=True, read_at=timezone.now())
     return Response({'status': 'success'})
 
 @api_view(['POST'])
-@permission_classes([IsTechnicianUser])
+@permission_classes([IsTechnician])
 def sync_batch(request):
     payload = request.data.get('payload', [])
     for item in payload:
@@ -380,6 +409,12 @@ def upload_and_analyze_photo(request, pk):
         return Response({'error': 'No image provided'}, status=status.HTTP_400_BAD_REQUEST)
         
     image_file = request.FILES['image']
+    
+    from core.utils import validate_file_upload
+    try:
+        validate_file_upload(image_file, allowed_extensions=['.png', '.jpg', '.jpeg'], allowed_mimetypes=['image/png', 'image/jpeg'])
+    except ValueError as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
     # Save the photo
     photo = TechnicianPhoto.objects.create(
@@ -436,6 +471,38 @@ def get_ai_findings(request, pk):
         'recommended_action', 'status', 'created_at'
     )
     return Response(list(findings))
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def technician_upload_photo(request, pk):
+    from .models import ServiceOrder, TechnicianPhoto
+    qs = get_scoped_queryset(ServiceOrder.objects.all(), request.user)
+    order = get_object_or_404(qs, pk=pk)
+    
+    if 'image' not in request.FILES:
+        return Response({'error': 'No image provided'}, status=status.HTTP_400_BAD_REQUEST)
+        
+    image_file = request.FILES['image']
+    
+    from core.utils import validate_file_upload
+    try:
+        validate_file_upload(image_file, allowed_extensions=['.png', '.jpg', '.jpeg', '.mp4'], allowed_mimetypes=['image/png', 'image/jpeg', 'video/mp4'])
+    except ValueError as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Save the photo
+    photo = TechnicianPhoto.objects.create(
+        vehicle=order.vehicle,
+        service_order=order,
+        technician=request.user,
+        image=image_file,
+        vehicle_area=request.data.get('vehicle_area', '')
+    )
+    
+    return Response({
+        'photo_id': photo.id,
+        'image_url': photo.image.url
+    })
 
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])

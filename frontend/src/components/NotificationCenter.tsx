@@ -54,11 +54,11 @@ export function NotificationCenter() {
       <div className="relative z-50">
         <button 
           onClick={() => setIsOpen(!isOpen)}
-          className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-white/5 text-slate-400 hover:text-white transition-colors relative"
+          className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors relative"
         >
           <Bell size={20} />
           {unreadCount > 0 && (
-            <span className="absolute top-3 right-3 w-4 h-4 bg-red-500 rounded-full border-2 border-[#0A0A0B] flex items-center justify-center text-[8px] text-white font-bold">
+            <span className="absolute top-3 right-3 w-4 h-4 bg-red-500 rounded-full border-2 border-[#0A0A0B] flex items-center justify-center text-[8px] text-[var(--text-primary)] font-bold">
               {unreadCount > 9 ? '9+' : unreadCount}
             </span>
           )}
@@ -82,24 +82,24 @@ export function NotificationCenter() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
                 transition={{ duration: 0.15 }}
-                className="absolute right-0 mt-3 w-80 sm:w-96 bg-[#111112] border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-50 flex flex-col max-h-[80vh]"
+                className="absolute right-0 mt-3 w-80 sm:w-96 bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-2xl shadow-2xl overflow-hidden z-50 flex flex-col max-h-[80vh]"
               >
-                <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between bg-[#1A1A1C]">
+                <div className="px-4 py-3 border-b border-[var(--border-subtle)] flex items-center justify-between bg-[#1A1A1C]">
                   <div>
-                    <h3 className="text-sm font-semibold text-white">Notifications</h3>
-                    <p className="text-xs text-slate-400">You have {unreadCount} unread messages</p>
+                    <h3 className="text-sm font-semibold text-[var(--text-primary)]">Notifications</h3>
+                    <p className="text-xs text-[var(--text-muted)]">You have {unreadCount} unread messages</p>
                   </div>
                   <div className="flex gap-2">
                     <button 
                       onClick={markAllAsRead}
-                      className="p-2 hover:bg-white/5 rounded-lg text-slate-400 hover:text-white transition-colors"
+                      className="p-2 hover:bg-[var(--bg-surface-hover)] rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
                       title="Mark all as read"
                     >
                       <Check size={16} />
                     </button>
                     <button 
                       onClick={clearAll}
-                      className="p-2 hover:bg-white/5 rounded-lg text-slate-400 hover:text-red-400 transition-colors"
+                      className="p-2 hover:bg-[var(--bg-surface-hover)] rounded-lg text-[var(--text-muted)] hover:text-red-400 transition-colors"
                       title="Clear all"
                     >
                       <Trash2 size={16} />
@@ -109,7 +109,7 @@ export function NotificationCenter() {
 
                 <div className="overflow-y-auto custom-scrollbar flex-1">
                   {notifications.length === 0 ? (
-                    <div className="p-8 text-center text-slate-500 flex flex-col items-center">
+                    <div className="p-8 text-center text-[var(--text-muted)] flex flex-col items-center">
                       <Bell size={24} className="mb-2 opacity-20" />
                       <p className="text-sm">No notifications yet</p>
                     </div>
@@ -119,8 +119,8 @@ export function NotificationCenter() {
                         <div 
                           key={notif.id} 
                           onClick={() => !notif.read && markAsRead(notif.id)}
-                          className={`p-4 border-b border-white/5 flex gap-3 cursor-pointer transition-colors ${
-                            notif.read ? 'opacity-60 hover:bg-white/5' : 'bg-[#35D07F]/5 hover:bg-[#35D07F]/10'
+                          className={`p-4 border-b border-[var(--border-subtle)] flex gap-3 cursor-pointer transition-colors ${
+                            notif.read ? 'opacity-60 hover:bg-[var(--bg-surface-hover)]' : 'bg-[#35D07F]/5 hover:bg-[#35D07F]/10'
                           }`}
                         >
                           <div className="mt-0.5 flex-shrink-0">
@@ -128,14 +128,14 @@ export function NotificationCenter() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex justify-between items-start mb-1">
-                              <h4 className={`text-sm font-medium truncate pr-2 ${notif.read ? 'text-slate-300' : 'text-white'}`}>
+                              <h4 className={`text-sm font-medium truncate pr-2 ${notif.read ? 'text-[var(--text-secondary)]' : 'text-[var(--text-primary)]'}`}>
                                 {notif.title}
                               </h4>
-                              <span className="text-[10px] text-slate-500 whitespace-nowrap">
+                              <span className="text-[10px] text-[var(--text-muted)] whitespace-nowrap">
                                 {formatTime(notif.timestamp)}
                               </span>
                             </div>
-                            <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                            <p className="text-xs text-[var(--text-muted)] line-clamp-2 leading-relaxed">
                               {notif.message}
                             </p>
                           </div>
@@ -162,18 +162,18 @@ export function NotificationCenter() {
               initial={{ opacity: 0, x: 50, scale: 0.9 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-              className="bg-[#111112] border border-white/10 rounded-xl shadow-2xl p-4 w-80 pointer-events-auto flex gap-3 items-start"
+              className="bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-xl shadow-2xl p-4 w-80 pointer-events-auto flex gap-3 items-start"
             >
               <div className="mt-0.5">
                 {getIcon(toast.type)}
               </div>
               <div className="flex-1 min-w-0">
-                <h4 className="text-sm font-medium text-white mb-1">{toast.title}</h4>
-                <p className="text-xs text-slate-400">{toast.message}</p>
+                <h4 className="text-sm font-medium text-[var(--text-primary)] mb-1">{toast.title}</h4>
+                <p className="text-xs text-[var(--text-muted)]">{toast.message}</p>
               </div>
               <button 
                 onClick={() => setToasts(prev => prev.filter(t => t.id !== toast.id))}
-                className="text-slate-500 hover:text-white"
+                className="text-[var(--text-muted)] hover:text-[var(--text-primary)]"
               >
                 <X size={14} />
               </button>
@@ -184,4 +184,5 @@ export function NotificationCenter() {
     </>
   );
 }
+
 

@@ -68,7 +68,7 @@ export default function ServiceHistoryDrawer({ isOpen, onClose, vehicleId, onOpe
                     onClick={() => setActiveTab(tab)}
                     className={`px-4 py-1.5 text-xs font-medium rounded-full whitespace-nowrap transition-colors ${
                       activeTab === tab 
-                        ? 'bg-gray-900 text-white' 
+                        ? 'bg-gray-900 text-[var(--text-primary)]' 
                         : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
                     }`}
                   >
@@ -117,4 +117,5 @@ export default function ServiceHistoryDrawer({ isOpen, onClose, vehicleId, onOpe
     </AnimatePresence>
   );
 }
+
 

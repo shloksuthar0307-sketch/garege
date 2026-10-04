@@ -39,7 +39,7 @@ export function EstimateApproval() {
           className="absolute bottom-32 left-8 z-40 pointer-events-auto"
         >
           {showConfirmation ? (
-            <div className="bg-[#35D07F]/10 backdrop-blur-xl border border-[#35D07F]/30 rounded-2xl p-6 flex items-center gap-4 text-white shadow-2xl">
+            <div className="bg-[#35D07F]/10 backdrop-blur-xl border border-[#35D07F]/30 rounded-2xl p-6 flex items-center gap-4 text-[var(--text-primary)] shadow-2xl">
               <CheckCircle2 size={32} className="text-[#35D07F]" />
               <div>
                 <h3 className="text-[10px] font-sans tracking-widest uppercase text-[#35D07F] mb-1">Success</h3>
@@ -48,7 +48,7 @@ export function EstimateApproval() {
               </div>
             </div>
           ) : (
-            <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl p-6 text-white shadow-2xl w-80">
+            <div className="bg-[var(--bg-overlay)] backdrop-blur-xl border border-[var(--border-default)] rounded-2xl p-6 text-[var(--text-primary)] shadow-2xl w-80">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2 rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-500">
                   <FileText size={20} />
@@ -68,7 +68,7 @@ export function EstimateApproval() {
                   <span className="font-light text-white/70">Labor</span>
                   <span className="font-medium">$350.00</span>
                 </div>
-                <div className="pt-4 border-t border-white/10 flex justify-between items-center">
+                <div className="pt-4 border-t border-[var(--border-default)] flex justify-between items-center">
                   <span className="text-[10px] font-sans tracking-widest uppercase text-white/50">Estimated Total</span>
                   <span className="text-xl font-medium">$850.00</span>
                 </div>
@@ -82,7 +82,7 @@ export function EstimateApproval() {
                 >
                   {isApproving ? 'Processing...' : 'Approve Work'}
                 </button>
-                <button className="w-full bg-transparent hover:bg-white/5 border border-white/20 text-white font-medium text-xs tracking-widest uppercase py-3 rounded-lg transition-colors">
+                <button className="w-full bg-transparent hover:bg-[var(--bg-surface-hover)] border border-[var(--border-strong)] text-[var(--text-primary)] font-medium text-xs tracking-widest uppercase py-3 rounded-lg transition-colors">
                   Decline
                 </button>
               </div>
@@ -93,4 +93,5 @@ export function EstimateApproval() {
     </AnimatePresence>
   );
 }
+
 

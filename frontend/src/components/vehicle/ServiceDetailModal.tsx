@@ -11,7 +11,7 @@ export default function ServiceDetailModal({ isOpen, onClose, order }: { isOpen:
           initial={{ opacity: 0 }} 
           animate={{ opacity: 1 }} 
           exit={{ opacity: 0 }} 
-          className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+          className="absolute inset-0 bg-[var(--bg-input)] backdrop-blur-sm"
           onClick={onClose}
         />
         <motion.div 
@@ -56,7 +56,7 @@ export default function ServiceDetailModal({ isOpen, onClose, order }: { isOpen:
               <div className="space-y-4 relative before:absolute before:inset-0 before:ml-2.5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-gray-200 before:via-gray-200 before:to-transparent">
                 {order.timeline?.map((event: any, i: number) => (
                   <div key={i} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                    <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-white bg-black text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                    <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-white bg-black text-[var(--text-primary)] shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
                       <Check size={10} />
                     </div>
                     <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-1.5rem)] p-3 rounded-lg border border-gray-100 bg-white shadow-sm">
@@ -91,7 +91,7 @@ export default function ServiceDetailModal({ isOpen, onClose, order }: { isOpen:
             <button className="flex-1 bg-white border border-gray-200 text-gray-900 text-sm font-medium py-2.5 rounded-lg hover:bg-gray-50 transition-colors">
               View Evidence
             </button>
-            <button className="flex-1 bg-black text-white text-sm font-medium py-2.5 rounded-lg hover:bg-gray-800 transition-colors">
+            <button className="flex-1 bg-black text-[var(--text-primary)] text-sm font-medium py-2.5 rounded-lg hover:bg-gray-800 transition-colors">
               Download Invoice
             </button>
           </div>
@@ -100,4 +100,5 @@ export default function ServiceDetailModal({ isOpen, onClose, order }: { isOpen:
     </AnimatePresence>
   );
 }
+
 

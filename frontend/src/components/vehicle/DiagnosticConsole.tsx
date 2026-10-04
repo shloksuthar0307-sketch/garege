@@ -77,7 +77,7 @@ export function DiagnosticConsole({ isOpen, onClose, onSaveToOrder, vehicleMake 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-[var(--bg-overlay)] backdrop-blur-sm"
             onClick={!isScanning ? onClose : undefined}
           />
           
@@ -85,7 +85,7 @@ export function DiagnosticConsole({ isOpen, onClose, onSaveToOrder, vehicleMake 
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-3xl bg-[#0A0A0B] border border-[#35D07F]/30 rounded-2xl shadow-2xl shadow-[#35D07F]/10 overflow-hidden flex flex-col"
+            className="relative w-full max-w-3xl bg-[var(--bg-primary)] border border-[#35D07F]/30 rounded-2xl shadow-2xl shadow-[#35D07F]/10 overflow-hidden flex flex-col"
           >
             {/* Header */}
             <div className="px-4 py-3 border-b border-[#35D07F]/20 bg-[#35D07F]/5 flex items-center justify-between">
@@ -102,7 +102,7 @@ export function DiagnosticConsole({ isOpen, onClose, onSaveToOrder, vehicleMake 
               <button 
                 onClick={onClose}
                 disabled={isScanning}
-                className={`p-1 rounded transition-colors ${isScanning ? 'opacity-50 cursor-not-allowed text-slate-600' : 'text-slate-400 hover:text-white hover:bg-white/10'}`}
+                className={`p-1 rounded transition-colors ${isScanning ? 'opacity-50 cursor-not-allowed text-slate-600' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)]'}`}
               >
                 <X size={20} />
               </button>
@@ -111,34 +111,34 @@ export function DiagnosticConsole({ isOpen, onClose, onSaveToOrder, vehicleMake 
             {/* Terminal View */}
             <div 
               ref={scrollRef}
-              className="p-6 h-80 overflow-y-auto font-mono text-sm bg-black/50"
+              className="p-6 h-80 overflow-y-auto font-mono text-sm bg-[var(--bg-input)]"
             >
               {logs.map((log, index) => (
                 <div 
                   key={index} 
-                  className={`mb-2 ${log.includes('DTC FOUND:') ? 'text-rose-400' : log.includes('ERROR') ? 'text-red-500' : log.includes('OK') ? 'text-[#35D07F]' : 'text-slate-300'}`}
+                  className={`mb-2 ${log.includes('DTC FOUND:') ? 'text-rose-400' : log.includes('ERROR') ? 'text-red-500' : log.includes('OK') ? 'text-[#35D07F]' : 'text-[var(--text-secondary)]'}`}
                 >
-                  <span className="opacity-50 mr-2 text-slate-500">{'>'}</span> 
+                  <span className="opacity-50 mr-2 text-[var(--text-muted)]">{'>'}</span> 
                   {log}
                 </div>
               ))}
               {isScanning && (
-                <div className="text-slate-500 animate-pulse">
+                <div className="text-[var(--text-muted)] animate-pulse">
                   <span className="opacity-50 mr-2">{'>'}</span>_
                 </div>
               )}
             </div>
 
             {/* Footer Actions */}
-            <div className="p-4 border-t border-white/10 bg-[#111112] flex items-center justify-between">
+            <div className="p-4 border-t border-[var(--border-default)] bg-[var(--bg-secondary)] flex items-center justify-between">
               <div className="flex items-center gap-4 text-xs">
                 {isScanning ? (
-                  <span className="text-slate-400 flex items-center gap-2">
+                  <span className="text-[var(--text-muted)] flex items-center gap-2">
                     <Activity size={14} className="animate-pulse text-[#35D07F]" /> Scanning Modules...
                   </span>
                 ) : (
                   <>
-                    <span className="text-slate-400">Scan Complete</span>
+                    <span className="text-[var(--text-muted)]">Scan Complete</span>
                     {foundCodes.length > 0 ? (
                       <span className="text-rose-400 flex items-center gap-1 font-bold">
                         <AlertTriangle size={14} /> {foundCodes.length} DTCs Found
@@ -160,7 +160,7 @@ export function DiagnosticConsole({ isOpen, onClose, onSaveToOrder, vehicleMake 
                 }}
                 className={`px-4 py-2 rounded-lg text-xs font-bold tracking-widest uppercase transition-all flex items-center gap-2
                   ${isScanning || foundCodes.length === 0 
-                    ? 'bg-white/5 text-slate-500 cursor-not-allowed' 
+                    ? 'bg-[var(--bg-surface-hover)] text-[var(--text-muted)] cursor-not-allowed' 
                     : 'bg-[#35D07F] text-black hover:bg-[#2EB86F]'}`}
               >
                 <Save size={16} /> Save to Service Order
@@ -172,4 +172,5 @@ export function DiagnosticConsole({ isOpen, onClose, onSaveToOrder, vehicleMake 
     </AnimatePresence>
   );
 }
+
 

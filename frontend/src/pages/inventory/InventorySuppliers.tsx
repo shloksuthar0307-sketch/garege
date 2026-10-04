@@ -66,7 +66,7 @@ export default function InventorySuppliers() {
     <div className="space-y-8 animate-fade-in pb-20">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-light tracking-widest uppercase text-white mb-2">Suppliers</h1>
+          <h1 className="text-3xl font-light tracking-widest uppercase text-[var(--text-primary)] mb-2">Suppliers</h1>
           <p className="text-white/50 tracking-wide">Manage vendor relationships, contact information, and status.</p>
         </div>
         <div className="flex items-center space-x-4">
@@ -80,7 +80,7 @@ export default function InventorySuppliers() {
         </div>
       </div>
 
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+      <div className="bg-[var(--bg-surface-hover)] border border-[var(--border-default)] rounded-2xl p-6">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
           <div className="relative w-full sm:w-96">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={18} />
@@ -89,7 +89,7 @@ export default function InventorySuppliers() {
               placeholder="Search by name, code, or contact..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#35D07F]/50 transition-all"
+              className="w-full bg-[var(--bg-surface-hover)] border border-[var(--border-default)] rounded-xl py-3 pl-12 pr-4 text-sm text-[var(--text-primary)] placeholder-white/30 focus:outline-none focus:border-[#35D07F]/50 transition-all"
             />
           </div>
           <FilterPopover 
@@ -111,7 +111,7 @@ export default function InventorySuppliers() {
             <div className="col-span-full py-8 text-center text-white/30 text-sm tracking-wide">No suppliers found.</div>
           ) : (
             filteredSuppliers?.map((sup: any) => (
-              <div key={sup.id} className="bg-[#111112] border border-white/5 rounded-2xl p-6 hover:border-white/20 transition-all group relative overflow-hidden">
+              <div key={sup.id} className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-6 hover:border-[var(--border-strong)] transition-all group relative overflow-hidden">
                 
                 {/* Status Indicator */}
                 <div className="absolute top-4 right-4">
@@ -120,18 +120,18 @@ export default function InventorySuppliers() {
                             <Activity size={10} /> <span>Active</span>
                         </div>
                     ) : (
-                        <div className="flex items-center space-x-1 bg-white/5 text-white/50 px-2 py-1 rounded-md border border-white/10 text-[10px] font-bold tracking-widest uppercase">
+                        <div className="flex items-center space-x-1 bg-[var(--bg-surface-hover)] text-white/50 px-2 py-1 rounded-md border border-[var(--border-default)] text-[10px] font-bold tracking-widest uppercase">
                             <span>{sup.status}</span>
                         </div>
                     )}
                 </div>
 
                 <div className="flex items-center space-x-4 mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center border border-white/10">
+                  <div className="w-12 h-12 rounded-xl bg-[var(--bg-surface-hover)] flex items-center justify-center border border-[var(--border-default)]">
                     <Users size={20} className="text-white/50" />
                   </div>
                   <div className="pr-16">
-                    <h3 className="text-lg font-medium text-white truncate">{sup.name}</h3>
+                    <h3 className="text-lg font-medium text-[var(--text-primary)] truncate">{sup.name}</h3>
                     <p className="text-xs text-[#35D07F] font-bold tracking-widest uppercase">{sup.code || 'NO-CODE'}</p>
                   </div>
                 </div>
@@ -155,8 +155,8 @@ export default function InventorySuppliers() {
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-white/5 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button className="text-xs font-bold tracking-widest uppercase text-white/50 hover:text-white transition-colors">
+                <div className="mt-6 pt-4 border-t border-[var(--border-subtle)] flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button className="text-xs font-bold tracking-widest uppercase text-white/50 hover:text-[var(--text-primary)] transition-colors">
                     Edit Details
                   </button>
                   <button className="flex items-center space-x-1 text-xs font-bold tracking-widest uppercase text-[#35D07F] hover:text-[#2bb469] transition-colors">
@@ -171,16 +171,16 @@ export default function InventorySuppliers() {
       </div>
 
       {isAddModalOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#1A1A1B] border border-white/10 rounded-2xl p-6 w-full max-w-2xl shadow-2xl relative animate-in fade-in zoom-in duration-200">
+        <div className="fixed inset-0 bg-[var(--bg-overlay)] backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#1A1A1B] border border-[var(--border-default)] rounded-2xl p-6 w-full max-w-2xl shadow-2xl relative animate-in fade-in zoom-in duration-200">
             <button 
               onClick={() => setIsAddModalOpen(false)}
-              className="absolute right-4 top-4 text-white/50 hover:text-white transition-colors"
+              className="absolute right-4 top-4 text-white/50 hover:text-[var(--text-primary)] transition-colors"
             >
               <X size={20} />
             </button>
             
-            <h2 className="text-xl font-medium text-white mb-6">Add New Supplier</h2>
+            <h2 className="text-xl font-medium text-[var(--text-primary)] mb-6">Add New Supplier</h2>
             
             <form onSubmit={handleAddSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -190,7 +190,7 @@ export default function InventorySuppliers() {
                     type="text" 
                     value={newSupplierData.name}
                     onChange={(e) => setNewSupplierData({...newSupplierData, name: e.target.value})}
-                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors"
+                    className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors"
                     required
                   />
                 </div>
@@ -200,7 +200,7 @@ export default function InventorySuppliers() {
                     type="text" 
                     value={newSupplierData.code}
                     onChange={(e) => setNewSupplierData({...newSupplierData, code: e.target.value})}
-                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors"
+                    className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors"
                     required
                   />
                 </div>
@@ -210,7 +210,7 @@ export default function InventorySuppliers() {
                     type="text" 
                     value={newSupplierData.contact_name}
                     onChange={(e) => setNewSupplierData({...newSupplierData, contact_name: e.target.value})}
-                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors"
+                    className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors"
                   />
                 </div>
                 <div>
@@ -219,7 +219,7 @@ export default function InventorySuppliers() {
                     type="email" 
                     value={newSupplierData.email}
                     onChange={(e) => setNewSupplierData({...newSupplierData, email: e.target.value})}
-                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors"
+                    className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors"
                   />
                 </div>
                 <div>
@@ -228,7 +228,7 @@ export default function InventorySuppliers() {
                     type="text" 
                     value={newSupplierData.phone}
                     onChange={(e) => setNewSupplierData({...newSupplierData, phone: e.target.value})}
-                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors"
+                    className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors"
                   />
                 </div>
                 <div>
@@ -236,7 +236,7 @@ export default function InventorySuppliers() {
                   <select 
                     value={newSupplierData.status}
                     onChange={(e) => setNewSupplierData({...newSupplierData, status: e.target.value})}
-                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors"
+                    className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors"
                   >
                     <option value="ACTIVE">Active</option>
                     <option value="INACTIVE">Inactive</option>
@@ -249,7 +249,7 @@ export default function InventorySuppliers() {
                 <textarea 
                   value={newSupplierData.address}
                   onChange={(e) => setNewSupplierData({...newSupplierData, address: e.target.value})}
-                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors h-24 resize-none"
+                  className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors h-24 resize-none"
                 />
               </div>
 
@@ -257,7 +257,7 @@ export default function InventorySuppliers() {
                 <button 
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl text-xs font-bold tracking-widest uppercase transition-colors"
+                  className="px-6 py-3 bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] text-[var(--text-primary)] rounded-xl text-xs font-bold tracking-widest uppercase transition-colors"
                 >
                   Cancel
                 </button>
@@ -276,4 +276,5 @@ export default function InventorySuppliers() {
     </div>
   );
 }
+
 

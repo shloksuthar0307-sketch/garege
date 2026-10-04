@@ -44,7 +44,7 @@ const AUDIT_LOGS = [
   }
 ];
 
-const TYPE_CONFIG: Record<string, { icon: React.ElementType, color: string }> = {
+const TYPE_CONFIG: Record<string, { icon: any, color: string }> = {
   'System': { icon: Server, color: 'text-purple-400' },
   'Operation': { icon: Activity, color: 'text-blue-400' },
   'Security': { icon: ShieldAlert, color: 'text-rose-400' },
@@ -89,12 +89,12 @@ export default function AdminAuditLogs() {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
-          <h1 className="text-3xl font-light text-white tracking-tight">System Audit Logs</h1>
-          <p className="text-sm text-slate-500 mt-1">Immutable ledger of all system events, authentication attempts, and data modifications.</p>
+          <h1 className="text-3xl font-light text-[var(--text-primary)] tracking-tight">System Audit Logs</h1>
+          <p className="text-sm text-[var(--text-muted)] mt-1">Immutable ledger of all system events, authentication attempts, and data modifications.</p>
         </div>
         <button 
           onClick={downloadLogsAsCSV}
-          className="flex items-center gap-2 bg-[#111112] border border-white/10 hover:border-white/30 text-white px-6 py-2.5 rounded-xl text-xs font-bold tracking-widest uppercase transition-colors"
+          className="flex items-center gap-2 bg-[var(--bg-secondary)] border border-[var(--border-default)] hover:border-white/30 text-[var(--text-primary)] px-6 py-2.5 rounded-xl text-xs font-bold tracking-widest uppercase transition-colors"
         >
           <Download size={16} />
           Export Logs
@@ -102,15 +102,15 @@ export default function AdminAuditLogs() {
       </div>
 
       {/* Toolbar */}
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-[#111112] border border-white/5 p-4 rounded-2xl">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] p-4 rounded-2xl">
         <div className="flex items-center gap-4">
           <div className="flex flex-col">
-            <span className="text-xs text-slate-500 uppercase tracking-widest">Events (24h)</span>
-            <span className="text-xl text-white font-light">4,192</span>
+            <span className="text-xs text-[var(--text-muted)] uppercase tracking-widest">Events (24h)</span>
+            <span className="text-xl text-[var(--text-primary)] font-light">4,192</span>
           </div>
-          <div className="w-px h-8 bg-white/10 mx-2"></div>
+          <div className="w-px h-8 bg-[var(--bg-surface-active)] mx-2"></div>
           <div className="flex flex-col">
-            <span className="text-xs text-slate-500 uppercase tracking-widest">Security Alerts</span>
+            <span className="text-xs text-[var(--text-muted)] uppercase tracking-widest">Security Alerts</span>
             <div className="flex items-center gap-1.5">
               <AlertOctagon size={14} className="text-rose-400" />
               <span className="text-xl text-rose-400 font-light">12</span>
@@ -120,16 +120,16 @@ export default function AdminAuditLogs() {
 
         <div className="flex items-center gap-3 w-full md:w-auto">
           <div className="relative w-full md:w-64">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
             <input 
               type="text" 
               placeholder="Search by ID, IP, or Actor..." 
-              className="w-full bg-black/50 border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F] transition-colors"
+              className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl pl-9 pr-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors"
             />
           </div>
           <button 
             onClick={() => toast("Advanced filtering options will be loaded.", { icon: "??" })}
-            className="flex items-center gap-2 bg-black/50 border border-white/10 hover:border-white/30 text-slate-300 px-4 py-2.5 rounded-xl text-sm transition-colors"
+            className="flex items-center gap-2 bg-[var(--bg-input)] border border-[var(--border-default)] hover:border-white/30 text-[var(--text-secondary)] px-4 py-2.5 rounded-xl text-sm transition-colors"
           >
             <Filter size={16} />
             Filters
@@ -141,19 +141,19 @@ export default function AdminAuditLogs() {
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-[#111112] border border-white/5 rounded-2xl overflow-hidden"
+        className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl overflow-hidden"
       >
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/5 bg-white/[0.02]">
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase">Timestamp</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase">Actor</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase">Event Action</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase">Resource / Target</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase">IP Address</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase">Status</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase text-right">Details</th>
+              <tr className="border-b border-[var(--border-subtle)] bg-white/[0.02]">
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase">Timestamp</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase">Actor</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase">Event Action</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase">Resource / Target</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase">IP Address</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase">Status</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase text-right">Details</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5 font-mono text-sm">
@@ -162,30 +162,30 @@ export default function AdminAuditLogs() {
                 return (
                   <tr key={log.id} className="hover:bg-white/[0.02] transition-colors group">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-slate-300">
+                      <div className="text-[var(--text-secondary)]">
                         {new Date(log.timestamp).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                       </div>
-                      <div className="text-[10px] text-slate-500 mt-0.5">
+                      <div className="text-[10px] text-[var(--text-muted)] mt-0.5">
                         {new Date(log.timestamp).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="font-sans font-medium text-white group-hover:text-[#35D07F] transition-colors cursor-pointer">{log.actor}</div>
-                      <div className="text-[10px] text-slate-500 mt-0.5 uppercase tracking-widest font-sans">{log.role}</div>
+                      <div className="font-sans font-medium text-[var(--text-primary)] group-hover:text-[#35D07F] transition-colors cursor-pointer">{log.actor}</div>
+                      <div className="text-[10px] text-[var(--text-muted)] mt-0.5 uppercase tracking-widest font-sans">{log.role}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         <TypeIcon size={14} className={TYPE_CONFIG[log.type].color} />
-                        <span className="text-slate-300 font-sans">{log.action}</span>
+                        <span className="text-[var(--text-secondary)] font-sans">{log.action}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="bg-white/5 border border-white/10 px-2 py-1 rounded text-xs text-slate-300">
+                      <span className="bg-[var(--bg-surface-hover)] border border-[var(--border-default)] px-2 py-1 rounded text-xs text-[var(--text-secondary)]">
                         {log.resource}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-slate-400 text-xs">{log.ip}</div>
+                      <div className="text-[var(--text-muted)] text-xs">{log.ip}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {log.status === 'Success' ? (
@@ -203,7 +203,7 @@ export default function AdminAuditLogs() {
                     <td className="px-6 py-4 text-right whitespace-nowrap">
                       <button 
                         onClick={() => toast(`Showing JSON payload for Event ID: ${log.id}`)}
-                        className="text-slate-500 hover:text-white p-1.5 rounded-lg hover:bg-white/5 transition-colors"
+                        className="text-[var(--text-muted)] hover:text-[var(--text-primary)] p-1.5 rounded-lg hover:bg-[var(--bg-surface-hover)] transition-colors"
                       >
                         <Eye size={16} />
                       </button>
@@ -215,18 +215,18 @@ export default function AdminAuditLogs() {
           </table>
         </div>
         
-        <div className="p-4 border-t border-white/5 flex items-center justify-between font-sans text-sm text-slate-500">
+        <div className="p-4 border-t border-[var(--border-subtle)] flex items-center justify-between font-sans text-sm text-[var(--text-muted)]">
           <span>Showing latest 50 events</span>
             <div className="flex items-center gap-2">
               <button 
                 onClick={() => toast("You are on the first page.")}
-                className="px-3 py-1 rounded border border-white/10 hover:bg-white/5 transition-colors"
+                className="px-3 py-1 rounded border border-[var(--border-default)] hover:bg-[var(--bg-surface-hover)] transition-colors"
               >
                 Prev
               </button>
               <button 
                 onClick={() => toast("Loading older events from S3 cold storage...")}
-                className="px-3 py-1 rounded border border-white/10 hover:bg-white/5 transition-colors"
+                className="px-3 py-1 rounded border border-[var(--border-default)] hover:bg-[var(--bg-surface-hover)] transition-colors"
               >
                 Next
               </button>
@@ -237,4 +237,5 @@ export default function AdminAuditLogs() {
     </div>
   );
 }
+
 

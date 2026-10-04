@@ -63,17 +63,17 @@ export default function ManagerFinance() {
     <div className="max-w-7xl mx-auto space-y-6">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-light text-white tracking-wide">Finance Overview</h1>
-          <p className="text-slate-400 text-sm mt-1">Real-time revenue, collections, and financial health metrics.</p>
+          <h1 className="text-3xl font-light text-[var(--text-primary)] tracking-wide">Finance Overview</h1>
+          <p className="text-[var(--text-muted)] text-sm mt-1">Real-time revenue, collections, and financial health metrics.</p>
         </div>
         <div className="flex gap-3">
-          <select className="bg-[#111112] border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none">
+          <select className="bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-lg px-4 py-2 text-sm text-[var(--text-primary)] focus:outline-none">
             <option>This Month</option>
             <option>Last Month</option>
             <option>Q3 2026</option>
             <option>Year to Date</option>
           </select>
-          <button onClick={handleExport} className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-lg text-sm transition-colors border border-white/10">
+          <button onClick={handleExport} className="flex items-center gap-2 px-4 py-2 bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] text-[var(--text-primary)] rounded-lg text-sm transition-colors border border-[var(--border-default)]">
             <Download size={16} /> Export Report
           </button>
         </div>
@@ -81,13 +81,13 @@ export default function ManagerFinance() {
 
       {loading ? (
         <div className="h-64 flex items-center justify-center">
-          <div className="text-slate-500">Loading financial data...</div>
+          <div className="text-[var(--text-muted)]">Loading financial data...</div>
         </div>
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Metric 1 */}
-            <div className="bg-[#111112] border border-white/5 rounded-2xl p-6 hover:border-white/10 transition-colors">
+            <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-6 hover:border-[var(--border-default)] transition-colors">
               <div className="flex justify-between items-start mb-4">
                 <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center">
                   <Activity size={18} className="text-blue-400" />
@@ -96,12 +96,12 @@ export default function ManagerFinance() {
                   <ArrowUpRight size={12} /> 12.5%
                 </span>
               </div>
-              <div className="text-xs text-slate-500 font-bold tracking-widest uppercase mb-1">Total Revenue</div>
-              <div className="text-2xl font-light text-white">₹{totalRevenue.toLocaleString()}</div>
+              <div className="text-xs text-[var(--text-muted)] font-bold tracking-widest uppercase mb-1">Total Revenue</div>
+              <div className="text-2xl font-light text-[var(--text-primary)]">₹{totalRevenue.toLocaleString()}</div>
             </div>
 
             {/* Metric 2 */}
-            <div className="bg-[#111112] border border-emerald-500/20 rounded-2xl p-6 shadow-[0_0_15px_rgba(53,208,127,0.03)] relative overflow-hidden">
+            <div className="bg-[var(--bg-secondary)] border border-emerald-500/20 rounded-2xl p-6 shadow-[0_0_15px_rgba(53,208,127,0.03)] relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-2xl -mr-10 -mt-10"></div>
               <div className="flex justify-between items-start mb-4 relative z-10">
                 <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
@@ -116,7 +116,7 @@ export default function ManagerFinance() {
             </div>
 
             {/* Metric 3 */}
-            <div className="bg-[#111112] border border-red-500/10 rounded-2xl p-6 hover:border-red-500/20 transition-colors">
+            <div className="bg-[var(--bg-secondary)] border border-red-500/10 rounded-2xl p-6 hover:border-red-500/20 transition-colors">
               <div className="flex justify-between items-start mb-4">
                 <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
                   <TrendingDown size={18} className="text-red-400" />
@@ -130,7 +130,7 @@ export default function ManagerFinance() {
             </div>
 
             {/* Metric 4 */}
-            <div className="bg-[#111112] border border-white/5 rounded-2xl p-6 hover:border-white/10 transition-colors">
+            <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-6 hover:border-[var(--border-default)] transition-colors">
               <div className="flex justify-between items-start mb-4">
                 <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
                   <CreditCard size={18} className="text-purple-400" />
@@ -139,50 +139,50 @@ export default function ManagerFinance() {
                   <ArrowUpRight size={12} /> 2.4%
                 </span>
               </div>
-              <div className="text-xs text-slate-500 font-bold tracking-widest uppercase mb-1">Collection Rate</div>
-              <div className="text-2xl font-light text-white">{collectionRate}%</div>
+              <div className="text-xs text-[var(--text-muted)] font-bold tracking-widest uppercase mb-1">Collection Rate</div>
+              <div className="text-2xl font-light text-[var(--text-primary)]">{collectionRate}%</div>
             </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Chart Area Mockup */}
-            <div className="lg:col-span-2 bg-[#111112] border border-white/5 rounded-2xl p-6">
-              <h2 className="text-lg font-medium text-white mb-6">Revenue Trend</h2>
-              <div className="h-64 flex items-center justify-center border border-white/5 border-dashed rounded-xl bg-white/[0.02]">
+            <div className="lg:col-span-2 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-6">
+              <h2 className="text-lg font-medium text-[var(--text-primary)] mb-6">Revenue Trend</h2>
+              <div className="h-64 flex items-center justify-center border border-[var(--border-subtle)] border-dashed rounded-xl bg-white/[0.02]">
                 <div className="text-center">
                   <TrendingUp size={32} className="mx-auto text-slate-600 mb-3" />
-                  <div className="text-slate-500 text-sm">Chart visualization requires external library (e.g. Recharts)</div>
+                  <div className="text-[var(--text-muted)] text-sm">Chart visualization requires external library (e.g. Recharts)</div>
                 </div>
               </div>
             </div>
 
             {/* Recent Transactions List */}
-            <div className="bg-[#111112] border border-white/5 rounded-2xl p-6">
-              <h2 className="text-lg font-medium text-white mb-6">Recent Payments</h2>
+            <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-6">
+              <h2 className="text-lg font-medium text-[var(--text-primary)] mb-6">Recent Payments</h2>
               <div className="space-y-4">
                 {invoices.filter(inv => parseFloat(inv.paid) > 0).slice(0, 5).map(inv => (
-                  <div key={`payment-${inv.id}`} className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                  <div key={`payment-${inv.id}`} className="flex items-center justify-between p-3 rounded-xl hover:bg-[var(--bg-surface-hover)] transition-colors border border-transparent hover:border-[var(--border-subtle)]">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
                         <DollarSign size={16} className="text-emerald-400" />
                       </div>
                       <div>
-                        <div className="text-sm font-medium text-white">{inv.invoice_number}</div>
-                        <div className="text-xs text-slate-500">{new Date(inv.created_at).toLocaleDateString()}</div>
+                        <div className="text-sm font-medium text-[var(--text-primary)]">{inv.invoice_number}</div>
+                        <div className="text-xs text-[var(--text-muted)]">{new Date(inv.created_at).toLocaleDateString()}</div>
                       </div>
                     </div>
                     <div className="text-right">
                       <div className="text-sm font-bold text-emerald-400">+₹{parseFloat(inv.paid).toLocaleString()}</div>
-                      <div className="text-[10px] text-slate-500 uppercase tracking-widest">{inv.status}</div>
+                      <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest">{inv.status}</div>
                     </div>
                   </div>
                 ))}
                 
                 {invoices.filter(inv => parseFloat(inv.paid) > 0).length === 0 && (
-                  <div className="text-center text-slate-500 py-8 text-sm">No recent payments</div>
+                  <div className="text-center text-[var(--text-muted)] py-8 text-sm">No recent payments</div>
                 )}
               </div>
-              <button className="w-full mt-6 py-2 text-sm text-slate-400 hover:text-white transition-colors border border-white/5 rounded-lg hover:bg-white/5">
+              <button className="w-full mt-6 py-2 text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors border border-[var(--border-subtle)] rounded-lg hover:bg-[var(--bg-surface-hover)]">
                 View All Transactions
               </button>
             </div>
@@ -192,4 +192,5 @@ export default function ManagerFinance() {
     </div>
   );
 }
+
 

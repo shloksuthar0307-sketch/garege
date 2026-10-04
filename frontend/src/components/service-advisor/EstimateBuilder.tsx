@@ -46,15 +46,15 @@ export default function EstimateBuilder({ serviceOrder }: { serviceOrder: any })
   };
 
   return (
-    <div className="bg-[#111112] border border-white/5 rounded-xl flex flex-col h-full">
-      <div className="p-4 border-b border-white/5 flex items-center justify-between">
-        <h3 className="text-sm font-bold text-white uppercase tracking-widest flex items-center gap-2">
+    <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-xl flex flex-col h-full">
+      <div className="p-4 border-b border-[var(--border-subtle)] flex items-center justify-between">
+        <h3 className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-widest flex items-center gap-2">
           <FileSignature size={16} className="text-[#35D07F]" /> Estimate Builder
         </h3>
         <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest ${
           serviceOrder?.service_estimate?.status === 'APPROVED' ? 'bg-[#35D07F]/20 text-[#35D07F]' :
           serviceOrder?.service_estimate?.status === 'SENT' ? 'bg-amber-400/20 text-amber-400' :
-          'bg-slate-500/20 text-slate-400'
+          'bg-slate-500/20 text-[var(--text-muted)]'
         }`}>
           {serviceOrder?.service_estimate?.status || 'DRAFT'}
         </span>
@@ -62,12 +62,12 @@ export default function EstimateBuilder({ serviceOrder }: { serviceOrder: any })
 
       <div className="p-4 flex-1 overflow-y-auto custom-scrollbar space-y-4">
         {items.map((item, index) => (
-          <div key={item.id} className="flex gap-3 items-start bg-black/40 p-3 rounded-lg border border-white/5">
+          <div key={item.id} className="flex gap-3 items-start bg-[var(--bg-input)] p-3 rounded-lg border border-[var(--border-subtle)]">
             <div className="w-24">
               <select 
                 value={item.type}
                 onChange={e => updateItem(item.id, 'type', e.target.value)}
-                className="w-full bg-[#111112] border border-white/10 rounded-lg px-2 py-2 text-xs text-white focus:border-[#35D07F] focus:outline-none"
+                className="w-full bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-lg px-2 py-2 text-xs text-[var(--text-primary)] focus:border-[#35D07F] focus:outline-none"
               >
                 <option value="PARTS">Parts</option>
                 <option value="LABOR">Labor</option>
@@ -79,7 +79,7 @@ export default function EstimateBuilder({ serviceOrder }: { serviceOrder: any })
                 type="text" placeholder="Description"
                 value={item.description}
                 onChange={e => updateItem(item.id, 'description', e.target.value)}
-                className="w-full bg-[#111112] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:border-[#35D07F] focus:outline-none"
+                className="w-full bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-lg px-3 py-2 text-xs text-[var(--text-primary)] focus:border-[#35D07F] focus:outline-none"
               />
             </div>
             <div className="w-20">
@@ -87,7 +87,7 @@ export default function EstimateBuilder({ serviceOrder }: { serviceOrder: any })
                 type="number" placeholder="Qty"
                 value={item.quantity}
                 onChange={e => updateItem(item.id, 'quantity', parseFloat(e.target.value) || 0)}
-                className="w-full bg-[#111112] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:border-[#35D07F] focus:outline-none text-right"
+                className="w-full bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-lg px-3 py-2 text-xs text-[var(--text-primary)] focus:border-[#35D07F] focus:outline-none text-right"
               />
             </div>
             <div className="w-28">
@@ -95,36 +95,36 @@ export default function EstimateBuilder({ serviceOrder }: { serviceOrder: any })
                 type="number" placeholder="Price"
                 value={item.unit_price}
                 onChange={e => updateItem(item.id, 'unit_price', parseFloat(e.target.value) || 0)}
-                className="w-full bg-[#111112] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:border-[#35D07F] focus:outline-none text-right"
+                className="w-full bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-lg px-3 py-2 text-xs text-[var(--text-primary)] focus:border-[#35D07F] focus:outline-none text-right"
               />
             </div>
-            <div className="w-24 text-right pt-2 font-mono text-xs text-slate-300">
+            <div className="w-24 text-right pt-2 font-mono text-xs text-[var(--text-secondary)]">
               ₹ {(item.quantity * item.unit_price).toFixed(2)}
             </div>
-            <button onClick={() => removeItem(item.id)} className="p-2 text-slate-500 hover:text-rose-400 transition-colors">
+            <button onClick={() => removeItem(item.id)} className="p-2 text-[var(--text-muted)] hover:text-rose-400 transition-colors">
               <Trash2 size={14} />
             </button>
           </div>
         ))}
 
         <div className="flex gap-2">
-          <button onClick={() => addItem('PARTS')} className="flex items-center gap-1 text-xs text-slate-400 hover:text-white transition-colors bg-white/5 px-3 py-1.5 rounded-lg">
+          <button onClick={() => addItem('PARTS')} className="flex items-center gap-1 text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors bg-[var(--bg-surface-hover)] px-3 py-1.5 rounded-lg">
             <Plus size={12} /> Add Part
           </button>
-          <button onClick={() => addItem('LABOR')} className="flex items-center gap-1 text-xs text-slate-400 hover:text-white transition-colors bg-white/5 px-3 py-1.5 rounded-lg">
+          <button onClick={() => addItem('LABOR')} className="flex items-center gap-1 text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors bg-[var(--bg-surface-hover)] px-3 py-1.5 rounded-lg">
             <Plus size={12} /> Add Labor
           </button>
         </div>
       </div>
 
-      <div className="p-4 border-t border-white/5 bg-black/40">
+      <div className="p-4 border-t border-[var(--border-subtle)] bg-[var(--bg-input)]">
         <div className="flex justify-end mb-4">
           <div className="w-64 space-y-2">
-            <div className="flex justify-between text-xs text-slate-400">
+            <div className="flex justify-between text-xs text-[var(--text-muted)]">
               <span>Subtotal</span>
-              <span className="font-mono text-white">₹ {subtotal.toFixed(2)}</span>
+              <span className="font-mono text-[var(--text-primary)]">₹ {subtotal.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between items-center text-xs text-slate-400">
+            <div className="flex justify-between items-center text-xs text-[var(--text-muted)]">
               <span>Discount</span>
               <div className="flex items-center">
                 <span className="mr-1">₹</span>
@@ -132,15 +132,15 @@ export default function EstimateBuilder({ serviceOrder }: { serviceOrder: any })
                   type="number" 
                   value={discount}
                   onChange={e => setDiscount(parseFloat(e.target.value) || 0)}
-                  className="w-16 bg-[#111112] border border-white/10 rounded px-2 py-1 text-right text-white focus:border-[#35D07F] focus:outline-none"
+                  className="w-16 bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded px-2 py-1 text-right text-[var(--text-primary)] focus:border-[#35D07F] focus:outline-none"
                 />
               </div>
             </div>
-            <div className="flex justify-between text-xs text-slate-400">
+            <div className="flex justify-between text-xs text-[var(--text-muted)]">
               <span>Tax (18%)</span>
-              <span className="font-mono text-white">₹ {tax.toFixed(2)}</span>
+              <span className="font-mono text-[var(--text-primary)]">₹ {tax.toFixed(2)}</span>
             </div>
-            <div className="h-px bg-white/10 my-2"></div>
+            <div className="h-px bg-[var(--bg-surface-active)] my-2"></div>
             <div className="flex justify-between text-sm font-bold text-[#35D07F]">
               <span>Total</span>
               <span className="font-mono text-xl">₹ {total.toFixed(2)}</span>
@@ -153,7 +153,7 @@ export default function EstimateBuilder({ serviceOrder }: { serviceOrder: any })
             href={`http://localhost:8000/api/v1/advisor/service-orders/${serviceOrder?.id || 'mock-id'}/export_pdf/`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl text-xs font-bold uppercase tracking-widest transition-colors"
+            className="flex-1 flex items-center justify-center px-4 py-2 bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] text-[var(--text-primary)] rounded-xl text-xs font-bold uppercase tracking-widest transition-colors"
           >
             Download PDF
           </a>
@@ -169,4 +169,5 @@ export default function EstimateBuilder({ serviceOrder }: { serviceOrder: any })
     </div>
   );
 }
+
 

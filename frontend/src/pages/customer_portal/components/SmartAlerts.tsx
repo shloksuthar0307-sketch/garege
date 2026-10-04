@@ -6,10 +6,7 @@ import { useNavigate } from 'react-router-dom';
 export default function SmartAlerts() {
   const navigate = useNavigate();
 
-  const alerts = [
-    { id: 1, type: 'action', icon: Wrench, message: 'Your brake repair estimate is waiting for approval.', actionText: 'Review Estimate', color: 'amber', link: '/customer/approvals' },
-    { id: 2, type: 'info', icon: Calendar, message: 'Your service appointment is tomorrow at 10:30 AM.', actionText: 'View Details', color: 'blue', link: '/customer/vehicles' }
-  ];
+  const alerts: any[] = [];
 
   return (
     <div className="flex flex-col gap-3">
@@ -36,4 +33,5 @@ export default function SmartAlerts() {
     </div>
   );
 }
+
 

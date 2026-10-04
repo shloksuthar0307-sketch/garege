@@ -45,7 +45,7 @@ export default function CustomerLayout() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex h-screen bg-[#0a0a0b] text-white overflow-hidden font-sans">
+    <div className="flex h-screen bg-[#0a0a0b] text-[var(--text-primary)] overflow-hidden font-sans">
       {/* Sidebar */}
       <AnimatePresence mode="wait">
         {sidebarOpen && (
@@ -53,9 +53,9 @@ export default function CustomerLayout() {
             initial={{ width: 0, opacity: 0 }}
             animate={{ width: 280, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
-            className="flex-shrink-0 border-r border-white/5 bg-[#111112]/90 backdrop-blur-xl flex flex-col z-20"
+            className="flex-shrink-0 border-r border-[var(--border-subtle)] bg-[var(--bg-secondary)]/90 backdrop-blur-xl flex flex-col z-20"
           >
-            <div className="p-6 border-b border-white/5 flex items-center justify-between">
+            <div className="p-6 border-b border-[var(--border-subtle)] flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-bold">
                   C
@@ -67,7 +67,7 @@ export default function CustomerLayout() {
             <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-8 custom-scrollbar">
               {SIDEBAR_SECTIONS.map((section) => (
                 <div key={section.title}>
-                  <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 px-3">
+                  <h3 className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-3 px-3">
                     {section.title}
                   </h3>
                   <div className="space-y-1">
@@ -80,10 +80,10 @@ export default function CustomerLayout() {
                           className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${
                             isActive 
                               ? 'bg-indigo-500/10 text-indigo-400 font-medium border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.1)]' 
-                              : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                              : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)]'
                           }`}
                         >
-                          <item.icon size={18} className={isActive ? 'text-indigo-400' : 'text-slate-500'} />
+                          <item.icon size={18} className={isActive ? 'text-indigo-400' : 'text-[var(--text-muted)]'} />
                           {item.name}
                         </Link>
                       );
@@ -93,16 +93,16 @@ export default function CustomerLayout() {
               ))}
             </div>
 
-            <div className="p-4 border-t border-white/5">
+            <div className="p-4 border-t border-[var(--border-subtle)]">
               <div className="space-y-1">
-                <Link to="/customer/profile" className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all ${location.pathname.includes('/customer/profile') ? 'text-indigo-400 bg-white/5' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'}`}>
-                  <User size={18} className={location.pathname.includes('/customer/profile') ? 'text-indigo-400' : 'text-slate-500'} /> Profile
+                <Link to="/customer/profile" className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all ${location.pathname.includes('/customer/profile') ? 'text-indigo-400 bg-[var(--bg-surface-hover)]' : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)]'}`}>
+                  <User size={18} className={location.pathname.includes('/customer/profile') ? 'text-indigo-400' : 'text-[var(--text-muted)]'} /> Profile
                 </Link>
-                <Link to="/customer/security" className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all ${location.pathname.includes('/customer/security') ? 'text-indigo-400 bg-white/5' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'}`}>
-                  <Shield size={18} className={location.pathname.includes('/customer/security') ? 'text-indigo-400' : 'text-slate-500'} /> Security
+                <Link to="/customer/security" className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all ${location.pathname.includes('/customer/security') ? 'text-indigo-400 bg-[var(--bg-surface-hover)]' : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)]'}`}>
+                  <Shield size={18} className={location.pathname.includes('/customer/security') ? 'text-indigo-400' : 'text-[var(--text-muted)]'} /> Security
                 </Link>
-                <Link to="/customer/preferences" className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all ${location.pathname.includes('/customer/preferences') ? 'text-indigo-400 bg-white/5' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'}`}>
-                  <Settings size={18} className={location.pathname.includes('/customer/preferences') ? 'text-indigo-400' : 'text-slate-500'} /> Preferences
+                <Link to="/customer/preferences" className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all ${location.pathname.includes('/customer/preferences') ? 'text-indigo-400 bg-[var(--bg-surface-hover)]' : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)]'}`}>
+                  <Settings size={18} className={location.pathname.includes('/customer/preferences') ? 'text-indigo-400' : 'text-[var(--text-muted)]'} /> Preferences
                 </Link>
                 <button 
                   onClick={() => navigate('/login')}
@@ -119,30 +119,30 @@ export default function CustomerLayout() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 bg-[#0a0a0b] relative">
         {/* Top Navbar */}
-        <header className="h-16 border-b border-white/5 bg-[#111112]/80 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-10">
+        <header className="h-16 border-b border-[var(--border-subtle)] bg-[var(--bg-secondary)]/80 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-10">
           <div className="flex items-center gap-4">
             <button 
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="text-slate-400 hover:text-white transition-colors"
+              className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
             >
               <Menu size={20} />
             </button>
             
             <div className="relative group hidden sm:block">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
               <input 
                 type="text" 
                 placeholder="Search projects, orders, or ask for help... (Ctrl+K)" 
-                className="pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 transition-all w-80 placeholder:text-slate-600"
+                className="pl-10 pr-4 py-2 bg-[var(--bg-surface-hover)] border border-[var(--border-default)] rounded-full text-sm focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 transition-all w-80 placeholder:text-slate-600"
               />
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-600 bg-white/5 px-1.5 py-0.5 rounded">
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-600 bg-[var(--bg-surface-hover)] px-1.5 py-0.5 rounded">
                 ⌘K
               </div>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            <button className="relative text-slate-400 hover:text-white transition-colors p-2 rounded-full hover:bg-white/5">
+            <button className="relative text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-2 rounded-full hover:bg-[var(--bg-surface-hover)]">
               <Bell size={20} />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-indigo-500 rounded-full shadow-[0_0_8px_rgba(99,102,241,0.8)] border border-[#111112]"></span>
             </button>
@@ -164,10 +164,11 @@ export default function CustomerLayout() {
       {/* Floating Chat Widget */}
       <div className="fixed bottom-6 right-6 z-50">
         <button className="w-14 h-14 bg-indigo-600 rounded-full flex items-center justify-center shadow-lg shadow-indigo-600/30 hover:bg-indigo-500 transition-all hover:scale-105 active:scale-95">
-          <MessageSquare size={24} className="text-white" />
+          <MessageSquare size={24} className="text-[var(--text-primary)]" />
         </button>
       </div>
     </div>
   );
 }
+
 

@@ -158,8 +158,8 @@ export default function CustomerMessages() {
     switch (status) {
       case 'online': return 'text-[#35D07F]';
       case 'busy': return 'text-amber-500';
-      case 'offline': return 'text-slate-500';
-      default: return 'text-slate-500';
+      case 'offline': return 'text-[var(--text-muted)]';
+      default: return 'text-[var(--text-muted)]';
     }
   };
 
@@ -180,11 +180,11 @@ export default function CustomerMessages() {
     <div className="max-w-[1400px] mx-auto pb-10 h-[calc(100vh-140px)] flex flex-col">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 shrink-0">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-          <h1 className="text-3xl font-bold tracking-widest uppercase text-white mb-2 flex items-center gap-3">
+          <h1 className="text-3xl font-bold tracking-widest uppercase text-[var(--text-primary)] mb-2 flex items-center gap-3">
             <MessageSquare className="text-[#35D07F]" size={28} />
             Direct Messages
           </h1>
-          <p className="text-slate-400 text-xs tracking-widest uppercase">
+          <p className="text-[var(--text-muted)] text-xs tracking-widest uppercase">
             Chat directly with your assigned technicians and service advisors.
           </p>
         </motion.div>
@@ -195,15 +195,15 @@ export default function CustomerMessages() {
         {/* Left Pane */}
         <motion.div 
           initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
-          className="lg:col-span-4 bg-[#0A0A0B]/80 backdrop-blur-md border border-white/5 rounded-2xl flex flex-col overflow-hidden"
+          className="lg:col-span-4 bg-[var(--bg-primary)]/80 backdrop-blur-md border border-[var(--border-subtle)] rounded-2xl flex flex-col overflow-hidden"
         >
-          <div className="p-4 border-b border-white/5 bg-white/[0.02]">
+          <div className="p-4 border-b border-[var(--border-subtle)] bg-white/[0.02]">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" size={16} />
               <input 
                 type="text" 
                 placeholder="SEARCH CONTACTS..." 
-                className="w-full pl-10 pr-4 py-2.5 bg-black/50 border border-white/10 rounded-xl text-xs text-white uppercase tracking-widest focus:border-[#35D07F] outline-none transition-all"
+                className="w-full pl-10 pr-4 py-2.5 bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl text-xs text-[var(--text-primary)] uppercase tracking-widest focus:border-[#35D07F] outline-none transition-all"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -211,34 +211,34 @@ export default function CustomerMessages() {
           </div>
 
           <div className="flex-1 overflow-y-auto custom-scrollbar">
-            {loadingConvos && <div className="p-8 text-center text-slate-500 text-[10px] tracking-widest uppercase animate-pulse">Loading conversations...</div>}
+            {loadingConvos && <div className="p-8 text-center text-[var(--text-muted)] text-[10px] tracking-widest uppercase animate-pulse">Loading conversations...</div>}
             {filteredChats.map((chat: Conversation) => (
               <div 
                 key={chat.id}
                 onClick={() => setActiveChatId(chat.id)}
-                className={`p-5 border-b border-white/5 cursor-pointer transition-all flex gap-4 items-center ${
+                className={`p-5 border-b border-[var(--border-subtle)] cursor-pointer transition-all flex gap-4 items-center ${
                   activeChatId === chat.id 
-                    ? 'bg-white/10 border-l-2 border-l-[#35D07F]' 
-                    : 'hover:bg-white/5 border-l-2 border-l-transparent'
+                    ? 'bg-[var(--bg-surface-active)] border-l-2 border-l-[#35D07F]' 
+                    : 'hover:bg-[var(--bg-surface-hover)] border-l-2 border-l-transparent'
                 }`}
               >
                 <div className="relative shrink-0">
-                  <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-slate-300">
+                  <div className="w-12 h-12 rounded-full bg-[var(--bg-surface-hover)] flex items-center justify-center text-[var(--text-secondary)]">
                     <HeadphonesIcon size={18} />
                   </div>
                   <Circle size={12} className={`absolute bottom-0 right-0 fill-current ${getStatusColor('online')}`} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex justify-between items-center mb-1">
-                    <h3 className={`text-sm font-bold tracking-wider truncate ${activeChatId === chat.id ? 'text-[#35D07F]' : 'text-white'}`}>
+                    <h3 className={`text-sm font-bold tracking-wider truncate ${activeChatId === chat.id ? 'text-[#35D07F]' : 'text-[var(--text-primary)]'}`}>
                       Service Advisor
                     </h3>
-                    <span className={`text-[9px] uppercase tracking-widest font-bold whitespace-nowrap ml-2 ${chat.unread_count > 0 ? 'text-[#35D07F]' : 'text-slate-500'}`}>
+                    <span className={`text-[9px] uppercase tracking-widest font-bold whitespace-nowrap ml-2 ${chat.unread_count > 0 ? 'text-[#35D07F]' : 'text-[var(--text-muted)]'}`}>
                       {chat.latest_message ? formatTime(chat.latest_message.created_at) : ''}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <p className="text-slate-400 text-[10px] uppercase tracking-widest font-bold truncate pr-2">
+                    <p className="text-[var(--text-muted)] text-[10px] uppercase tracking-widest font-bold truncate pr-2">
                       {chat.latest_message?.content || 'No messages'}
                     </p>
                     {chat.unread_count > 0 && (
@@ -251,7 +251,7 @@ export default function CustomerMessages() {
               </div>
             ))}
             {filteredChats.length === 0 && !loadingConvos && (
-              <div className="p-8 text-center text-slate-500 text-[10px] font-bold tracking-widest uppercase">
+              <div className="p-8 text-center text-[var(--text-muted)] text-[10px] font-bold tracking-widest uppercase">
                 No contacts match your search.
               </div>
             )}
@@ -261,27 +261,27 @@ export default function CustomerMessages() {
         {/* Right Pane */}
         <motion.div 
           initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
-          className="lg:col-span-8 bg-[#0A0A0B]/80 backdrop-blur-md border border-white/5 rounded-2xl flex flex-col overflow-hidden relative"
+          className="lg:col-span-8 bg-[var(--bg-primary)]/80 backdrop-blur-md border border-[var(--border-subtle)] rounded-2xl flex flex-col overflow-hidden relative"
         >
           {activeChat ? (
             <>
-              <div className="p-6 border-b border-white/5 bg-white/[0.02] flex items-center gap-4 shrink-0">
+              <div className="p-6 border-b border-[var(--border-subtle)] bg-white/[0.02] flex items-center gap-4 shrink-0">
                 <div className="relative shrink-0">
-                  <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-slate-300">
+                  <div className="w-12 h-12 rounded-full bg-[var(--bg-surface-hover)] flex items-center justify-center text-[var(--text-secondary)]">
                     <HeadphonesIcon size={18} />
                   </div>
                   <Circle size={12} className={`absolute bottom-0 right-0 fill-current ${getStatusColor('online')}`} />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold tracking-widest text-white mb-1">Service Advisor</h2>
-                  <p className="text-slate-400 text-[10px] uppercase tracking-widest font-bold flex items-center gap-2">
+                  <h2 className="text-xl font-bold tracking-widest text-[var(--text-primary)] mb-1">Service Advisor</h2>
+                  <p className="text-[var(--text-muted)] text-[10px] uppercase tracking-widest font-bold flex items-center gap-2">
                     Service Team • Online
                   </p>
                 </div>
               </div>
 
               <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-black/20">
-                {loadingMessages && <div className="text-center text-slate-500 text-[10px] tracking-widest uppercase animate-pulse">Loading messages...</div>}
+                {loadingMessages && <div className="text-center text-[var(--text-muted)] text-[10px] tracking-widest uppercase animate-pulse">Loading messages...</div>}
                 {messages.map((msg: Message) => {
                   const isCustomer = msg.sender.role === 'CUSTOMER';
                   return (
@@ -295,13 +295,13 @@ export default function CustomerMessages() {
                         
                         <div className={`flex flex-col ${isCustomer ? 'items-end' : 'items-start'}`}>
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="text-slate-300 text-[10px] font-bold uppercase tracking-widest">{isCustomer ? 'You' : msg.sender.name || 'Advisor'}</span>
-                            <span className="text-slate-500 text-[9px] uppercase tracking-widest">{formatTime(msg.created_at)}</span>
+                            <span className="text-[var(--text-secondary)] text-[10px] font-bold uppercase tracking-widest">{isCustomer ? 'You' : msg.sender.name || 'Advisor'}</span>
+                            <span className="text-[var(--text-muted)] text-[9px] uppercase tracking-widest">{formatTime(msg.created_at)}</span>
                           </div>
                           <div className={`p-4 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${
                             isCustomer 
                               ? 'bg-[#35D07F] text-black rounded-tr-sm' 
-                              : 'bg-white/10 text-white rounded-tl-sm border border-white/5'
+                              : 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] rounded-tl-sm border border-[var(--border-subtle)]'
                           }`}>
                             {msg.content}
                           </div>
@@ -318,15 +318,15 @@ export default function CustomerMessages() {
                 <div ref={chatEndRef} />
               </div>
 
-              <div className="p-4 border-t border-white/5 bg-white/[0.02] shrink-0">
+              <div className="p-4 border-t border-[var(--border-subtle)] bg-white/[0.02] shrink-0">
                 <div className="relative flex items-center">
-                  <button onClick={() => { toast('Attachments feature coming soon!', { icon: '📎' }) }} className="absolute left-3 text-slate-500 hover:text-white transition-colors">
+                  <button onClick={() => { toast('Attachments feature coming soon!', { icon: '📎' }) }} className="absolute left-3 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
                     <Paperclip size={18} />
                   </button>
                   <input 
                     type="text" 
                     placeholder="TYPE YOUR MESSAGE..." 
-                    className="w-full pl-12 pr-16 py-4 bg-black/50 border border-white/10 rounded-xl text-sm text-white placeholder:uppercase placeholder:tracking-widest focus:border-[#35D07F] outline-none transition-all"
+                    className="w-full pl-12 pr-16 py-4 bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl text-sm text-[var(--text-primary)] placeholder:uppercase placeholder:tracking-widest focus:border-[#35D07F] outline-none transition-all"
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSendReply()}
@@ -342,7 +342,7 @@ export default function CustomerMessages() {
               </div>
             </>
           ) : (
-            <div className="flex-1 flex items-center justify-center text-slate-500 text-xs uppercase tracking-widest">
+            <div className="flex-1 flex items-center justify-center text-[var(--text-muted)] text-xs uppercase tracking-widest">
               Select a contact to start messaging
             </div>
           )}
@@ -352,4 +352,5 @@ export default function CustomerMessages() {
     </div>
   );
 }
+
 

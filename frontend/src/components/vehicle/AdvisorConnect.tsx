@@ -43,7 +43,7 @@ export function AdvisorConnect() {
   return (
     <>
       <div 
-        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 transition-opacity pointer-events-auto"
+        className="fixed inset-0 bg-[var(--bg-input)] backdrop-blur-sm z-50 transition-opacity pointer-events-auto"
         onClick={() => setConnectOpen(false)}
       />
       
@@ -52,12 +52,12 @@ export function AdvisorConnect() {
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: '100%', opacity: 0 }}
         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="fixed right-8 bottom-8 w-96 h-[600px] max-h-[80vh] bg-[#0a0a0c]/90 backdrop-blur-2xl border border-white/10 rounded-2xl z-50 overflow-hidden text-white shadow-2xl flex flex-col pointer-events-auto"
+        className="fixed right-8 bottom-8 w-96 h-[600px] max-h-[80vh] bg-[#0a0a0c]/90 backdrop-blur-2xl border border-[var(--border-default)] rounded-2xl z-50 overflow-hidden text-[var(--text-primary)] shadow-2xl flex flex-col pointer-events-auto"
       >
         {/* Header */}
-        <div className="bg-[#111] p-4 flex items-center gap-4 border-b border-white/10 shrink-0">
+        <div className="bg-[#111] p-4 flex items-center gap-4 border-b border-[var(--border-default)] shrink-0">
           <div className="relative">
-            <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20">
+            <div className="w-12 h-12 bg-[var(--bg-surface-active)] rounded-full flex items-center justify-center border border-[var(--border-strong)]">
               <User size={20} className="text-white/50" />
             </div>
             <div className="absolute bottom-0 right-0 w-3 h-3 bg-[#35D07F] rounded-full border-2 border-[#111]" />
@@ -66,7 +66,7 @@ export function AdvisorConnect() {
             <h2 className="text-sm font-medium tracking-wide">Alex Morgan</h2>
             <p className="text-[10px] font-sans tracking-widest uppercase text-[#35D07F]">Senior Advisor</p>
           </div>
-          <button onClick={() => setConnectOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors text-white/70 hover:text-white">
+          <button onClick={() => setConnectOpen(false)} className="p-2 hover:bg-[var(--bg-surface-active)] rounded-full transition-colors text-white/70 hover:text-[var(--text-primary)]">
             <X size={20} />
           </button>
         </div>
@@ -80,7 +80,7 @@ export function AdvisorConnect() {
                 <div className={`max-w-[80%] p-3 rounded-2xl text-sm font-light leading-relaxed ${
                   isMe 
                     ? 'bg-white text-black rounded-tr-sm' 
-                    : 'bg-white/10 text-white rounded-tl-sm border border-white/5'
+                    : 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] rounded-tl-sm border border-[var(--border-subtle)]'
                 }`}>
                   {msg.text}
                 </div>
@@ -92,14 +92,14 @@ export function AdvisorConnect() {
         </div>
 
         {/* Input Area */}
-        <div className="p-4 bg-[#111]/80 backdrop-blur-md border-t border-white/10 shrink-0">
+        <div className="p-4 bg-[#111]/80 backdrop-blur-md border-t border-[var(--border-default)] shrink-0">
           <form onSubmit={handleSend} className="relative">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type your message..."
-              className="w-full bg-white/5 border border-white/10 rounded-full py-3 pl-4 pr-12 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors"
+              className="w-full bg-[var(--bg-surface-hover)] border border-[var(--border-default)] rounded-full py-3 pl-4 pr-12 text-sm text-[var(--text-primary)] placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors"
             />
             <button 
               type="submit"
@@ -114,4 +114,5 @@ export function AdvisorConnect() {
     </>
   );
 }
+
 

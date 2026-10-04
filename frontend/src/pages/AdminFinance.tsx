@@ -71,12 +71,12 @@ export default function AdminFinance() {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
-          <h1 className="text-3xl font-light text-white tracking-tight">Finance & Analytics</h1>
-          <p className="text-sm text-slate-500 mt-1">Global business insights, revenue tracking, and operational efficiency.</p>
+          <h1 className="text-3xl font-light text-[var(--text-primary)] tracking-tight">Finance & Analytics</h1>
+          <p className="text-sm text-[var(--text-muted)] mt-1">Global business insights, revenue tracking, and operational efficiency.</p>
         </div>
         <button 
           onClick={handleExport}
-          className="flex items-center gap-2 bg-[#111112] border border-white/10 hover:border-white/30 text-white px-6 py-2.5 rounded-xl text-xs font-bold tracking-widest uppercase transition-colors"
+          className="flex items-center gap-2 bg-[var(--bg-secondary)] border border-[var(--border-default)] hover:border-white/30 text-[var(--text-primary)] px-6 py-2.5 rounded-xl text-xs font-bold tracking-widest uppercase transition-colors"
         >
           <Download size={16} />
           Export Report
@@ -85,46 +85,46 @@ export default function AdminFinance() {
 
       {/* Top KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0 }} className="bg-[#111112] border border-white/5 p-6 rounded-2xl relative overflow-hidden">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0 }} className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] p-6 rounded-2xl relative overflow-hidden">
           <div className="flex justify-between items-start mb-4">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Total Revenue (YTD)</span>
+            <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Total Revenue (YTD)</span>
             <div className="p-2 bg-[#35D07F]/10 rounded-lg"><IndianRupee size={20} className="text-[#35D07F]" /></div>
           </div>
           <div className="flex items-end gap-3">
-            <h3 className="text-3xl font-light text-white">?58.4L</h3>
+            <h3 className="text-3xl font-light text-[var(--text-primary)]">?58.4L</h3>
             <span className="flex items-center text-sm text-[#35D07F] font-medium mb-1"><ArrowUpRight size={16} /> 24%</span>
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-[#111112] border border-white/5 p-6 rounded-2xl relative overflow-hidden">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] p-6 rounded-2xl relative overflow-hidden">
           <div className="flex justify-between items-start mb-4">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Net Profit Margin</span>
+            <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Net Profit Margin</span>
             <div className="p-2 bg-blue-500/10 rounded-lg"><TrendingUp size={20} className="text-blue-400" /></div>
           </div>
           <div className="flex items-end gap-3">
-            <h3 className="text-3xl font-light text-white">32.8%</h3>
+            <h3 className="text-3xl font-light text-[var(--text-primary)]">32.8%</h3>
             <span className="flex items-center text-sm text-blue-400 font-medium mb-1"><ArrowUpRight size={16} /> 4.2%</span>
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-[#111112] border border-white/5 p-6 rounded-2xl relative overflow-hidden">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] p-6 rounded-2xl relative overflow-hidden">
           <div className="flex justify-between items-start mb-4">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Avg Ticket Size</span>
+            <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Avg Ticket Size</span>
             <div className="p-2 bg-purple-500/10 rounded-lg"><Car size={20} className="text-purple-400" /></div>
           </div>
           <div className="flex items-end gap-3">
-            <h3 className="text-3xl font-light text-white">?42.5K</h3>
+            <h3 className="text-3xl font-light text-[var(--text-primary)]">?42.5K</h3>
             <span className="flex items-center text-sm text-rose-400 font-medium mb-1"><ArrowDownRight size={16} /> 1.5%</span>
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-[#111112] border border-white/5 p-6 rounded-2xl relative overflow-hidden">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] p-6 rounded-2xl relative overflow-hidden">
           <div className="flex justify-between items-start mb-4">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Active Customers</span>
+            <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Active Customers</span>
             <div className="p-2 bg-amber-500/10 rounded-lg"><Users size={20} className="text-amber-400" /></div>
           </div>
           <div className="flex items-end gap-3">
-            <h3 className="text-3xl font-light text-white">892</h3>
+            <h3 className="text-3xl font-light text-[var(--text-primary)]">892</h3>
             <span className="flex items-center text-sm text-[#35D07F] font-medium mb-1"><ArrowUpRight size={16} /> 12%</span>
           </div>
         </motion.div>
@@ -136,10 +136,10 @@ export default function AdminFinance() {
         {/* Revenue Chart */}
         <motion.div 
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-          className="lg:col-span-2 bg-[#111112] border border-white/5 p-6 rounded-2xl"
+          className="lg:col-span-2 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] p-6 rounded-2xl"
         >
           <div className="mb-6">
-            <h3 className="text-sm font-bold text-white uppercase tracking-widest">Revenue vs Expenses (Trailing 7 Mo)</h3>
+            <h3 className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-widest">Revenue vs Expenses (Trailing 7 Mo)</h3>
           </div>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -160,7 +160,7 @@ export default function AdminFinance() {
                 <Tooltip 
                   contentStyle={{ backgroundColor: '#111112', borderColor: '#ffffff20', borderRadius: '8px' }}
                   itemStyle={{ color: '#fff' }}
-                  formatter={(value: number) => ['?' + value.toLocaleString('en-IN'), '']}
+                  formatter={(value: any) => ['?' + value.toLocaleString('en-IN'), '']}
                 />
                 <Area type="monotone" dataKey="revenue" name="Revenue" stroke="#35D07F" strokeWidth={3} fillOpacity={1} fill="url(#colorRevenue)" />
                 <Area type="monotone" dataKey="expenses" name="Expenses" stroke="#f43f5e" strokeWidth={2} fillOpacity={1} fill="url(#colorExpense)" />
@@ -172,10 +172,10 @@ export default function AdminFinance() {
         {/* Category Breakdown */}
         <motion.div 
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-          className="bg-[#111112] border border-white/5 p-6 rounded-2xl"
+          className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] p-6 rounded-2xl"
         >
           <div className="mb-2">
-            <h3 className="text-sm font-bold text-white uppercase tracking-widest">Revenue by Category</h3>
+            <h3 className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-widest">Revenue by Category</h3>
           </div>
           <div className="h-[240px] w-full flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
@@ -196,7 +196,7 @@ export default function AdminFinance() {
                 </Pie>
                 <Tooltip 
                   contentStyle={{ backgroundColor: '#111112', borderColor: '#ffffff20', borderRadius: '8px' }}
-                  formatter={(value: number) => [value + '%', 'Share']}
+                  formatter={(value: any) => [value + '%', 'Share']}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -206,9 +206,9 @@ export default function AdminFinance() {
               <div key={cat.name} className="flex justify-between items-center text-xs">
                 <div className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: PIE_COLORS[i] }}></div>
-                  <span className="text-slate-300">{cat.name}</span>
+                  <span className="text-[var(--text-secondary)]">{cat.name}</span>
                 </div>
-                <span className="font-mono text-white">{cat.value}%</span>
+                <span className="font-mono text-[var(--text-primary)]">{cat.value}%</span>
               </div>
             ))}
           </div>
@@ -222,10 +222,10 @@ export default function AdminFinance() {
         {/* Tech Efficiency */}
         <motion.div 
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
-          className="bg-[#111112] border border-white/5 p-6 rounded-2xl"
+          className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] p-6 rounded-2xl"
         >
           <div className="mb-6">
-            <h3 className="text-sm font-bold text-white uppercase tracking-widest">Technician Efficiency Leaderboard</h3>
+            <h3 className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-widest">Technician Efficiency Leaderboard</h3>
           </div>
           <div className="h-[250px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -236,7 +236,7 @@ export default function AdminFinance() {
                 <Tooltip 
                   cursor={{fill: '#ffffff05'}}
                   contentStyle={{ backgroundColor: '#111112', borderColor: '#ffffff20', borderRadius: '8px' }}
-                  formatter={(value: number) => [value + '%', 'Efficiency']}
+                  formatter={(value: any) => [value + '%', 'Efficiency']}
                 />
                 <Bar dataKey="eff" fill="#35D07F" radius={[0, 4, 4, 0]} barSize={24}>
                   {EFFICIENCY_DATA.map((entry, index) => (
@@ -251,10 +251,10 @@ export default function AdminFinance() {
         {/* Top Customers */}
         <motion.div 
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
-          className="bg-[#111112] border border-white/5 p-6 rounded-2xl"
+          className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] p-6 rounded-2xl"
         >
           <div className="mb-6 flex justify-between items-center">
-            <h3 className="text-sm font-bold text-white uppercase tracking-widest">Top Customers by Revenue</h3>
+            <h3 className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-widest">Top Customers by Revenue</h3>
             <button className="text-xs text-[#35D07F] hover:underline uppercase tracking-widest">View All</button>
           </div>
           
@@ -266,14 +266,14 @@ export default function AdminFinance() {
               { name: 'Rahul Dravid', spend: 68000, visits: 2 },
               { name: 'Priya Kumar', spend: 18000, visits: 1 },
             ].map((cust, i) => (
-              <div key={i} className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer border border-transparent hover:border-white/10">
+              <div key={i} className="flex items-center justify-between p-3 rounded-xl hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer border border-transparent hover:border-[var(--border-default)]">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-black border border-white/10 flex items-center justify-center font-mono text-xs text-slate-400">
+                  <div className="w-8 h-8 rounded-full bg-black border border-[var(--border-default)] flex items-center justify-center font-mono text-xs text-[var(--text-muted)]">
                     #{i + 1}
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-white">{cust.name}</div>
-                    <div className="text-xs text-slate-500">{cust.visits} Lifetime Visits</div>
+                    <div className="text-sm font-medium text-[var(--text-primary)]">{cust.name}</div>
+                    <div className="text-xs text-[var(--text-muted)]">{cust.visits} Lifetime Visits</div>
                   </div>
                 </div>
                 <div className="text-right">
@@ -288,4 +288,5 @@ export default function AdminFinance() {
     </div>
   );
 }
+
 

@@ -77,22 +77,22 @@ export default function CustomerPortalLayout() {
   const unreadMessagesCount = conversations.reduce((acc: number, c: any) => acc + (c.unread_count || 0), 0);
 
   return (
-    <div className="flex h-screen bg-[#050505] text-slate-300 font-sans overflow-hidden selection:bg-[#35D07F]/30">
+    <div className="flex h-screen bg-[#050505] text-[var(--text-secondary)] font-sans overflow-hidden selection:bg-[#35D07F]/30">
       <AnimatePresence mode="wait">
         {sidebarOpen && (
           <motion.aside
             initial={{ width: 0, opacity: 0 }}
             animate={{ width: 280, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
-            className="flex-shrink-0 border-r border-white/5 bg-[#0A0A0B]/90 backdrop-blur-xl flex flex-col z-20"
+            className="flex-shrink-0 border-r border-[var(--border-subtle)] bg-[var(--bg-primary)]/90 backdrop-blur-xl flex flex-col z-20"
           >
-            <div className="h-20 flex items-center px-6 border-b border-white/5">
+            <div className="h-20 flex items-center px-6 border-b border-[var(--border-subtle)]">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-gradient-to-br from-[#35D07F] to-[#25a05d] rounded-xl flex items-center justify-center text-black font-bold shadow-[0_0_15px_rgba(53,208,127,0.4)]">
                   C
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-white font-bold tracking-widest text-sm uppercase">Portal</span>
+                  <span className="text-[var(--text-primary)] font-bold tracking-widest text-sm uppercase">Portal</span>
                   <span className="text-[9px] text-[#35D07F] tracking-[0.2em] uppercase">Premium Access</span>
                 </div>
               </div>
@@ -101,7 +101,7 @@ export default function CustomerPortalLayout() {
             <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-8 custom-scrollbar">
               {SIDEBAR_SECTIONS.map((section) => (
                 <div key={section.title}>
-                  <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-3 px-3">
+                  <h3 className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-[0.15em] mb-3 px-3">
                     {section.title}
                   </h3>
                   <div className="space-y-1">
@@ -114,7 +114,7 @@ export default function CustomerPortalLayout() {
                           className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-200 ${
                             isActive 
                               ? 'bg-[#35D07F]/10 text-[#35D07F] shadow-[inset_2px_0_0_#35D07F]' 
-                              : 'text-slate-400 hover:text-white hover:bg-white/5'
+                              : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
                           }`}
                         >
                           <item.icon size={16} className={isActive ? 'drop-shadow-[0_0_8px_rgba(53,208,127,0.5)]' : ''} />
@@ -132,18 +132,18 @@ export default function CustomerPortalLayout() {
               ))}
             </div>
 
-            <div className="p-4 border-t border-white/5 bg-[#080808]">
-              <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-3 px-3">
+            <div className="p-4 border-t border-[var(--border-subtle)] bg-[#080808]">
+              <h3 className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-[0.15em] mb-3 px-3">
                 Account
               </h3>
               <div className="space-y-1">
-                <Link to="/customer/profile" className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${location.pathname.includes('/customer/profile') ? 'text-[#35D07F] bg-white/5' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
+                <Link to="/customer/profile" className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${location.pathname.includes('/customer/profile') ? 'text-[#35D07F] bg-[var(--bg-surface-hover)]' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'}`}>
                   <User size={16} /> Profile
                 </Link>
-                <Link to="/customer/security" className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${location.pathname.includes('/customer/security') ? 'text-[#35D07F] bg-white/5' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
+                <Link to="/customer/security" className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${location.pathname.includes('/customer/security') ? 'text-[#35D07F] bg-[var(--bg-surface-hover)]' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'}`}>
                   <Shield size={16} /> Security
                 </Link>
-                <Link to="/customer/preferences" className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${location.pathname.includes('/customer/preferences') ? 'text-[#35D07F] bg-white/5' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
+                <Link to="/customer/preferences" className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${location.pathname.includes('/customer/preferences') ? 'text-[#35D07F] bg-[var(--bg-surface-hover)]' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'}`}>
                   <Settings size={16} /> Preferences
                 </Link>
                 <button 
@@ -159,22 +159,22 @@ export default function CustomerPortalLayout() {
       </AnimatePresence>
 
       <main className="flex-1 flex flex-col min-w-0 bg-[#050505] relative">
-        <header className="h-20 border-b border-white/5 bg-[#050505]/80 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-10">
+        <header className="h-20 border-b border-[var(--border-subtle)] bg-[#050505]/80 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-10">
           <div className="flex items-center gap-4">
             <button 
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="text-slate-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5"
+              className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-2 rounded-lg hover:bg-[var(--bg-surface-hover)]"
             >
               <Menu size={20} />
             </button>
             <div className="relative group hidden sm:block">
-              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
               <input 
                 type="text" 
                 placeholder="Search across projects, orders, tickets... (Ctrl+K)" 
-                className="pl-11 pr-12 py-2.5 bg-[#0A0A0B] border border-white/10 rounded-full text-xs font-bold tracking-widest focus:outline-none focus:border-[#35D07F]/50 focus:ring-1 focus:ring-[#35D07F]/50 transition-all w-96 placeholder:text-slate-600 text-white shadow-inner"
+                className="pl-11 pr-12 py-2.5 bg-[var(--bg-primary)] border border-[var(--border-default)] rounded-full text-xs font-bold tracking-widest focus:outline-none focus:border-[#35D07F]/50 focus:ring-1 focus:ring-[#35D07F]/50 transition-all w-96 placeholder:text-slate-600 text-[var(--text-primary)] shadow-inner"
               />
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] font-bold text-slate-500 bg-white/5 px-2 py-1 rounded">
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] font-bold text-[var(--text-muted)] bg-[var(--bg-surface-hover)] px-2 py-1 rounded">
                 CTRL K
               </div>
             </div>
@@ -182,7 +182,7 @@ export default function CustomerPortalLayout() {
           <div className="flex items-center gap-4">
             <button 
                 onClick={() => navigate('/customer/notifications')}
-                className="relative text-slate-400 hover:text-white transition-colors p-2 rounded-full hover:bg-white/5"
+                className="relative text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-2 rounded-full hover:bg-[var(--bg-surface-hover)]"
                 title="Notifications"
               >
                 <Bell size={20} />
@@ -233,4 +233,5 @@ export default function CustomerPortalLayout() {
     </div>
   );
 }
+
 

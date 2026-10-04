@@ -43,23 +43,23 @@ export default function TechnicianVehicleDetail() {
     { time: '10:45', title: 'Photos Uploaded', desc: 'Evidence captured', type: 'evidence', icon: Camera },
   ];
 
-  if (!id) return <div className="p-8 text-white">No Service Order ID provided</div>;
-  if (isLoading) return <div className="p-8 text-white">Loading vehicle details...</div>;
+  if (!id) return <div className="p-8 text-[var(--text-primary)]">No Service Order ID provided</div>;
+  if (isLoading) return <div className="p-8 text-[var(--text-primary)]">Loading vehicle details...</div>;
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-24">
       
       {/* Vehicle Header */}
-      <div className="bg-[#111112] border border-white/5 rounded-2xl p-6">
+      <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-xl bg-white/5 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-xl bg-[var(--bg-surface-hover)] flex items-center justify-center">
               <Car size={32} className="text-[#35D07F]" />
             </div>
             <div>
-              <h1 className="text-2xl font-light text-white">{order?.vehicle?.make} {order?.vehicle?.model}</h1>
+              <h1 className="text-2xl font-light text-[var(--text-primary)]">{order?.vehicle?.make} {order?.vehicle?.model}</h1>
               <div className="flex items-center gap-3 mt-1">
-                <span className="text-xs font-mono text-slate-400 bg-white/5 px-2 py-1 rounded border border-white/10">{order?.vehicle?.registration_number}</span>
+                <span className="text-xs font-mono text-[var(--text-muted)] bg-[var(--bg-surface-hover)] px-2 py-1 rounded border border-[var(--border-default)]">{order?.vehicle?.registration_number}</span>
                 <span className="text-xs font-mono text-[#35D07F]">ID: {order?.order_number}</span>
               </div>
             </div>
@@ -73,28 +73,28 @@ export default function TechnicianVehicleDetail() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-black/50 rounded-xl border border-white/5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-[var(--bg-input)] rounded-xl border border-[var(--border-subtle)]">
           <div>
-            <span className="block text-[9px] text-slate-500 uppercase tracking-widest mb-1">Customer ID</span>
-            <span className="text-sm text-white font-medium">{order?.vehicle?.owner || '-'}</span>
+            <span className="block text-[9px] text-[var(--text-muted)] uppercase tracking-widest mb-1">Customer ID</span>
+            <span className="text-sm text-[var(--text-primary)] font-medium">{order?.vehicle?.owner || '-'}</span>
           </div>
           <div>
-            <span className="block text-[9px] text-slate-500 uppercase tracking-widest mb-1">Service</span>
-            <span className="text-sm text-white font-medium">{order?.title}</span>
+            <span className="block text-[9px] text-[var(--text-muted)] uppercase tracking-widest mb-1">Service</span>
+            <span className="text-sm text-[var(--text-primary)] font-medium">{order?.title}</span>
           </div>
           <div>
-            <span className="block text-[9px] text-slate-500 uppercase tracking-widest mb-1">Advisor</span>
-            <span className="text-sm text-white font-medium">{order?.advisor || 'Unassigned'}</span>
+            <span className="block text-[9px] text-[var(--text-muted)] uppercase tracking-widest mb-1">Advisor</span>
+            <span className="text-sm text-[var(--text-primary)] font-medium">{order?.advisor || 'Unassigned'}</span>
           </div>
           <div>
-            <span className="block text-[9px] text-slate-500 uppercase tracking-widest mb-1">Priority</span>
+            <span className="block text-[9px] text-[var(--text-muted)] uppercase tracking-widest mb-1">Priority</span>
             <span className="text-sm text-amber-400 font-medium">Normal</span>
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex overflow-x-auto custom-scrollbar gap-2 p-1 bg-[#111112] border border-white/5 rounded-xl">
+      <div className="flex overflow-x-auto custom-scrollbar gap-2 p-1 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-xl">
         {tabs.map(tab => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -102,7 +102,7 @@ export default function TechnicianVehicleDetail() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={'whitespace-nowrap px-6 py-3 text-xs font-bold tracking-widest uppercase rounded-lg transition-colors flex items-center gap-2 ' + (isActive ? 'bg-[#35D07F] text-black' : 'text-slate-400 hover:text-white hover:bg-white/5')}
+              className={'whitespace-nowrap px-6 py-3 text-xs font-bold tracking-widest uppercase rounded-lg transition-colors flex items-center gap-2 ' + (isActive ? 'bg-[#35D07F] text-black' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]')}
             >
               <Icon size={16} /> {tab.label}
             </button>
@@ -116,26 +116,26 @@ export default function TechnicianVehicleDetail() {
           
           {activeTab === 'overview' && (
             <motion.div key="overview" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-[#111112] border border-white/5 rounded-2xl p-6">
-                 <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Customer Concerns</h3>
-                 <p className="text-sm text-slate-300 leading-relaxed bg-white/5 p-4 rounded-xl border border-white/5">
+              <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-6">
+                 <h3 className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest mb-6">Customer Concerns</h3>
+                 <p className="text-sm text-[var(--text-secondary)] leading-relaxed bg-[var(--bg-surface-hover)] p-4 rounded-xl border border-[var(--border-subtle)]">
                    No specific concerns documented yet.
                  </p>
               </div>
-              <div className="bg-[#111112] border border-white/5 rounded-2xl p-6">
-                 <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Quick Actions</h3>
+              <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-6">
+                 <h3 className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest mb-6">Quick Actions</h3>
                  <div className="grid grid-cols-2 gap-3">
-                   <Link to={`/technician/inspections?id=${id}`} className="bg-white/5 hover:bg-white/10 text-white p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors border border-white/10">
+                   <Link to={`/technician/inspections?id=${id}`} className="bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] text-[var(--text-primary)] p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors border border-[var(--border-default)]">
                      <FileSearch size={20} className="text-amber-400" />
                      <span className="text-[10px] font-bold uppercase tracking-widest">Inspection</span>
                    </Link>
-                   <Link to={`/technician/repair?id=${id}`} className="bg-white/5 hover:bg-white/10 text-white p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors border border-white/10">
+                   <Link to={`/technician/repair?id=${id}`} className="bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] text-[var(--text-primary)] p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors border border-[var(--border-default)]">
                      <Wrench size={20} className="text-[#35D07F]" />
                      <span className="text-[10px] font-bold uppercase tracking-widest">Repair workflow</span>
                    </Link>
                    <button 
                      onClick={() => setIsDiagnosticOpen(true)}
-                     className="bg-white/5 hover:bg-white/10 text-white p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors border border-white/10 col-span-2 md:col-span-1">
+                     className="bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] text-[var(--text-primary)] p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors border border-[var(--border-default)] col-span-2 md:col-span-1">
                      <Terminal size={20} className="text-purple-400" />
                      <span className="text-[10px] font-bold uppercase tracking-widest">RUN DIAGNOSTICS</span>
                    </button>
@@ -144,7 +144,7 @@ export default function TechnicianVehicleDetail() {
                        const { startJob } = useLaborStore.getState();
                        startJob(id, 60); // Assuming 60 mins estimate
                      }}
-                     className="bg-blue-500/10 hover:bg-blue-500/20 text-white p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors border border-blue-500/20 col-span-2 md:col-span-1">
+                     className="bg-blue-500/10 hover:bg-blue-500/20 text-[var(--text-primary)] p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors border border-blue-500/20 col-span-2 md:col-span-1">
                      <Clock size={20} className="text-blue-400" />
                      <span className="text-[10px] font-bold uppercase tracking-widest text-blue-400">Clock Into Job</span>
                    </button>
@@ -155,13 +155,13 @@ export default function TechnicianVehicleDetail() {
 
           {activeTab === 'timeline' && (
             <motion.div key="timeline" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-              <div className="bg-[#111112] border border-white/5 rounded-2xl p-6">
-                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-8">Service Activity Timeline</h3>
+              <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-6">
+                <h3 className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest mb-8">Service Activity Timeline</h3>
                 
                 <div className="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
                   {TIMELINE_EVENTS.map((event, idx) => {
                     const EventIcon = event.icon;
-                    let iconColor = 'text-slate-400';
+                    let iconColor = 'text-[var(--text-muted)]';
                     let bgColor = 'bg-slate-800';
                     let borderColor = 'border-slate-700';
 
@@ -176,12 +176,12 @@ export default function TechnicianVehicleDetail() {
                           <EventIcon size={16} className={iconColor} />
                         </div>
                         
-                        <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
+                        <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] p-4 rounded-xl border border-[var(--border-subtle)] bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
                           <div className="flex items-center justify-between space-x-2 mb-2">
-                            <div className="font-bold text-sm text-white">{event.title}</div>
-                            <time className="font-mono text-xs text-slate-500 bg-black/50 px-2 py-1 rounded border border-white/5">{event.time}</time>
+                            <div className="font-bold text-sm text-[var(--text-primary)]">{event.title}</div>
+                            <time className="font-mono text-xs text-[var(--text-muted)] bg-[var(--bg-input)] px-2 py-1 rounded border border-[var(--border-subtle)]">{event.time}</time>
                           </div>
-                          <div className="text-xs text-slate-400">{event.desc}</div>
+                          <div className="text-xs text-[var(--text-muted)]">{event.desc}</div>
                         </div>
                       </div>
                     );
@@ -194,7 +194,7 @@ export default function TechnicianVehicleDetail() {
           {activeTab === 'evidence' && (
             <motion.div key="evidence" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <button className="bg-white/5 border border-dashed border-white/20 hover:border-[#35D07F] hover:bg-[#35D07F]/5 rounded-2xl aspect-square flex flex-col items-center justify-center gap-3 transition-colors text-slate-400 hover:text-[#35D07F]">
+                <button className="bg-[var(--bg-surface-hover)] border border-dashed border-[var(--border-strong)] hover:border-[#35D07F] hover:bg-[#35D07F]/5 rounded-2xl aspect-square flex flex-col items-center justify-center gap-3 transition-colors text-[var(--text-muted)] hover:text-[#35D07F]">
                   <Camera size={32} />
                   <span className="text-xs font-bold uppercase tracking-widest">Upload Media</span>
                 </button>
@@ -204,10 +204,10 @@ export default function TechnicianVehicleDetail() {
 
           {['inspection', 'issues', 'repair'].includes(activeTab) && (
             <motion.div key="placeholder" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <div className="bg-[#111112] border border-white/5 rounded-2xl p-12 text-center flex flex-col items-center justify-center">
+              <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl p-12 text-center flex flex-col items-center justify-center">
                 <Box size={48} className="text-slate-600 mb-4" />
-                <h3 className="text-lg text-white font-medium mb-2">Dedicated Workspace Required</h3>
-                <p className="text-sm text-slate-500 max-w-md mx-auto mb-6">This section contains complex interactive workflows. Please use the dedicated full-screen modules.</p>
+                <h3 className="text-lg text-[var(--text-primary)] font-medium mb-2">Dedicated Workspace Required</h3>
+                <p className="text-sm text-[var(--text-muted)] max-w-md mx-auto mb-6">This section contains complex interactive workflows. Please use the dedicated full-screen modules.</p>
                 <Link to={`/technician/${activeTab === 'repair' ? 'repair' : 'inspections'}?id=${id}`} className="bg-[#35D07F] text-black px-6 py-3 rounded-xl text-xs font-bold tracking-widest uppercase transition-colors hover:bg-[#2EB86F]">
                   Launch Workspace
                 </Link>
@@ -228,4 +228,5 @@ export default function TechnicianVehicleDetail() {
     </div>
   );
 }
+
 

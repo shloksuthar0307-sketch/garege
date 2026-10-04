@@ -6,34 +6,13 @@ import {
   Clock, CreditCard, Send, Edit2, Trash2, X
 } from 'lucide-react';
 
-const INITIAL_INVOICES = [
-  {
-    id: 'INV-2609', date: '2026-09-22', customer: 'Shlok Mehta', vehicle: 'Porsche 718 Cayman',
-    bookingId: 'BK-10042', total: 45000, paid: 0, balance: 45000, 
-    status: 'Pending', dueDate: '2026-09-29'
-  },
-  {
-    id: 'INV-2608', date: '2026-09-20', customer: 'Rahul Dravid', vehicle: 'BMW M4',
-    bookingId: 'BK-10039', total: 125000, paid: 125000, balance: 0, 
-    status: 'Paid', dueDate: '2026-09-27'
-  },
-  {
-    id: 'INV-2605', date: '2026-09-10', customer: 'Priya Kumar', vehicle: 'Audi A6',
-    bookingId: 'BK-10024', total: 68000, paid: 20000, balance: 48000, 
-    status: 'Overdue', dueDate: '2026-09-17'
-  },
-  {
-    id: 'INV-2601', date: '2026-09-01', customer: 'Amit Patel', vehicle: 'Honda City',
-    bookingId: 'BK-10015', total: 12500, paid: 0, balance: 12500, 
-    status: 'Draft', dueDate: '2026-09-08'
-  }
-];
+const INITIAL_INVOICES: any[] = [];
 
 const STATUS_CONFIG: Record<string, any> = {
   'Paid': { icon: CheckCircle2, color: 'text-[#35D07F]', bg: 'bg-[#35D07F]/10 border-[#35D07F]/20' },
   'Pending': { icon: Clock, color: 'text-amber-400', bg: 'bg-amber-500/10 border-amber-500/20' },
   'Overdue': { icon: AlertCircle, color: 'text-rose-400', bg: 'bg-rose-500/10 border-rose-500/20' },
-  'Draft': { icon: FileText, color: 'text-slate-400', bg: 'bg-slate-500/10 border-slate-500/20' }
+  'Draft': { icon: FileText, color: 'text-[var(--text-muted)]', bg: 'bg-slate-500/10 border-slate-500/20' }
 };
 
 export default function AdminInvoices() {
@@ -47,7 +26,7 @@ export default function AdminInvoices() {
     status: 'Draft', dueDate: ''
   });
 
-  const handleOpenModal = (inv = null) => {
+  const handleOpenModal = (inv: any = null) => {
     if (inv) {
       setEditingInvoice(inv);
       setFormData({ ...inv });
@@ -120,8 +99,8 @@ export default function AdminInvoices() {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
-          <h1 className="text-3xl font-light text-white tracking-tight">Invoices</h1>
-          <p className="text-sm text-slate-500 mt-1">Manage billing, track payments, and follow up on overdue accounts.</p>
+          <h1 className="text-3xl font-light text-[var(--text-primary)] tracking-tight">Invoices</h1>
+          <p className="text-sm text-[var(--text-muted)] mt-1">Manage billing, track payments, and follow up on overdue accounts.</p>
         </div>
         <button 
           onClick={() => handleOpenModal()}
@@ -133,15 +112,15 @@ export default function AdminInvoices() {
       </div>
 
       {/* Toolbar */}
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-[#111112] border border-white/5 p-4 rounded-2xl">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] p-4 rounded-2xl">
         <div className="flex items-center gap-4">
           <div className="flex flex-col">
-            <span className="text-xs text-slate-500 uppercase tracking-widest">Total Issued (MTD)</span>
-            <span className="text-xl text-white font-light">{invoices.length}</span>
+            <span className="text-xs text-[var(--text-muted)] uppercase tracking-widest">Total Issued (MTD)</span>
+            <span className="text-xl text-[var(--text-primary)] font-light">{invoices.length}</span>
           </div>
-          <div className="w-px h-8 bg-white/10 mx-2"></div>
+          <div className="w-px h-8 bg-[var(--bg-surface-active)] mx-2"></div>
           <div className="flex flex-col">
-            <span className="text-xs text-slate-500 uppercase tracking-widest">Outstanding Balance</span>
+            <span className="text-xs text-[var(--text-muted)] uppercase tracking-widest">Outstanding Balance</span>
             <div className="flex items-center gap-1.5">
               <IndianRupee size={14} className="text-rose-400" />
               <span className="text-xl text-rose-400 font-light">{totalOutstanding.toLocaleString('en-IN')}</span>
@@ -151,14 +130,14 @@ export default function AdminInvoices() {
 
         <div className="flex items-center gap-3 w-full md:w-auto">
           <div className="relative w-full md:w-64">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
             <input 
               type="text" 
               placeholder="Search invoices..." 
-              className="w-full bg-black/50 border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F] transition-colors"
+              className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl pl-9 pr-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors"
             />
           </div>
-          <button className="flex items-center gap-2 bg-black/50 border border-white/10 hover:border-white/30 text-slate-300 px-4 py-2.5 rounded-xl text-sm transition-colors">
+          <button className="flex items-center gap-2 bg-[var(--bg-input)] border border-[var(--border-default)] hover:border-white/30 text-[var(--text-secondary)] px-4 py-2.5 rounded-xl text-sm transition-colors">
             <Filter size={16} />
             Filters
           </button>
@@ -169,18 +148,18 @@ export default function AdminInvoices() {
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-[#111112] border border-white/5 rounded-2xl overflow-visible"
+        className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl overflow-visible"
       >
         <div className="overflow-visible min-h-[400px]">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/5 bg-white/[0.02]">
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase">Invoice & Date</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase">Customer & Vehicle</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase">Status</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase text-right">Total Amount</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase text-right">Balance Due</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase text-right">Actions</th>
+              <tr className="border-b border-[var(--border-subtle)] bg-white/[0.02]">
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase">Invoice & Date</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase">Customer & Vehicle</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase">Status</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase text-right">Total Amount</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase text-right">Balance Due</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -191,13 +170,13 @@ export default function AdminInvoices() {
                 return (
                   <tr key={inv.id} className="hover:bg-white/[0.02] transition-colors group">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-mono text-white group-hover:text-[#35D07F] transition-colors cursor-pointer" onClick={() => handleDownload(inv.id)}>{inv.id}</div>
-                      <div className="text-[10px] text-slate-500 mt-1">{new Date(inv.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+                      <div className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[#35D07F] transition-colors cursor-pointer" onClick={() => handleDownload(inv.id)}>{inv.id}</div>
+                      <div className="text-[10px] text-[var(--text-muted)] mt-1">{new Date(inv.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm font-medium text-white">{inv.customer}</div>
-                      <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
-                        <span className="font-mono bg-white/5 px-1.5 py-0.5 rounded text-[10px]">{inv.bookingId}</span>
+                      <div className="text-sm font-medium text-[var(--text-primary)]">{inv.customer}</div>
+                      <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] mt-0.5">
+                        <span className="font-mono bg-[var(--bg-surface-hover)] px-1.5 py-0.5 rounded text-[10px]">{inv.bookingId}</span>
                         <span>&bull; {inv.vehicle}</span>
                       </div>
                     </td>
@@ -214,15 +193,15 @@ export default function AdminInvoices() {
                           <span className="text-[11px] font-bold uppercase tracking-widest">{inv.status}</span>
                         </div>
                         {inv.status !== 'Paid' && inv.status !== 'Draft' && (
-                          <div className={'text-[9px] uppercase tracking-widest ' + (isOverdue ? 'text-rose-400/70' : 'text-slate-500')}>
+                          <div className={'text-[9px] uppercase tracking-widest ' + (isOverdue ? 'text-rose-400/70' : 'text-[var(--text-muted)]')}>
                             Due: {new Date(inv.dueDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                           </div>
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">
-                      <div className="flex items-center justify-end text-sm text-slate-300 font-mono">
-                        <IndianRupee size={14} className="text-slate-500 mr-0.5" />
+                      <div className="flex items-center justify-end text-sm text-[var(--text-secondary)] font-mono">
+                        <IndianRupee size={14} className="text-[var(--text-muted)] mr-0.5" />
                         {Number(inv.total).toLocaleString('en-IN')}
                       </div>
                     </td>
@@ -232,7 +211,7 @@ export default function AdminInvoices() {
                         {Number(inv.balance).toLocaleString('en-IN')}
                       </div>
                       {inv.paid > 0 && inv.balance > 0 && (
-                        <div className="text-[9px] text-slate-500 mt-1 uppercase tracking-widest">
+                        <div className="text-[9px] text-[var(--text-muted)] mt-1 uppercase tracking-widest">
                           ?{Number(inv.paid).toLocaleString('en-IN')} Paid
                         </div>
                       )}
@@ -249,10 +228,10 @@ export default function AdminInvoices() {
                             <Send size={12} /> Remind
                           </button>
                         )}
-                        <button onClick={() => handleDownload(inv.id)} className="text-slate-500 hover:text-white p-1.5 rounded-lg hover:bg-white/5 transition-colors" title="Download PDF">
+                        <button onClick={() => handleDownload(inv.id)} className="text-[var(--text-muted)] hover:text-[var(--text-primary)] p-1.5 rounded-lg hover:bg-[var(--bg-surface-hover)] transition-colors" title="Download PDF">
                           <Download size={16} />
                         </button>
-                        <button onClick={() => setActiveMenuId(activeMenuId === inv.id ? null : inv.id)} className="text-slate-500 hover:text-white p-1.5 rounded-lg hover:bg-white/5 transition-colors focus:outline-none">
+                        <button onClick={() => setActiveMenuId(activeMenuId === inv.id ? null : inv.id)} className="text-[var(--text-muted)] hover:text-[var(--text-primary)] p-1.5 rounded-lg hover:bg-[var(--bg-surface-hover)] transition-colors focus:outline-none">
                           <MoreHorizontal size={16} />
                         </button>
                       </div>
@@ -264,15 +243,15 @@ export default function AdminInvoices() {
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
-                            className="absolute right-8 top-10 w-40 bg-[#1A1A1B] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden text-left"
+                            className="absolute right-8 top-10 w-40 bg-[#1A1A1B] border border-[var(--border-default)] rounded-xl shadow-2xl z-50 overflow-hidden text-left"
                           >
                             <button 
                               onClick={() => handleOpenModal(inv)}
-                              className="w-full text-left px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-white flex items-center gap-2 transition-colors"
+                              className="w-full text-left px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)] hover:text-[var(--text-primary)] flex items-center gap-2 transition-colors"
                             >
                               <Edit2 size={14} /> Edit Invoice
                             </button>
-                            <div className="h-px bg-white/10"></div>
+                            <div className="h-px bg-[var(--bg-surface-active)]"></div>
                             <button 
                               onClick={() => handleDelete(inv.id)}
                               className="w-full text-left px-4 py-2.5 text-sm text-rose-400 hover:bg-rose-500/10 flex items-center gap-2 transition-colors"
@@ -290,11 +269,11 @@ export default function AdminInvoices() {
           </table>
         </div>
         
-        <div className="p-4 border-t border-white/5 flex items-center justify-between text-sm text-slate-500">
+        <div className="p-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-sm text-[var(--text-muted)]">
           <span>Showing {invoices.length} recent invoices</span>
           <div className="flex items-center gap-2">
-            <button className="px-3 py-1 rounded border border-white/10 hover:bg-white/5 transition-colors">Prev</button>
-            <button className="px-3 py-1 rounded border border-white/10 hover:bg-white/5 transition-colors">Next</button>
+            <button className="px-3 py-1 rounded border border-[var(--border-default)] hover:bg-[var(--bg-surface-hover)] transition-colors">Prev</button>
+            <button className="px-3 py-1 rounded border border-[var(--border-default)] hover:bg-[var(--bg-surface-hover)] transition-colors">Next</button>
           </div>
         </div>
       </motion.div>
@@ -305,20 +284,20 @@ export default function AdminInvoices() {
           <>
             <motion.div 
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
+              className="fixed inset-0 bg-[var(--bg-overlay)] backdrop-blur-sm z-[100]"
               onClick={() => setIsModalOpen(false)}
             />
             <motion.div 
               initial={{ opacity: 0, y: 20, scale: 0.95 }} 
               animate={{ opacity: 1, y: 0, scale: 1 }} 
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
-              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-[#111112] border border-white/10 rounded-2xl z-[101] shadow-2xl overflow-hidden"
+              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-2xl z-[101] shadow-2xl overflow-hidden"
             >
-              <div className="flex items-center justify-between p-6 border-b border-white/5 bg-white/[0.02]">
-                <h2 className="text-xl font-light text-white">
+              <div className="flex items-center justify-between p-6 border-b border-[var(--border-subtle)] bg-white/[0.02]">
+                <h2 className="text-xl font-light text-[var(--text-primary)]">
                   {editingInvoice ? 'Edit Invoice' : 'Create Invoice'}
                 </h2>
-                <button onClick={() => setIsModalOpen(false)} className="text-slate-500 hover:text-white transition-colors">
+                <button onClick={() => setIsModalOpen(false)} className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
                   <X size={20} />
                 </button>
               </div>
@@ -327,37 +306,37 @@ export default function AdminInvoices() {
                 <div className="grid grid-cols-2 gap-6">
                   {/* Customer */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Customer</label>
+                    <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Customer</label>
                     <input 
                       required type="text" placeholder="e.g. Shlok Mehta"
                       value={formData.customer} onChange={e => setFormData({...formData, customer: e.target.value})}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+                      className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     />
                   </div>
                   {/* Vehicle */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Vehicle</label>
+                    <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Vehicle</label>
                     <input 
-                      required type="text" placeholder="e.g. Porsche 718"
+                      required type="text" placeholder="e.g. Your Vehicle"
                       value={formData.vehicle} onChange={e => setFormData({...formData, vehicle: e.target.value})}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+                      className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     />
                   </div>
                   {/* Booking ID */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Booking ID</label>
+                    <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Booking ID</label>
                     <input 
                       required type="text" placeholder="e.g. BK-10042"
                       value={formData.bookingId} onChange={e => setFormData({...formData, bookingId: e.target.value})}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+                      className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     />
                   </div>
                   {/* Status */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Status</label>
+                    <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Status</label>
                     <select 
                       value={formData.status} onChange={e => setFormData({...formData, status: e.target.value})}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+                      className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     >
                       <option>Draft</option>
                       <option>Pending</option>
@@ -367,35 +346,35 @@ export default function AdminInvoices() {
                   </div>
                   {/* Total */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Total Amount (?)</label>
+                    <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Total Amount (?)</label>
                     <input 
                       type="number" min="0" required
                       value={formData.total} onChange={e => setFormData({...formData, total: parseInt(e.target.value) || 0})}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+                      className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     />
                   </div>
                   {/* Paid */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Amount Paid (?)</label>
+                    <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Amount Paid (?)</label>
                     <input 
                       type="number" min="0" required
                       value={formData.paid} onChange={e => setFormData({...formData, paid: parseInt(e.target.value) || 0})}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+                      className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     />
                   </div>
                   {/* Due Date */}
                   <div className="space-y-2 col-span-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Due Date</label>
+                    <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Due Date</label>
                     <input 
                       type="date" required
                       value={formData.dueDate} onChange={e => setFormData({...formData, dueDate: e.target.value})}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F] [color-scheme:dark]"
+                      className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] [color-scheme:dark]"
                     />
                   </div>
                 </div>
 
-                <div className="flex justify-end gap-3 pt-6 border-t border-white/5 mt-8">
-                  <button type="button" onClick={() => setIsModalOpen(false)} className="px-6 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-colors">
+                <div className="flex justify-end gap-3 pt-6 border-t border-[var(--border-subtle)] mt-8">
+                  <button type="button" onClick={() => setIsModalOpen(false)} className="px-6 py-2.5 rounded-xl text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors">
                     Cancel
                   </button>
                   <button type="submit" className="px-6 py-2.5 rounded-xl text-sm font-bold bg-[#35D07F] text-black hover:bg-[#2EB86F] transition-colors uppercase tracking-widest">
@@ -410,4 +389,6 @@ export default function AdminInvoices() {
     </div>
   );
 }
+
+
 

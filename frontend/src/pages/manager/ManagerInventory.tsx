@@ -56,13 +56,13 @@ export default function ManagerInventory() {
     <div className="max-w-7xl mx-auto space-y-6">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-light text-white tracking-wide">Inventory Management</h1>
-          <p className="text-slate-400 text-sm mt-1">Monitor branch stock levels and purchase requests.</p>
+          <h1 className="text-3xl font-light text-[var(--text-primary)] tracking-wide">Inventory Management</h1>
+          <p className="text-[var(--text-muted)] text-sm mt-1">Monitor branch stock levels and purchase requests.</p>
         </div>
         <div className="flex gap-3">
-          <div className="bg-[#111112] border border-white/10 rounded-lg flex items-center px-3 py-2">
-            <Search size={16} className="text-slate-400 mr-2" />
-            <input type="text" placeholder="Search parts..." className="bg-transparent border-none outline-none text-sm text-white w-48 placeholder:text-slate-600" />
+          <div className="bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-lg flex items-center px-3 py-2">
+            <Search size={16} className="text-[var(--text-muted)] mr-2" />
+            <input type="text" placeholder="Search parts..." className="bg-transparent border-none outline-none text-sm text-[var(--text-primary)] w-48 placeholder:text-slate-600" />
           </div>
           <button 
             onClick={() => setIsModalOpen(true)}
@@ -73,10 +73,10 @@ export default function ManagerInventory() {
         </div>
       </div>
 
-      <div className="bg-[#111112] border border-white/5 rounded-2xl overflow-hidden">
+      <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-300">
-            <thead className="bg-[#1A1A1B] text-slate-400 text-xs uppercase tracking-wider border-b border-white/5">
+          <table className="w-full text-left text-sm text-[var(--text-secondary)]">
+            <thead className="bg-[#1A1A1B] text-[var(--text-muted)] text-xs uppercase tracking-wider border-b border-[var(--border-subtle)]">
               <tr>
                 <th className="px-6 py-4 font-medium">Part Number</th>
                 <th className="px-6 py-4 font-medium">Name</th>
@@ -88,20 +88,20 @@ export default function ManagerInventory() {
             </thead>
             <tbody className="divide-y divide-white/5">
               {loading ? (
-                <tr><td colSpan={6} className="px-6 py-8 text-center text-slate-500">Loading inventory...</td></tr>
+                <tr><td colSpan={6} className="px-6 py-8 text-center text-[var(--text-muted)]">Loading inventory...</td></tr>
               ) : inventory.length === 0 ? (
-                <tr><td colSpan={6} className="px-6 py-8 text-center text-slate-500">No inventory parts found.</td></tr>
+                <tr><td colSpan={6} className="px-6 py-8 text-center text-[var(--text-muted)]">No inventory parts found.</td></tr>
               ) : inventory.map((part) => {
                 const isLow = part.current_stock <= part.minimum_level;
                 return (
-                  <tr key={part.id} className={`hover:bg-white/5 transition-colors ${isLow ? 'bg-red-500/5' : ''}`}>
-                    <td className="px-6 py-4 font-mono text-white">{part.part_number}</td>
-                    <td className="px-6 py-4 font-medium text-white">{part.name}</td>
+                  <tr key={part.id} className={`hover:bg-[var(--bg-surface-hover)] transition-colors ${isLow ? 'bg-red-500/5' : ''}`}>
+                    <td className="px-6 py-4 font-mono text-[var(--text-primary)]">{part.part_number}</td>
+                    <td className="px-6 py-4 font-medium text-[var(--text-primary)]">{part.name}</td>
                     <td className="px-6 py-4">{part.category}</td>
                     <td className="px-6 py-4 text-center">
-                      <span className={`text-lg font-light ${isLow ? 'text-red-400' : 'text-white'}`}>{part.current_stock}</span>
+                      <span className={`text-lg font-light ${isLow ? 'text-red-400' : 'text-[var(--text-primary)]'}`}>{part.current_stock}</span>
                     </td>
-                    <td className="px-6 py-4 text-center text-slate-500">{part.minimum_level}</td>
+                    <td className="px-6 py-4 text-center text-[var(--text-muted)]">{part.minimum_level}</td>
                     <td className="px-6 py-4">
                       {isLow ? (
                         <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase bg-red-500/10 text-red-400 w-max">
@@ -122,22 +122,22 @@ export default function ManagerInventory() {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#111112] border border-white/10 rounded-2xl w-full max-w-md overflow-hidden">
-            <div className="flex justify-between items-center p-6 border-b border-white/5">
-              <h2 className="text-xl font-light text-white tracking-wide">New Purchase Request</h2>
-              <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-white transition-colors">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--bg-overlay)] backdrop-blur-sm">
+          <div className="bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-2xl w-full max-w-md overflow-hidden">
+            <div className="flex justify-between items-center p-6 border-b border-[var(--border-subtle)]">
+              <h2 className="text-xl font-light text-[var(--text-primary)] tracking-wide">New Purchase Request</h2>
+              <button onClick={() => setIsModalOpen(false)} className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
                 <X size={20} />
               </button>
             </div>
             
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-2">Select Part</label>
+                <label className="block text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-2">Select Part</label>
                 <select 
                   value={formData.part_id}
                   onChange={(e) => setFormData({...formData, part_id: e.target.value})}
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F]"
+                  className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                   required
                 >
                   <option value="">-- Choose a part --</option>
@@ -149,22 +149,22 @@ export default function ManagerInventory() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-2">Quantity</label>
+                  <label className="block text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-2">Quantity</label>
                   <input 
                     type="number" 
                     min="1"
                     value={formData.quantity}
                     onChange={(e) => setFormData({...formData, quantity: parseInt(e.target.value) || 1})}
-                    className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F]"
+                    className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-2">Priority</label>
+                  <label className="block text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-2">Priority</label>
                   <select 
                     value={formData.priority}
                     onChange={(e) => setFormData({...formData, priority: e.target.value})}
-                    className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F]"
+                    className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                   >
                     <option value="LOW">Low</option>
                     <option value="NORMAL">Normal</option>
@@ -175,11 +175,11 @@ export default function ManagerInventory() {
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-2">Reason (Optional)</label>
+                <label className="block text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-2">Reason (Optional)</label>
                 <textarea 
                   value={formData.reason}
                   onChange={(e) => setFormData({...formData, reason: e.target.value})}
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] h-24 resize-none"
+                  className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] h-24 resize-none"
                   placeholder="e.g., Stocking up for upcoming service campaign..."
                 ></textarea>
               </div>
@@ -188,7 +188,7 @@ export default function ManagerInventory() {
                 <button 
                   type="button" 
                   onClick={() => setIsModalOpen(false)}
-                  className="px-6 py-3 rounded-lg text-sm font-medium text-white hover:bg-white/5 transition-colors border border-transparent hover:border-white/10"
+                  className="px-6 py-3 rounded-lg text-sm font-medium text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors border border-transparent hover:border-[var(--border-default)]"
                 >
                   Cancel
                 </button>
@@ -207,4 +207,5 @@ export default function ManagerInventory() {
     </div>
   );
 }
+
 

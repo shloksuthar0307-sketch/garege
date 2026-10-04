@@ -70,7 +70,7 @@ export default function AppLayout() {
         initial={{ width: 256 }}
         animate={{ width: sidebarOpen ? 256 : 80 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="flex-shrink-0 bg-[#0a0f1c] text-slate-300 flex flex-col z-20 shadow-2xl relative"
+        className="flex-shrink-0 bg-[#0a0f1c] text-[var(--text-secondary)] flex flex-col z-20 shadow-2xl relative"
       >
         {/* Logo Area */}
         <div className="h-[72px] flex items-center px-6 border-b border-slate-800/60">
@@ -82,10 +82,10 @@ export default function AppLayout() {
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                className="font-bold text-xl text-white flex items-center gap-3 w-full"
+                className="font-bold text-xl text-[var(--text-primary)] flex items-center gap-3 w-full"
               >
                 <div className="w-9 h-9 rounded-lg bg-[#0070f3] flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-500/20">
-                  <Wrench size={18} className="text-white" />
+                  <Wrench size={18} className="text-[var(--text-primary)]" />
                 </div>
                 <span className="tracking-tight">RepairTrace</span>
               </motion.div>
@@ -99,7 +99,7 @@ export default function AppLayout() {
                 className="w-full flex justify-center"
               >
                 <div className="w-10 h-10 rounded-lg bg-[#0070f3] flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-500/20">
-                  <Wrench size={20} className="text-white" />
+                  <Wrench size={20} className="text-[var(--text-primary)]" />
                 </div>
               </motion.div>
             )}
@@ -123,7 +123,7 @@ export default function AppLayout() {
                   to={item.path}
                   className={cn(
                     'relative flex items-center gap-3 px-3.5 py-3 rounded-xl transition-colors group',
-                    isActive ? 'text-white' : 'text-slate-400 hover:text-white'
+                    isActive ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                   )}
                 >
                   {/* Awwwards Style Sliding Background */}
@@ -174,23 +174,23 @@ export default function AppLayout() {
             >
               <Menu size={22} />
             </button>
-            <div className="hidden md:flex items-center text-sm text-slate-500 font-medium">
+            <div className="hidden md:flex items-center text-sm text-[var(--text-muted)] font-medium">
               <span>Branch HQ</span>
-              <span className="mx-2 text-slate-300">/</span>
+              <span className="mx-2 text-[var(--text-secondary)]">/</span>
               <span className="text-slate-900">Dashboard</span>
             </div>
           </div>
 
           <div className="flex items-center gap-5">
-            <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-sm text-slate-500 border border-slate-200 transition-all shadow-sm group">
-              <Search size={16} className="text-slate-400 group-hover:text-slate-600" />
+            <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-sm text-[var(--text-muted)] border border-slate-200 transition-all shadow-sm group">
+              <Search size={16} className="text-[var(--text-muted)] group-hover:text-slate-600" />
               <span className="hidden sm:inline font-medium">Search records...</span>
               <kbd className="hidden sm:inline font-sans text-xs bg-white px-1.5 py-0.5 rounded border border-slate-200 shadow-sm ml-2 font-semibold">
                 Ctrl K
               </kbd>
             </button>
 
-            <button className="p-2.5 rounded-full hover:bg-slate-50 text-slate-500 relative transition-colors border border-transparent hover:border-slate-200">
+            <button className="p-2.5 rounded-full hover:bg-slate-50 text-[var(--text-muted)] relative transition-colors border border-transparent hover:border-slate-200">
               <Bell size={20} />
               <span className="absolute top-2 right-2.5 w-2 h-2 rounded-full bg-red-500 border-2 border-white"></span>
             </button>
@@ -220,4 +220,5 @@ export default function AppLayout() {
     </div>
   );
 }
+
 

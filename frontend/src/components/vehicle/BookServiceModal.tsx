@@ -109,7 +109,7 @@ export default function BookServiceModal({ isOpen, onClose, vehicleId }: BookSer
 
               <div className="p-6 border-t border-gray-100 flex gap-3">
                 <button onClick={onClose} type="button" className="flex-1 px-4 py-3.5 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors">Cancel</button>
-                <button type="submit" form="booking-form" className="flex-[2] px-4 py-3.5 rounded-xl bg-black text-white text-sm font-medium hover:bg-gray-900 transition-colors">
+                <button type="submit" form="booking-form" className="flex-[2] px-4 py-3.5 rounded-xl bg-black text-[var(--text-primary)] text-sm font-medium hover:bg-gray-900 transition-colors">
                   Confirm Booking
                 </button>
               </div>
@@ -146,4 +146,5 @@ export default function BookServiceModal({ isOpen, onClose, vehicleId }: BookSer
     </AnimatePresence>
   );
 }
+
 

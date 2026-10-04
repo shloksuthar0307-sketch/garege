@@ -20,7 +20,7 @@ const fadeIn = {
 };
 
 const FALLBACK_IMAGES: Record<string, string> = {
-  'PORSCHE': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Porsche_718_Cayman_S_IMG_0719.jpg/800px-Porsche_718_Cayman_S_IMG_0719.jpg',
+  'Vehicle': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Vehicle_718_Cayman_S_IMG_0719.jpg/800px-Vehicle_718_Cayman_S_IMG_0719.jpg',
   'BMW': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/BMW_M4_Competition_G82_1X7A6227.jpg/800px-BMW_M4_Competition_G82_1X7A6227.jpg',
   'MERCEDES-BENZ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/2019_Mercedes-Benz_G63_AMG_Automatic_4.0.jpg/800px-2019_Mercedes-Benz_G63_AMG_Automatic_4.0.jpg',
   'DEFAULT': 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80'
@@ -55,7 +55,7 @@ export default function VehicleDetail() {
       {/* 1. TOP NAVIGATION */}
       <nav className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-gray-200 px-6 py-4 flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <div className="w-5 h-5 bg-black text-white flex items-center justify-center text-[8px] font-bold">RT</div>
+          <div className="w-5 h-5 bg-black text-[var(--text-primary)] flex items-center justify-center text-[8px] font-bold">RT</div>
           <span className="text-xs font-semibold tracking-widest uppercase text-gray-900">RepairTrace</span>
         </div>
         <div className="hidden md:flex items-center gap-8 text-xs font-medium text-gray-500">
@@ -115,7 +115,7 @@ export default function VehicleDetail() {
                 </div>
 
                 <div className="flex gap-3 mt-2">
-                  <button onClick={() => setIsHistoryDrawerOpen(true)} className="flex-1 bg-black text-white text-sm font-medium py-3 rounded-lg hover:bg-gray-800 transition-colors">
+                  <button onClick={() => setIsHistoryDrawerOpen(true)} className="flex-1 bg-black text-[var(--text-primary)] text-sm font-medium py-3 rounded-lg hover:bg-gray-800 transition-colors">
                     Service History
                   </button>
                   <button onClick={() => setIsEditModalOpen(true)} className="flex-1 bg-white border border-gray-200 text-gray-900 text-sm font-medium py-3 rounded-lg hover:bg-gray-50 transition-colors">
@@ -273,4 +273,5 @@ export default function VehicleDetail() {
     </div>
   );
 }
+
 

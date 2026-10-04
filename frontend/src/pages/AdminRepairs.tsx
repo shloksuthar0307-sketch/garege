@@ -81,21 +81,21 @@ export default function AdminRepairs() {
     <div className="h-[calc(100vh-140px)] flex flex-col space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 shrink-0">
         <div>
-          <h1 className="text-3xl font-light text-white tracking-tight">Active Repairs</h1>
-          <p className="text-sm text-slate-500 mt-1">Drag and drop vehicles across the workshop pipeline.</p>
+          <h1 className="text-3xl font-light text-[var(--text-primary)] tracking-tight">Active Repairs</h1>
+          <p className="text-sm text-[var(--text-muted)] mt-1">Drag and drop vehicles across the workshop pipeline.</p>
         </div>
         
         <div className="flex items-center gap-3 w-full md:w-auto">
           <div className="relative flex-1 md:w-64">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
             <input 
               type="text" placeholder="Search vehicle or order..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-black/50 border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+              className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl pl-9 pr-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
             />
           </div>
-          <button className="p-2.5 bg-black/50 border border-white/10 rounded-xl text-slate-400 hover:text-white transition-colors">
+          <button className="p-2.5 bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
             <Filter size={18} />
           </button>
           <button 
@@ -109,41 +109,41 @@ export default function AdminRepairs() {
 
       <div className="flex-1 min-h-0">
         {isLoading ? (
-          <div className="h-full flex items-center justify-center text-slate-400">Loading repairs...</div>
+          <div className="h-full flex items-center justify-center text-[var(--text-muted)]">Loading repairs...</div>
         ) : (
           <RepairKanban jobs={filteredJobs} setJobs={setJobs} />
         )}
       </div>
 
       {showNewJobModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[#1A1A1B] border border-white/10 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
-            <div className="p-4 border-b border-white/5 flex justify-between items-center bg-black/20">
-              <h3 className="text-lg font-medium text-white">Create New Job</h3>
-              <button onClick={() => setShowNewJobModal(false)} className="text-slate-400 hover:text-white">
+        <div className="fixed inset-0 bg-[var(--bg-overlay)] backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-[#1A1A1B] border border-[var(--border-default)] rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
+            <div className="p-4 border-b border-[var(--border-subtle)] flex justify-between items-center bg-black/20">
+              <h3 className="text-lg font-medium text-[var(--text-primary)]">Create New Job</h3>
+              <button onClick={() => setShowNewJobModal(false)} className="text-[var(--text-muted)] hover:text-[var(--text-primary)]">
                 <X size={20} />
               </button>
             </div>
             
             <form onSubmit={handleCreateJob} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm text-slate-400 mb-1.5">Job Title</label>
+                <label className="block text-sm text-[var(--text-muted)] mb-1.5">Job Title</label>
                 <input 
                   type="text" 
                   value={newJobData.title}
                   onChange={e => setNewJobData({...newJobData, title: e.target.value})}
-                  className="w-full bg-black border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#35D07F]"
+                  className="w-full bg-black border border-[var(--border-default)] rounded-lg px-3 py-2 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                   placeholder="e.g. Brake Replacement"
                   autoFocus
                 />
               </div>
               
               <div>
-                <label className="block text-sm text-slate-400 mb-1.5">Vehicle</label>
+                <label className="block text-sm text-[var(--text-muted)] mb-1.5">Vehicle</label>
                 <select 
                   value={newJobData.vehicle_id}
                   onChange={e => setNewJobData({...newJobData, vehicle_id: e.target.value})}
-                  className="w-full bg-black border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#35D07F]"
+                  className="w-full bg-black border border-[var(--border-default)] rounded-lg px-3 py-2 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                 >
                   <option value="">Select a vehicle</option>
                   {vehicles.map((v: any) => (
@@ -155,11 +155,11 @@ export default function AdminRepairs() {
               </div>
 
               <div>
-                <label className="block text-sm text-slate-400 mb-1.5">Type</label>
+                <label className="block text-sm text-[var(--text-muted)] mb-1.5">Type</label>
                 <select 
                   value={newJobData.type}
                   onChange={e => setNewJobData({...newJobData, type: e.target.value})}
-                  className="w-full bg-black border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#35D07F]"
+                  className="w-full bg-black border border-[var(--border-default)] rounded-lg px-3 py-2 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                 >
                   <option value="Repair">Repair</option>
                   <option value="Maintenance">Maintenance</option>
@@ -184,4 +184,5 @@ export default function AdminRepairs() {
     </div>
   );
 }
+
 

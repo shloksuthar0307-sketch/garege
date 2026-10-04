@@ -9,7 +9,7 @@ interface ProfileState {
 export const useProfileStore = create<ProfileState>()(
   persist(
     (set) => ({
-      profileImage: 'https://i.pravatar.cc/150?u=vikram',
+      profileImage: '',
       setProfileImage: (image) => set({ profileImage: image }),
     }),
     {

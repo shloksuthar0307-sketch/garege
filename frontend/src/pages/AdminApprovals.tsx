@@ -6,44 +6,15 @@ import {
   Edit2, Trash2, X
 } from 'lucide-react';
 
-const INITIAL_APPROVALS = [
-  {
-    id: 'AUTH-7092', entityId: 'EST-9042', type: 'Estimate', 
-    customer: 'Shlok Mehta', vehicle: 'Porsche 718 Cayman',
-    channel: 'App', status: 'Approved', 
-    timestamp: '2026-09-22T11:05:00', authorizedBy: 'Shlok Mehta',
-    signature: 'IP: 192.168.1.45 | Fingerprint: a8f9c2'
-  },
-  {
-    id: 'AUTH-7091', entityId: 'ISS-4088', type: 'Repair Issue', 
-    customer: 'Rahul Dravid', vehicle: 'BMW M4',
-    channel: 'SMS', status: 'Approved', 
-    timestamp: '2026-09-21T16:30:00', authorizedBy: 'Rahul Dravid',
-    signature: 'Reply: YES | +91 98765 43210'
-  },
-  {
-    id: 'AUTH-7085', entityId: 'EST-9035', type: 'Estimate', 
-    customer: 'Priya Kumar', vehicle: 'Audi A6',
-    channel: 'Email', status: 'Declined', 
-    timestamp: '2026-09-20T14:15:00', authorizedBy: 'Priya Kumar',
-    signature: 'priya.k@email.com | Token Validated'
-  },
-  {
-    id: 'AUTH-7080', entityId: 'EST-9030', type: 'Estimate', 
-    customer: 'Amit Patel', vehicle: 'Honda City',
-    channel: 'Verbal', status: 'Approved', 
-    timestamp: '2026-09-20T14:20:00', authorizedBy: 'Amit Patel (via Vikram)',
-    signature: 'Call Recording ID: CR-4899'
-  }
-];
+const INITIAL_APPROVALS: any[] = [];
 
-const STATUS_CONFIG: Record<string, { icon: React.ElementType, color: string, bg: string }> = {
+const STATUS_CONFIG: Record<string, { icon: any, color: string, bg: string }> = {
   'Pending': { icon: Clock, color: 'text-amber-400', bg: 'bg-amber-500/10 border-amber-500/20' },
   'Approved': { icon: CheckCircle2, color: 'text-[#35D07F]', bg: 'bg-[#35D07F]/10 border-[#35D07F]/20' },
   'Declined': { icon: XCircle, color: 'text-rose-400', bg: 'bg-rose-500/10 border-rose-500/20' },
 };
 
-const CHANNEL_ICONS: Record<string, React.ElementType> = {
+const CHANNEL_ICONS: Record<string, any> = {
   'App': Smartphone,
   'Email': Mail,
   'SMS': MessageSquare,
@@ -61,7 +32,7 @@ export default function AdminApprovals() {
     channel: 'App', status: 'Pending', authorizedBy: '', signature: '', timestamp: ''
   });
 
-  const handleOpenModal = (approval = null) => {
+  const handleOpenModal = (approval: any = null) => {
     if (approval) {
       setEditingApproval(approval);
       setFormData({ ...approval });
@@ -105,8 +76,8 @@ export default function AdminApprovals() {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
-          <h1 className="text-3xl font-light text-white tracking-tight">Customer Approvals</h1>
-          <p className="text-sm text-slate-500 mt-1">Audit log of all digital and verbal authorizations for repairs and estimates.</p>
+          <h1 className="text-3xl font-light text-[var(--text-primary)] tracking-tight">Customer Approvals</h1>
+          <p className="text-sm text-[var(--text-muted)] mt-1">Audit log of all digital and verbal authorizations for repairs and estimates.</p>
         </div>
         <button 
           onClick={() => handleOpenModal()}
@@ -118,17 +89,17 @@ export default function AdminApprovals() {
       </div>
 
       {/* Toolbar */}
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-[#111112] border border-white/5 p-4 rounded-2xl">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] p-4 rounded-2xl">
         <div className="flex items-center gap-4">
           <div className="flex flex-col">
-            <span className="text-xs text-slate-500 uppercase tracking-widest">Pending Signatures</span>
+            <span className="text-xs text-[var(--text-muted)] uppercase tracking-widest">Pending Signatures</span>
             <span className="text-xl text-amber-400 font-light">
               {approvals.filter(a => a.status === 'Pending').length}
             </span>
           </div>
-          <div className="w-px h-8 bg-white/10 mx-2"></div>
+          <div className="w-px h-8 bg-[var(--bg-surface-active)] mx-2"></div>
           <div className="flex flex-col">
-            <span className="text-xs text-slate-500 uppercase tracking-widest">Approved Records</span>
+            <span className="text-xs text-[var(--text-muted)] uppercase tracking-widest">Approved Records</span>
             <span className="text-xl text-[#35D07F] font-light">
               {approvals.filter(a => a.status === 'Approved').length}
             </span>
@@ -137,14 +108,14 @@ export default function AdminApprovals() {
 
         <div className="flex items-center gap-3 w-full md:w-auto">
           <div className="relative w-full md:w-64">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
             <input 
               type="text" 
               placeholder="Search authorizations..." 
-              className="w-full bg-black/50 border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F] transition-colors"
+              className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl pl-9 pr-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors"
             />
           </div>
-          <button className="flex items-center gap-2 bg-black/50 border border-white/10 hover:border-white/30 text-slate-300 px-4 py-2.5 rounded-xl text-sm transition-colors">
+          <button className="flex items-center gap-2 bg-[var(--bg-input)] border border-[var(--border-default)] hover:border-white/30 text-[var(--text-secondary)] px-4 py-2.5 rounded-xl text-sm transition-colors">
             <Filter size={16} />
             Filters
           </button>
@@ -155,19 +126,19 @@ export default function AdminApprovals() {
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-[#111112] border border-white/5 rounded-2xl overflow-visible"
+        className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-2xl overflow-visible"
       >
         <div className="overflow-visible min-h-[400px]">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/5 bg-white/[0.02]">
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase">Approval ID & Time</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase">Customer & Vehicle</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase">Reference Entity</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase">Channel</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase">Status</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase">Digital Signature / Audit</th>
-                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase text-right">Actions</th>
+              <tr className="border-b border-[var(--border-subtle)] bg-white/[0.02]">
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase">Approval ID & Time</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase">Customer & Vehicle</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase">Reference Entity</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase">Channel</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase">Status</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase">Digital Signature / Audit</th>
+                <th className="px-6 py-4 text-[10px] font-bold tracking-widest text-[var(--text-muted)] uppercase text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -179,28 +150,28 @@ export default function AdminApprovals() {
                   <tr key={approval.id} className="hover:bg-white/[0.02] transition-colors group">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">
-                        <ShieldCheck size={16} className={approval.status === 'Approved' ? 'text-[#35D07F]' : 'text-slate-500'} />
-                        <span className="text-sm font-mono text-white group-hover:text-[#35D07F] transition-colors">{approval.id}</span>
+                        <ShieldCheck size={16} className={approval.status === 'Approved' ? 'text-[#35D07F]' : 'text-[var(--text-muted)]'} />
+                        <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[#35D07F] transition-colors">{approval.id}</span>
                       </div>
-                      <div className="text-[10px] text-slate-500 mt-1">
+                      <div className="text-[10px] text-[var(--text-muted)] mt-1">
                         {approval.timestamp ? new Date(approval.timestamp).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) + ' at ' + new Date(approval.timestamp).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : ''}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm font-medium text-white">{approval.customer}</div>
-                      <div className="text-xs text-slate-500 mt-0.5">{approval.vehicle}</div>
+                      <div className="text-sm font-medium text-[var(--text-primary)]">{approval.customer}</div>
+                      <div className="text-xs text-[var(--text-muted)] mt-0.5">{approval.vehicle}</div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono bg-white/5 px-2 py-1 rounded text-slate-300 border border-white/10">
+                        <span className="text-xs font-mono bg-[var(--bg-surface-hover)] px-2 py-1 rounded text-[var(--text-secondary)] border border-[var(--border-default)]">
                           {approval.entityId}
                         </span>
-                        <span className="text-xs text-slate-500">{approval.type}</span>
+                        <span className="text-xs text-[var(--text-muted)]">{approval.type}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-2 text-sm text-slate-300">
-                        <ChannelIcon size={14} className="text-slate-500" />
+                      <div className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
+                        <ChannelIcon size={14} className="text-[var(--text-muted)]" />
                         {approval.channel}
                       </div>
                     </td>
@@ -211,8 +182,8 @@ export default function AdminApprovals() {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-slate-300">{approval.authorizedBy}</div>
-                      <div className="text-[10px] font-mono text-slate-500 mt-0.5">{approval.signature}</div>
+                      <div className="text-sm text-[var(--text-secondary)]">{approval.authorizedBy}</div>
+                      <div className="text-[10px] font-mono text-[var(--text-muted)] mt-0.5">{approval.signature}</div>
                     </td>
                     <td className="px-6 py-4 text-right relative whitespace-nowrap">
                       <div className="flex items-center justify-end gap-2">
@@ -226,7 +197,7 @@ export default function AdminApprovals() {
                         )}
                         <button 
                           onClick={() => setActiveMenuId(activeMenuId === approval.id ? null : approval.id)}
-                          className="text-slate-500 hover:text-white p-1.5 rounded-lg hover:bg-white/5 transition-colors focus:outline-none"
+                          className="text-[var(--text-muted)] hover:text-[var(--text-primary)] p-1.5 rounded-lg hover:bg-[var(--bg-surface-hover)] transition-colors focus:outline-none"
                         >
                           <MoreHorizontal size={16} />
                         </button>
@@ -239,23 +210,23 @@ export default function AdminApprovals() {
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
-                            className="absolute right-8 top-10 w-40 bg-[#1A1A1B] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden text-left"
+                            className="absolute right-8 top-10 w-40 bg-[#1A1A1B] border border-[var(--border-default)] rounded-xl shadow-2xl z-50 overflow-hidden text-left"
                           >
                             <button 
                               onClick={() => handleOpenModal(approval)}
-                              className="w-full text-left px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-white flex items-center gap-2 transition-colors"
+                              className="w-full text-left px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)] hover:text-[var(--text-primary)] flex items-center gap-2 transition-colors"
                             >
                               <Edit2 size={14} /> Edit Record
                             </button>
                             {approval.status !== 'Declined' && (
                               <button 
                                 onClick={() => changeStatus(approval.id, 'Declined')}
-                                className="w-full text-left px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-white flex items-center gap-2 transition-colors"
+                                className="w-full text-left px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)] hover:text-[var(--text-primary)] flex items-center gap-2 transition-colors"
                               >
                                 <XCircle size={14} /> Mark Declined
                               </button>
                             )}
-                            <div className="h-px bg-white/10"></div>
+                            <div className="h-px bg-[var(--bg-surface-active)]"></div>
                             <button 
                               onClick={() => handleDelete(approval.id)}
                               className="w-full text-left px-4 py-2.5 text-sm text-rose-400 hover:bg-rose-500/10 flex items-center gap-2 transition-colors"
@@ -273,11 +244,11 @@ export default function AdminApprovals() {
           </table>
         </div>
         
-        <div className="p-4 border-t border-white/5 flex items-center justify-between text-sm text-slate-500">
+        <div className="p-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-sm text-[var(--text-muted)]">
           <span>Showing {approvals.length} recent authorizations</span>
           <div className="flex items-center gap-2">
-            <button className="px-3 py-1 rounded border border-white/10 hover:bg-white/5 transition-colors">Prev</button>
-            <button className="px-3 py-1 rounded border border-white/10 hover:bg-white/5 transition-colors">Next</button>
+            <button className="px-3 py-1 rounded border border-[var(--border-default)] hover:bg-[var(--bg-surface-hover)] transition-colors">Prev</button>
+            <button className="px-3 py-1 rounded border border-[var(--border-default)] hover:bg-[var(--bg-surface-hover)] transition-colors">Next</button>
           </div>
         </div>
       </motion.div>
@@ -288,20 +259,20 @@ export default function AdminApprovals() {
           <>
             <motion.div 
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
+              className="fixed inset-0 bg-[var(--bg-overlay)] backdrop-blur-sm z-[100]"
               onClick={() => setIsModalOpen(false)}
             />
             <motion.div 
               initial={{ opacity: 0, y: 20, scale: 0.95 }} 
               animate={{ opacity: 1, y: 0, scale: 1 }} 
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
-              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-[#111112] border border-white/10 rounded-2xl z-[101] shadow-2xl overflow-hidden"
+              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-2xl z-[101] shadow-2xl overflow-hidden"
             >
-              <div className="flex items-center justify-between p-6 border-b border-white/5 bg-white/[0.02]">
-                <h2 className="text-xl font-light text-white">
+              <div className="flex items-center justify-between p-6 border-b border-[var(--border-subtle)] bg-white/[0.02]">
+                <h2 className="text-xl font-light text-[var(--text-primary)]">
                   {editingApproval ? 'Edit Authorization' : 'Record New Authorization'}
                 </h2>
-                <button onClick={() => setIsModalOpen(false)} className="text-slate-500 hover:text-white transition-colors">
+                <button onClick={() => setIsModalOpen(false)} className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
                   <X size={20} />
                 </button>
               </div>
@@ -310,19 +281,19 @@ export default function AdminApprovals() {
                 <div className="grid grid-cols-2 gap-6">
                   {/* Entity ID */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Reference ID</label>
+                    <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Reference ID</label>
                     <input 
                       required type="text" placeholder="e.g. EST-9042"
                       value={formData.entityId} onChange={e => setFormData({...formData, entityId: e.target.value})}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+                      className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     />
                   </div>
                   {/* Entity Type */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Entity Type</label>
+                    <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Entity Type</label>
                     <select 
                       value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+                      className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     >
                       <option>Estimate</option>
                       <option>Repair Issue</option>
@@ -331,28 +302,28 @@ export default function AdminApprovals() {
                   </div>
                   {/* Customer */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Customer Name</label>
+                    <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Customer Name</label>
                     <input 
                       required type="text" placeholder="e.g. Shlok Mehta"
                       value={formData.customer} onChange={e => setFormData({...formData, customer: e.target.value})}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+                      className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     />
                   </div>
                   {/* Vehicle */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Vehicle</label>
+                    <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Vehicle</label>
                     <input 
-                      required type="text" placeholder="e.g. Porsche 718 Cayman"
+                      required type="text" placeholder="e.g. Your Vehicle"
                       value={formData.vehicle} onChange={e => setFormData({...formData, vehicle: e.target.value})}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+                      className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     />
                   </div>
                   {/* Channel */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Auth Channel</label>
+                    <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Auth Channel</label>
                     <select 
                       value={formData.channel} onChange={e => setFormData({...formData, channel: e.target.value})}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+                      className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     >
                       <option>App</option>
                       <option>Email</option>
@@ -362,10 +333,10 @@ export default function AdminApprovals() {
                   </div>
                   {/* Status */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Status</label>
+                    <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Status</label>
                     <select 
                       value={formData.status} onChange={e => setFormData({...formData, status: e.target.value})}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+                      className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     >
                       <option>Pending</option>
                       <option>Approved</option>
@@ -374,26 +345,26 @@ export default function AdminApprovals() {
                   </div>
                   {/* Authorized By */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Authorized By</label>
+                    <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Authorized By</label>
                     <input 
                       required type="text" placeholder="Name or System"
                       value={formData.authorizedBy} onChange={e => setFormData({...formData, authorizedBy: e.target.value})}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+                      className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     />
                   </div>
                   {/* Signature Trail */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Audit Signature</label>
+                    <label className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Audit Signature</label>
                     <input 
                       required type="text" placeholder="IP Address, Call ID, etc."
                       value={formData.signature} onChange={e => setFormData({...formData, signature: e.target.value})}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+                      className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                     />
                   </div>
                 </div>
 
-                <div className="flex justify-end gap-3 pt-6 border-t border-white/5 mt-8">
-                  <button type="button" onClick={() => setIsModalOpen(false)} className="px-6 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-colors">
+                <div className="flex justify-end gap-3 pt-6 border-t border-[var(--border-subtle)] mt-8">
+                  <button type="button" onClick={() => setIsModalOpen(false)} className="px-6 py-2.5 rounded-xl text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors">
                     Cancel
                   </button>
                   <button type="submit" className="px-6 py-2.5 rounded-xl text-sm font-bold bg-[#35D07F] text-black hover:bg-[#2EB86F] transition-colors uppercase tracking-widest">
@@ -408,4 +379,6 @@ export default function AdminApprovals() {
     </div>
   );
 }
+
+
 

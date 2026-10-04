@@ -32,12 +32,12 @@ export default function InventoryServiceOrders() {
     <div className="space-y-8 animate-fade-in pb-20">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-light tracking-widest uppercase text-white mb-2">Service Parts Queue</h1>
+          <h1 className="text-3xl font-light tracking-widest uppercase text-[var(--text-primary)] mb-2">Service Parts Queue</h1>
           <p className="text-white/50 tracking-wide">Monitor parts required for active service orders and workshop operations.</p>
         </div>
       </div>
 
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+      <div className="bg-[var(--bg-surface-hover)] border border-[var(--border-default)] rounded-2xl p-6">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
           <div className="relative w-full sm:w-96">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={18} />
@@ -46,7 +46,7 @@ export default function InventoryServiceOrders() {
               placeholder="Search by order, part, or vehicle..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#35D07F]/50 transition-all"
+              className="w-full bg-[var(--bg-surface-hover)] border border-[var(--border-default)] rounded-xl py-3 pl-12 pr-4 text-sm text-[var(--text-primary)] placeholder-white/30 focus:outline-none focus:border-[#35D07F]/50 transition-all"
             />
           </div>
           <FilterPopover 
@@ -65,7 +65,7 @@ export default function InventoryServiceOrders() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/10">
+              <tr className="border-b border-[var(--border-default)]">
                 <th className="py-4 px-4 text-xs font-bold tracking-widest uppercase text-white/50">Service Order</th>
                 <th className="py-4 px-4 text-xs font-bold tracking-widest uppercase text-white/50">Vehicle</th>
                 <th className="py-4 px-4 text-xs font-bold tracking-widest uppercase text-white/50">Required Part</th>
@@ -90,14 +90,14 @@ export default function InventoryServiceOrders() {
                     const canFulfill = available >= item.quantity_required;
                     
                     return (
-                  <tr key={item.id} className="border-b border-white/5 hover:bg-white/5 transition-colors group">
+                  <tr key={item.id} className="border-b border-[var(--border-subtle)] hover:bg-[var(--bg-surface-hover)] transition-colors group">
                     <td className="py-4 px-4">
                       <div className="flex items-center space-x-3">
                         <div className="w-8 h-8 rounded-lg bg-[#35D07F]/10 flex items-center justify-center">
                           <Wrench size={14} className="text-[#35D07F]" />
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-sm font-medium text-white">{item.service_order_details?.order_number}</span>
+                          <span className="text-sm font-medium text-[var(--text-primary)]">{item.service_order_details?.order_number}</span>
                           <span className="text-[10px] text-white/50 tracking-widest uppercase">{item.technician_name || 'Unassigned'}</span>
                         </div>
                       </div>
@@ -109,10 +109,10 @@ export default function InventoryServiceOrders() {
                       </div>
                     </td>
                     <td className="py-4 px-4">
-                        <div className="text-sm font-medium text-white truncate max-w-[200px]">{item.part_details?.name}</div>
+                        <div className="text-sm font-medium text-[var(--text-primary)] truncate max-w-[200px]">{item.part_details?.name}</div>
                         <div className="text-[10px] text-white/50 tracking-widest">{item.part_details?.part_number}</div>
                     </td>
-                    <td className="py-4 px-4 text-sm font-bold text-white">{item.quantity_required}</td>
+                    <td className="py-4 px-4 text-sm font-bold text-[var(--text-primary)]">{item.quantity_required}</td>
                     <td className="py-4 px-4">
                         <span className={`text-xs font-bold ${canFulfill ? 'text-[#35D07F]' : 'text-red-400'}`}>
                             {available} Available
@@ -132,7 +132,7 @@ export default function InventoryServiceOrders() {
                                 <AlertTriangle size={10} /> <span>Unavailable</span>
                             </span>
                         ) : (
-                            <span className="px-3 py-1 bg-white/5 text-white/50 border border-white/10 rounded-full text-[10px] font-bold tracking-widest uppercase flex items-center w-fit space-x-1">
+                            <span className="px-3 py-1 bg-[var(--bg-surface-hover)] text-white/50 border border-[var(--border-default)] rounded-full text-[10px] font-bold tracking-widest uppercase flex items-center w-fit space-x-1">
                                 <span>{item.status}</span>
                             </span>
                         )}
@@ -148,7 +148,7 @@ export default function InventoryServiceOrders() {
                             </button>
                           ) : (
                             <button 
-                                className="px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-white/70 hover:text-white hover:bg-white/10 border border-white/20 rounded-lg transition-colors"
+                                className="px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-white/70 hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] border border-[var(--border-strong)] rounded-lg transition-colors"
                             >
                                 Order Part
                             </button>
@@ -166,4 +166,5 @@ export default function InventoryServiceOrders() {
     </div>
   );
 }
+
 

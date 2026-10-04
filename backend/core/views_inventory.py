@@ -16,22 +16,19 @@ from .serializers_inventory import (
 )
 from organizations.models import Branch
 
-class IsInventoryManagerOrAdmin(permissions.BasePermission):
-    def has_permission(self, request, view):
-        return request.user.is_authenticated and request.user.role in ['INVENTORY_MANAGER', 'BRANCH_MANAGER', 'ORG_ADMIN', 'SUPER_ADMIN']
-
-def get_branch(user):
-    return user.branch
+from accounts.permissions import IsBranchManager
+from core.utils import get_scoped_queryset
 
 class InventoryDashboardAPI(APIView):
-    permission_classes = [IsInventoryManagerOrAdmin]
+    permission_classes = [IsBranchManager]
 
     def get(self, request):
-        branch = get_branch(request.user)
-        if not branch:
-            return Response({'detail': 'No branch assigned.'}, status=status.HTTP_400_BAD_REQUEST)
+        qs = InventoryPart.objects.all()
+        qs = get_scoped_queryset(qs, request.user)
+        if not qs.exists():
+            return Response({'detail': 'No branch access.'}, status=status.HTTP_400_BAD_REQUEST)
         
-        parts = InventoryPart.objects.filter(branch=branch)
+        parts = qs
         total_parts = parts.count()
         total_stock_units = parts.aggregate(total=Sum('current_stock'))['total'] or 0
         
@@ -41,20 +38,21 @@ class InventoryDashboardAPI(APIView):
         
         today = timezone.now().date()
         received_today = StockMovement.objects.filter(
-            part__branch=branch, 
+            part__in=parts, 
             movement_type='RECEIVED',
             timestamp__date=today
         ).aggregate(total=Sum('quantity'))['total'] or 0
         
         issued_today = StockMovement.objects.filter(
-            part__branch=branch, 
+            part__in=parts, 
             movement_type='ISSUED',
             timestamp__date=today
         ).aggregate(total=Sum('quantity'))['total'] or 0
         
         # parts waiting (service orders waiting for parts)
-        parts_waiting = RequiredPart.objects.filter(
-            service_order__branch=branch,
+        req_qs = RequiredPart.objects.all()
+        req_qs = get_scoped_queryset(req_qs, request.user, branch_lookup='service_order__branch')
+        parts_waiting = req_qs.filter(
             status='WAITING'
         ).count()
 
@@ -71,18 +69,16 @@ class InventoryDashboardAPI(APIView):
 
 class InventoryPartViewSet(viewsets.ModelViewSet):
     serializer_class = InventoryPartSerializer
-    permission_classes = [IsInventoryManagerOrAdmin]
+    permission_classes = [IsBranchManager]
 
     def get_queryset(self):
-        branch = get_branch(self.request.user)
-        if not branch:
-            return InventoryPart.objects.none()
-        return InventoryPart.objects.filter(branch=branch).order_by('name')
+        qs = InventoryPart.objects.all().order_by('name')
+        return get_scoped_queryset(qs, self.request.user)
 
     @action(detail=False, methods=['get'])
     def low_stock(self, request):
-        branch = get_branch(request.user)
-        parts = InventoryPart.objects.filter(branch=branch, current_stock__lte=F('minimum_level')).order_by('current_stock')
+        qs = InventoryPart.objects.filter(current_stock__lte=F('minimum_level')).order_by('current_stock')
+        parts = get_scoped_queryset(qs, request.user)
         return Response(self.get_serializer(parts, many=True).data)
 
     @action(detail=True, methods=['post'])
@@ -148,13 +144,11 @@ class InventoryPartViewSet(viewsets.ModelViewSet):
 
 class StockReservationViewSet(viewsets.ModelViewSet):
     serializer_class = StockReservationSerializer
-    permission_classes = [IsInventoryManagerOrAdmin]
+    permission_classes = [IsBranchManager]
 
     def get_queryset(self):
-        branch = get_branch(self.request.user)
-        if not branch:
-            return StockReservation.objects.none()
-        return StockReservation.objects.filter(part__branch=branch).select_related('part', 'service_order', 'requested_by', 'reserved_by').order_by('-created_at')
+        qs = StockReservation.objects.select_related('part', 'service_order', 'requested_by', 'reserved_by').order_by('-created_at')
+        return get_scoped_queryset(qs, self.request.user, branch_lookup='part__branch')
 
     def create(self, request, *args, **kwargs):
         part_id = request.data.get('part')
@@ -166,7 +160,8 @@ class StockReservationViewSet(viewsets.ModelViewSet):
             
         try:
             with transaction.atomic():
-                part = InventoryPart.objects.select_for_update().get(id=part_id, branch=get_branch(request.user))
+                part_qs = get_scoped_queryset(InventoryPart.objects.all(), request.user)
+                part = part_qs.select_for_update().get(id=part_id)
                 service_order = ServiceOrder.objects.get(id=service_order_id)
                 
                 available = part.current_stock - part.reserved
@@ -275,41 +270,33 @@ class StockReservationViewSet(viewsets.ModelViewSet):
 
 class StockMovementViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = StockMovementSerializer
-    permission_classes = [IsInventoryManagerOrAdmin]
+    permission_classes = [IsBranchManager]
 
     def get_queryset(self):
-        branch = get_branch(self.request.user)
-        if not branch:
-            return StockMovement.objects.none()
-        return StockMovement.objects.filter(part__branch=branch).select_related('part', 'service_order', 'actor').order_by('-timestamp')
+        qs = StockMovement.objects.select_related('part', 'service_order', 'actor').order_by('-timestamp')
+        return get_scoped_queryset(qs, self.request.user, branch_lookup='part__branch')
 
 class RequiredPartViewSet(viewsets.ModelViewSet):
     serializer_class = RequiredPartSerializer
-    permission_classes = [IsInventoryManagerOrAdmin]
+    permission_classes = [IsBranchManager]
 
     def get_queryset(self):
-        branch = get_branch(self.request.user)
-        if not branch:
-            return RequiredPart.objects.none()
-        return RequiredPart.objects.filter(service_order__branch=branch).select_related('service_order', 'part', 'technician').order_by('-created_at')
+        qs = RequiredPart.objects.select_related('service_order', 'part', 'technician').order_by('-created_at')
+        return get_scoped_queryset(qs, self.request.user, branch_lookup='service_order__branch')
 
 class SupplierViewSet(viewsets.ModelViewSet):
     serializer_class = SupplierSerializer
-    permission_classes = [IsInventoryManagerOrAdmin]
+    permission_classes = [IsBranchManager]
 
     def get_queryset(self):
-        branch = get_branch(self.request.user)
-        if not branch:
-            return Supplier.objects.none()
-        return Supplier.objects.filter(branch=branch).order_by('name')
+        qs = Supplier.objects.all().order_by('name')
+        return get_scoped_queryset(qs, self.request.user)
 
 class PurchaseRequestViewSet(viewsets.ModelViewSet):
     serializer_class = PurchaseRequestSerializer
-    permission_classes = [IsInventoryManagerOrAdmin]
+    permission_classes = [IsBranchManager]
 
     def get_queryset(self):
-        branch = get_branch(self.request.user)
-        if not branch:
-            return PurchaseRequest.objects.none()
-        return PurchaseRequest.objects.filter(branch=branch).select_related('part', 'branch').order_by('-created_at')
+        qs = PurchaseRequest.objects.select_related('part', 'branch').order_by('-created_at')
+        return get_scoped_queryset(qs, self.request.user)
 

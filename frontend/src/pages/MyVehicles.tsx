@@ -8,7 +8,7 @@ const majesticEase: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 // Fallback images based on make if no image_url is provided
 const FALLBACK_IMAGES: Record<string, string> = {
-  'PORSCHE': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Porsche_718_Cayman_S_IMG_0719.jpg/800px-Porsche_718_Cayman_S_IMG_0719.jpg',
+  'Vehicle': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Vehicle_718_Cayman_S_IMG_0719.jpg/800px-Vehicle_718_Cayman_S_IMG_0719.jpg',
   'BMW': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/BMW_M4_Competition_G82_1X7A6227.jpg/800px-BMW_M4_Competition_G82_1X7A6227.jpg',
   'MERCEDES-BENZ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/2019_Mercedes-Benz_G63_AMG_Automatic_4.0.jpg/800px-2019_Mercedes-Benz_G63_AMG_Automatic_4.0.jpg',
   'DEFAULT': 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80'
@@ -34,14 +34,14 @@ export default function MyVehicles() {
 
   if (isLoading) {
     return (
-      <div className="w-full h-screen bg-[#020202] flex flex-col items-center justify-center">
-        <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+      <div className="w-full h-screen bg-[var(--bg-root)] flex flex-col items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--border-strong)] border-t-white rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="relative w-full min-h-screen bg-[#020202] text-white selection:bg-white/30 px-8 py-12 md:px-16 overflow-y-auto">
+    <div className="relative w-full min-h-screen bg-[var(--bg-root)] text-[var(--text-primary)] selection:bg-white/30 px-8 py-12 md:px-16 overflow-y-auto">
       
       {/* Top Nav */}
       <motion.nav 
@@ -50,12 +50,12 @@ export default function MyVehicles() {
         transition={{ duration: 1.5, ease: majesticEase }}
         className="flex justify-between items-center mb-24"
       >
-        <Link to="/customer/vehicle" className="flex items-center gap-4 text-white/50 hover:text-white transition-colors duration-500 group">
+        <Link to="/customer/vehicle" className="flex items-center gap-4 text-white/50 hover:text-[var(--text-primary)] transition-colors duration-500 group">
           <ArrowLeft size={20} className="group-hover:-translate-x-2 transition-transform duration-500" strokeWidth={1} />
           <span className="text-[10px] font-sans tracking-[0.2em] uppercase">Back to Dashboard</span>
         </Link>
-        <div className="w-6 h-6 border border-white/20 flex items-center justify-center">
-          <div className="w-1.5 h-1.5 bg-white/50" />
+        <div className="w-6 h-6 border border-[var(--border-strong)] flex items-center justify-center">
+          <div className="w-1.5 h-1.5 bg-[var(--bg-surface-hover)]0" />
         </div>
       </motion.nav>
 
@@ -75,7 +75,7 @@ export default function MyVehicles() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.5, delay: 0.5, ease: majesticEase }}
-            className="flex items-center gap-2 border border-white/20 px-6 py-3 hover:bg-white hover:text-black transition-all duration-500 group"
+            className="flex items-center gap-2 border border-[var(--border-strong)] px-6 py-3 hover:bg-white hover:text-black transition-all duration-500 group"
           >
             <Plus size={14} className="group-hover:rotate-90 transition-transform duration-500" />
             <span className="text-[10px] font-sans tracking-[0.2em] uppercase">Add Vehicle</span>
@@ -95,7 +95,7 @@ export default function MyVehicles() {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1.5, delay: 0.6 + (i * 0.1), ease: majesticEase }}
-                  className="group relative h-96 border border-white/10 hover:border-white/30 transition-colors duration-500 overflow-hidden cursor-pointer flex flex-col justify-end p-8"
+                  className="group relative h-96 border border-[var(--border-default)] hover:border-white/30 transition-colors duration-500 overflow-hidden cursor-pointer flex flex-col justify-end p-8"
                 >
                   {/* Background Image */}
                   <div className="absolute inset-0 z-0">
@@ -115,17 +115,17 @@ export default function MyVehicles() {
                   {/* Card Content */}
                   <div className="relative z-10 transform group-hover:-translate-y-2 transition-transform duration-500">
                     <div className="flex justify-between items-start mb-12">
-                      <div className={`text-[10px] font-sans tracking-widest uppercase flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 ${statusColor}`}>
+                      <div className={`text-[10px] font-sans tracking-widest uppercase flex items-center gap-2 bg-[var(--bg-input)] backdrop-blur-md px-3 py-1.5 rounded-full border border-[var(--border-default)] ${statusColor}`}>
                         <div className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
                         {statusText}
                       </div>
-                      <ShieldCheck size={16} className="text-white/40 group-hover:text-white transition-colors duration-500 drop-shadow-md" />
+                      <ShieldCheck size={16} className="text-white/40 group-hover:text-[var(--text-primary)] transition-colors duration-500 drop-shadow-md" />
                     </div>
                     
                     <div className="text-[10px] font-sans tracking-[0.3em] text-white/70 uppercase mb-1 drop-shadow-md">{vehicle.make}</div>
-                    <h2 className="text-3xl font-light tracking-tight text-white mb-4 drop-shadow-lg">{vehicle.model}</h2>
+                    <h2 className="text-3xl font-light tracking-tight text-[var(--text-primary)] mb-4 drop-shadow-lg">{vehicle.model}</h2>
                     
-                    <div className="flex items-center gap-6 text-[10px] font-sans tracking-widest text-white/60 uppercase border-t border-white/10 pt-4 mt-4">
+                    <div className="flex items-center gap-6 text-[10px] font-sans tracking-widest text-white/60 uppercase border-t border-[var(--border-default)] pt-4 mt-4">
                       <span className="flex items-center gap-2"><Settings2 size={12} /> {vehicle.year}</span>
                       <span>{vehicle.registration_number}</span>
                     </div>
@@ -140,4 +140,5 @@ export default function MyVehicles() {
     </div>
   );
 }
+
 

@@ -13,7 +13,8 @@ from .views_advisor import (
     MessageViewSet,
     CustomerViewSet,
     SystemNotificationViewSet,
-    AdvisorVehicleViewSet
+    AdvisorVehicleViewSet,
+    AdvisorInvoiceViewSet
 )
 
 router = DefaultRouter()
@@ -29,6 +30,7 @@ router.register(r'messages', MessageViewSet, basename='advisor-messages')
 router.register(r'customers', CustomerViewSet, basename='advisor-customers')
 router.register(r'notifications', SystemNotificationViewSet, basename='advisor-notifications')
 router.register(r'vehicles', AdvisorVehicleViewSet, basename='advisor-vehicles')
+router.register(r'invoices', AdvisorInvoiceViewSet, basename='advisor-invoices')
 
 urlpatterns = [
     path('dashboard/', advisor_dashboard_stats, name='advisor-dashboard-stats'),

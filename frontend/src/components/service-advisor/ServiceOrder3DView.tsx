@@ -9,12 +9,12 @@ import { DamagePanel } from '../inspection/DamagePanel';
 import type { DamageData } from '../inspection/DamagePanel';
 import { InspectionSummary } from '../inspection/InspectionSummary';
 
-function PorscheModel({ 
+function VehicleModel({ 
   onModelClick 
 }: { 
   onModelClick: (e: ThreeEvent<MouseEvent>, zone: string) => void 
 }) {
-  const { scene } = useGLTF('/models/porsche_full.gltf');
+  const { scene } = useGLTF('/models/Vehicle_full.gltf');
   const modelRef = useRef<THREE.Group>(null);
 
   // Apply a nice car paint material
@@ -108,14 +108,14 @@ export default function ServiceOrder3DView() {
     <div className="w-full h-full bg-slate-100 relative overflow-hidden">
       
       <InspectionSummary damages={damages} />
-      <Suspense fallback={<div className="flex items-center justify-center w-full h-full text-slate-500">Loading Digital Twin...</div>}>
+      <Suspense fallback={<div className="flex items-center justify-center w-full h-full text-[var(--text-muted)]">Loading Digital Twin...</div>}>
         <Canvas camera={{ position: [4, 2, 4], fov: 45 }}>
           <Environment preset="city" />
           <ambientLight intensity={0.7} />
           <directionalLight position={[10, 10, 5]} intensity={1.5} />
           <directionalLight position={[-10, 10, -5]} intensity={1} />
           
-          <PorscheModel onModelClick={handleModelClick} />
+          <VehicleModel onModelClick={handleModelClick} />
           <ContactShadows resolution={1024} scale={10} blur={2} opacity={0.5} far={10} color="#000000" />
           
           {damages.map((dmg) => (
@@ -164,4 +164,5 @@ export default function ServiceOrder3DView() {
     </div>
   );
 }
+
 

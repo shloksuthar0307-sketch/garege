@@ -72,7 +72,7 @@ export const VoiceNoteButton: React.FC<VoiceNoteButtonProps> = ({ onTranscript }
       className={`flex items-center justify-center transition-all rounded-xl border ${
         isRecording 
           ? 'bg-red-500/20 border-red-500/50 text-red-500 animate-pulse' 
-          : 'bg-[#111112] border-white/10 hover:bg-white/5 hover:border-white/20 text-slate-400 hover:text-white'
+          : 'bg-[var(--bg-secondary)] border-[var(--border-default)] hover:bg-[var(--bg-surface-hover)] hover:border-[var(--border-strong)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
       } ${greasyHandsMode ? 'p-6 w-full text-2xl gap-4 mb-4' : 'p-3 w-12 h-12'}`}
       title="Voice to Text"
     >
@@ -90,4 +90,5 @@ export const VoiceNoteButton: React.FC<VoiceNoteButtonProps> = ({ onTranscript }
     </button>
   );
 };
+
 

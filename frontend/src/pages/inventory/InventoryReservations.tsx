@@ -112,7 +112,7 @@ export default function InventoryReservations() {
     <div className="space-y-8 animate-fade-in pb-20">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-light tracking-widest uppercase text-white mb-2">Part Reservations</h1>
+          <h1 className="text-3xl font-light tracking-widest uppercase text-[var(--text-primary)] mb-2">Part Reservations</h1>
           <p className="text-white/50 tracking-wide">Manage parts reserved for active service orders.</p>
         </div>
         <div className="flex items-center space-x-4">
@@ -126,7 +126,7 @@ export default function InventoryReservations() {
         </div>
       </div>
 
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+      <div className="bg-[var(--bg-surface-hover)] border border-[var(--border-default)] rounded-2xl p-6">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
           <div className="relative w-full sm:w-96">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={18} />
@@ -135,7 +135,7 @@ export default function InventoryReservations() {
               placeholder="Search by part or order number..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#35D07F]/50 transition-all"
+              className="w-full bg-[var(--bg-surface-hover)] border border-[var(--border-default)] rounded-xl py-3 pl-12 pr-4 text-sm text-[var(--text-primary)] placeholder-white/30 focus:outline-none focus:border-[#35D07F]/50 transition-all"
             />
           </div>
           <FilterPopover 
@@ -154,7 +154,7 @@ export default function InventoryReservations() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/10">
+              <tr className="border-b border-[var(--border-default)]">
                 <th className="py-4 px-4 text-xs font-bold tracking-widest uppercase text-white/50">Service Order</th>
                 <th className="py-4 px-4 text-xs font-bold tracking-widest uppercase text-white/50">Part Details</th>
                 <th className="py-4 px-4 text-xs font-bold tracking-widest uppercase text-white/50">Quantity</th>
@@ -177,7 +177,7 @@ export default function InventoryReservations() {
                     const isPending = res.status === 'ACTIVE';
                     
                     return (
-                  <tr key={res.id} className="border-b border-white/5 hover:bg-white/5 transition-colors group">
+                  <tr key={res.id} className="border-b border-[var(--border-subtle)] hover:bg-[var(--bg-surface-hover)] transition-colors group">
                     <td className="py-4 px-4">
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-[#35D07F]">{res.service_order_details?.order_number}</span>
@@ -186,16 +186,16 @@ export default function InventoryReservations() {
                     </td>
                     <td className="py-4 px-4">
                       <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+                        <div className="w-8 h-8 rounded-lg bg-[var(--bg-surface-hover)] flex items-center justify-center">
                           <CheckSquare size={14} className="text-white/50" />
                         </div>
                         <div>
-                          <div className="text-sm font-medium text-white truncate max-w-[200px]">{res.part_details?.name}</div>
+                          <div className="text-sm font-medium text-[var(--text-primary)] truncate max-w-[200px]">{res.part_details?.name}</div>
                           <div className="text-xs text-white/50 tracking-widest">{res.part_details?.part_number}</div>
                         </div>
                       </div>
                     </td>
-                    <td className="py-4 px-4 text-sm font-bold text-white">{res.quantity}</td>
+                    <td className="py-4 px-4 text-sm font-bold text-[var(--text-primary)]">{res.quantity}</td>
                     <td className="py-4 px-4">
                       <div className="flex flex-col">
                         <span className="text-sm text-white/70">{res.reserved_by_name || 'System'}</span>
@@ -212,7 +212,7 @@ export default function InventoryReservations() {
                                 <CheckCircle2 size={10} /> <span>Issued</span>
                             </span>
                         ) : (
-                            <span className="px-3 py-1 bg-white/5 text-white/50 border border-white/10 rounded-full text-[10px] font-bold tracking-widest uppercase flex items-center w-fit space-x-1">
+                            <span className="px-3 py-1 bg-[var(--bg-surface-hover)] text-white/50 border border-[var(--border-default)] rounded-full text-[10px] font-bold tracking-widest uppercase flex items-center w-fit space-x-1">
                                 <XCircle size={10} /> <span>{res.status}</span>
                             </span>
                         )}
@@ -244,16 +244,16 @@ export default function InventoryReservations() {
       </div>
 
       {isAddModalOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#1A1A1B] border border-white/10 rounded-2xl p-6 w-full max-w-lg shadow-2xl relative animate-in fade-in zoom-in duration-200">
+        <div className="fixed inset-0 bg-[var(--bg-overlay)] backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#1A1A1B] border border-[var(--border-default)] rounded-2xl p-6 w-full max-w-lg shadow-2xl relative animate-in fade-in zoom-in duration-200">
             <button 
               onClick={() => setIsAddModalOpen(false)}
-              className="absolute right-4 top-4 text-white/50 hover:text-white transition-colors"
+              className="absolute right-4 top-4 text-white/50 hover:text-[var(--text-primary)] transition-colors"
             >
               <X size={20} />
             </button>
             
-            <h2 className="text-xl font-medium text-white mb-6">New Reservation</h2>
+            <h2 className="text-xl font-medium text-[var(--text-primary)] mb-6">New Reservation</h2>
             
             <form onSubmit={handleAddSubmit} className="space-y-4">
               <div>
@@ -261,7 +261,7 @@ export default function InventoryReservations() {
                 <select 
                   value={newReservationData.part}
                   onChange={(e) => setNewReservationData({...newReservationData, part: e.target.value})}
-                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors"
+                  className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors"
                   required
                 >
                   <option value="">Select a part...</option>
@@ -276,7 +276,7 @@ export default function InventoryReservations() {
                 <select 
                   value={newReservationData.service_order}
                   onChange={(e) => setNewReservationData({...newReservationData, service_order: e.target.value})}
-                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors"
+                  className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors"
                   required
                 >
                   <option value="">Select an order...</option>
@@ -293,7 +293,7 @@ export default function InventoryReservations() {
                   min="1"
                   value={newReservationData.quantity}
                   onChange={(e) => setNewReservationData({...newReservationData, quantity: parseInt(e.target.value)})}
-                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors"
+                  className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors"
                   required
                 />
               </div>
@@ -302,7 +302,7 @@ export default function InventoryReservations() {
                 <button 
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="flex-1 px-4 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl text-xs font-bold tracking-widest uppercase transition-colors"
+                  className="flex-1 px-4 py-3 bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] text-[var(--text-primary)] rounded-xl text-xs font-bold tracking-widest uppercase transition-colors"
                 >
                   Cancel
                 </button>
@@ -321,4 +321,5 @@ export default function InventoryReservations() {
     </div>
   );
 }
+
 

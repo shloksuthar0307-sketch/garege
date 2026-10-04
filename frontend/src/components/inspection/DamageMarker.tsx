@@ -29,7 +29,7 @@ export function DamageMarker({ position, zone, damageType, severity, isSelected,
       case 'Severe': return 'text-orange-400';
       case 'Moderate': return 'text-amber-400';
       case 'Minor': return 'text-sky-400';
-      default: return 'text-slate-400';
+      default: return 'text-[var(--text-muted)]';
     }
   };
 
@@ -49,11 +49,11 @@ export function DamageMarker({ position, zone, damageType, severity, isSelected,
           <div className={`absolute inset-0 rounded-full bg-white/20 blur-sm`} />
         </div>
         
-        <div className={`mt-2 p-2 bg-black/80 backdrop-blur-md rounded-xl border transition-all origin-top whitespace-nowrap shadow-2xl
-          ${isSelected ? 'opacity-100 scale-100 border-white/20' : 'opacity-0 scale-95 border-white/5 group-hover:opacity-100 group-hover:scale-100'}`}
+        <div className={`mt-2 p-2 bg-[var(--bg-overlay)] backdrop-blur-md rounded-xl border transition-all origin-top whitespace-nowrap shadow-2xl
+          ${isSelected ? 'opacity-100 scale-100 border-[var(--border-strong)]' : 'opacity-0 scale-95 border-[var(--border-subtle)] group-hover:opacity-100 group-hover:scale-100'}`}
         >
           <div className="flex flex-col gap-1">
-            <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest leading-none">{zone}</span>
+            <span className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest leading-none">{zone}</span>
             <span className={`text-xs font-bold leading-none ${getTextColor(severity)}`}>{damageType}</span>
           </div>
         </div>
@@ -61,4 +61,5 @@ export function DamageMarker({ position, zone, damageType, severity, isSelected,
     </Html>
   );
 }
+
 

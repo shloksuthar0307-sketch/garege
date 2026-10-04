@@ -84,7 +84,7 @@ export default function ShareHistoryDialog({ isOpen, onClose, vehicleId }: Share
                             ? 'bg-black border-black' 
                             : 'bg-white border-gray-300 group-hover:border-gray-400'
                         }`}>
-                          {options[opt.id as keyof typeof options] && <Check size={14} className="text-white" />}
+                          {options[opt.id as keyof typeof options] && <Check size={14} className="text-[var(--text-primary)]" />}
                         </div>
                         <span className="text-sm font-medium text-gray-900">{opt.label}</span>
                         <input
@@ -104,7 +104,7 @@ export default function ShareHistoryDialog({ isOpen, onClose, vehicleId }: Share
                     </div>
                     <div className="flex gap-3">
                       <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900">Cancel</button>
-                      <button onClick={handleShare} className="px-5 py-2 text-sm font-medium text-white bg-black rounded-lg hover:bg-gray-800 transition-colors">
+                      <button onClick={handleShare} className="px-5 py-2 text-sm font-medium text-[var(--text-primary)] bg-black rounded-lg hover:bg-gray-800 transition-colors">
                         Create Link
                       </button>
                     </div>
@@ -143,4 +143,5 @@ export default function ShareHistoryDialog({ isOpen, onClose, vehicleId }: Share
     </AnimatePresence>
   );
 }
+
 

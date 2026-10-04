@@ -16,7 +16,7 @@ export default function Dashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-[var(--color-navy-900)]">Good morning, Workshop Team</h1>
-          <p className="text-slate-500 mt-1">Here is the overview of today's service operations.</p>
+          <p className="text-[var(--text-muted)] mt-1">Here is the overview of today's service operations.</p>
         </div>
       </div>
 
@@ -31,8 +31,8 @@ export default function Dashboard() {
           <AnimatedCard key={i} custom={i}>
             <CardContent className="p-6">
               <div className="flex items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-slate-500">{metric.title}</CardTitle>
-                <metric.icon className="h-5 w-5 text-slate-400" />
+                <CardTitle className="text-sm font-medium text-[var(--text-muted)]">{metric.title}</CardTitle>
+                <metric.icon className="h-5 w-5 text-[var(--text-muted)]" />
               </div>
               <div className="flex items-baseline gap-2">
                 <div className="text-3xl font-bold text-[var(--color-navy-950)]">{metric.value}</div>
@@ -52,7 +52,7 @@ export default function Dashboard() {
             <CardTitle>Revenue & Volume Pipeline</CardTitle>
           </CardHeader>
           <CardContent className="flex-1 flex items-center justify-center border-t border-[var(--color-border)] bg-slate-50/50 min-h-[300px]">
-            <div className="text-center text-slate-400">
+            <div className="text-center text-[var(--text-muted)]">
               <TrendingUp className="h-10 w-10 mx-auto mb-2 opacity-50" />
               <p className="text-sm">Revenue Chart (Recharts) will load here</p>
             </div>
@@ -75,7 +75,7 @@ export default function Dashboard() {
                 <div className="w-4 h-4 rounded-full bg-[var(--color-electric-blue)] mt-1 border-4 border-white flex-shrink-0 relative z-10 shadow-sm" />
                 <div>
                   <p className="text-sm font-medium text-[var(--color-navy-900)]">{event.action}</p>
-                  <p className="text-xs text-slate-500">{event.vehicle} • {event.time}</p>
+                  <p className="text-xs text-[var(--text-muted)]">{event.vehicle} • {event.time}</p>
                 </div>
               </div>
             ))}
@@ -85,4 +85,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
 

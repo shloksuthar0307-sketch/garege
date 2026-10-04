@@ -234,8 +234,8 @@ export default function AdvisorMessages() {
     <div className="h-[calc(100vh-140px)] flex flex-col space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 shrink-0">
         <div>
-          <h1 className="text-3xl font-light text-white tracking-tight">Customer Messages</h1>
-          <p className="text-sm text-slate-500 mt-1">Direct communication channel with vehicle owners via the mobile app.</p>
+          <h1 className="text-3xl font-light text-[var(--text-primary)] tracking-tight">Customer Messages</h1>
+          <p className="text-sm text-[var(--text-muted)] mt-1">Direct communication channel with vehicle owners via the mobile app.</p>
         </div>
         <button 
           onClick={() => setShowNewChatModal(true)}
@@ -245,7 +245,7 @@ export default function AdvisorMessages() {
         </button>
       </div>
 
-      <div className="flex-1 flex bg-[#111B21] border border-white/5 rounded-2xl overflow-hidden shadow-xl">
+      <div className="flex-1 flex bg-[#111B21] border border-[var(--border-subtle)] rounded-2xl overflow-hidden shadow-xl">
         {/* Contacts Sidebar */}
         <div className="w-80 border-r border-[#202C33] flex flex-col bg-[#111B21]">
           <div className="p-4 border-b border-[#202C33] shrink-0 bg-[#202C33]">
@@ -420,7 +420,7 @@ export default function AdvisorMessages() {
                   <button 
                     onClick={handleSendMessage}
                     disabled={sendMutation.isPending}
-                    className="w-10 h-10 rounded-full bg-[#00A884] flex items-center justify-center text-white hover:bg-[#008f6f] transition-colors shrink-0"
+                    className="w-10 h-10 rounded-full bg-[#00A884] flex items-center justify-center text-[var(--text-primary)] hover:bg-[#008f6f] transition-colors shrink-0"
                   >
                     <Send size={18} className="ml-1" />
                   </button>
@@ -441,7 +441,7 @@ export default function AdvisorMessages() {
       
       {/* New Chat Modal */}
       {showNewChatModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-[var(--bg-overlay)] backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-[#111B21] border border-[#202C33] rounded-2xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col max-h-[80vh]">
             <div className="p-4 border-b border-[#202C33] flex justify-between items-center bg-[#202C33]">
               <h3 className="text-lg font-medium text-[#E9EDEF]">New Chat</h3>
@@ -500,4 +500,5 @@ export default function AdvisorMessages() {
     </div>
   );
 }
+
 

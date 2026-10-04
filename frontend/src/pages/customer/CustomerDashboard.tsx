@@ -36,10 +36,10 @@ export default function CustomerDashboard() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-1">
+          <h1 className="text-3xl font-bold tracking-tight text-[var(--text-primary)] mb-1">
             Welcome back, John 👋
           </h1>
-          <p className="text-slate-400">
+          <p className="text-[var(--text-muted)]">
             Here's what's happening with your account today.
           </p>
         </motion.div>
@@ -50,13 +50,13 @@ export default function CustomerDashboard() {
           transition={{ delay: 0.1 }}
           className="flex flex-wrap items-center gap-3"
         >
-          <button className="flex items-center gap-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-400 text-white rounded-xl text-sm font-medium transition-all shadow-[0_0_15px_rgba(99,102,241,0.3)]">
+          <button className="flex items-center gap-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-400 text-[var(--text-primary)] rounded-xl text-sm font-medium transition-all shadow-[0_0_15px_rgba(99,102,241,0.3)]">
             <Plus size={16} /> Create New Project
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-sm font-medium transition-all">
+          <button className="flex items-center gap-2 px-4 py-2 bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] border border-[var(--border-default)] text-[var(--text-primary)] rounded-xl text-sm font-medium transition-all">
             View Pending Orders
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-sm font-medium transition-all">
+          <button className="flex items-center gap-2 px-4 py-2 bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] border border-[var(--border-default)] text-[var(--text-primary)] rounded-xl text-sm font-medium transition-all">
             Contact Support
           </button>
         </motion.div>
@@ -70,7 +70,7 @@ export default function CustomerDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 + idx * 0.05 }}
-            className="group p-5 bg-[#111112]/60 backdrop-blur-md border border-white/5 hover:border-white/10 rounded-2xl transition-all cursor-pointer relative overflow-hidden"
+            className="group p-5 bg-[var(--bg-secondary)]/60 backdrop-blur-md border border-[var(--border-subtle)] hover:border-[var(--border-default)] rounded-2xl transition-all cursor-pointer relative overflow-hidden"
           >
             {/* Hover Gradient */}
             <div className={`absolute inset-0 bg-${metric.color}-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
@@ -78,11 +78,11 @@ export default function CustomerDashboard() {
             {loading ? (
               <div className="animate-pulse space-y-3">
                 <div className="flex justify-between">
-                  <div className="w-10 h-10 bg-white/5 rounded-xl"></div>
-                  <div className="w-12 h-5 bg-white/5 rounded-full"></div>
+                  <div className="w-10 h-10 bg-[var(--bg-surface-hover)] rounded-xl"></div>
+                  <div className="w-12 h-5 bg-[var(--bg-surface-hover)] rounded-full"></div>
                 </div>
-                <div className="h-8 bg-white/5 rounded-md w-1/2 mt-4"></div>
-                <div className="h-4 bg-white/5 rounded-md w-1/3"></div>
+                <div className="h-8 bg-[var(--bg-surface-hover)] rounded-md w-1/2 mt-4"></div>
+                <div className="h-4 bg-[var(--bg-surface-hover)] rounded-md w-1/3"></div>
               </div>
             ) : (
               <>
@@ -93,7 +93,7 @@ export default function CustomerDashboard() {
                   <span className={`flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full ${
                     metric.trend === 'up' ? 'bg-emerald-500/10 text-emerald-400' :
                     metric.trend === 'down' ? 'bg-rose-500/10 text-rose-400' :
-                    'bg-slate-500/10 text-slate-400'
+                    'bg-slate-500/10 text-[var(--text-muted)]'
                   }`}>
                     {metric.trend === 'up' && <ArrowUpRight size={14} />}
                     {metric.trend === 'down' && <ArrowDownRight size={14} />}
@@ -101,8 +101,8 @@ export default function CustomerDashboard() {
                   </span>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-white tracking-tight mb-1">{metric.value}</h3>
-                  <p className="text-slate-400 text-sm">{metric.label}</p>
+                  <h3 className="text-2xl font-bold text-[var(--text-primary)] tracking-tight mb-1">{metric.value}</h3>
+                  <p className="text-[var(--text-muted)] text-sm">{metric.label}</p>
                 </div>
               </>
             )}
@@ -116,7 +116,7 @@ export default function CustomerDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="lg:col-span-2 p-6 bg-[#111112]/60 backdrop-blur-md border border-white/5 rounded-2xl"
+          className="lg:col-span-2 p-6 bg-[var(--bg-secondary)]/60 backdrop-blur-md border border-[var(--border-subtle)] rounded-2xl"
         >
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold">Recent Activity</h2>
@@ -129,10 +129,10 @@ export default function CustomerDashboard() {
             {loading ? (
               [1,2,3].map(i => (
                 <div key={i} className="flex gap-4 animate-pulse">
-                  <div className="w-10 h-10 rounded-full bg-white/5 shrink-0"></div>
+                  <div className="w-10 h-10 rounded-full bg-[var(--bg-surface-hover)] shrink-0"></div>
                   <div className="flex-1 space-y-2 py-1">
-                    <div className="h-4 bg-white/5 rounded w-3/4"></div>
-                    <div className="h-3 bg-white/5 rounded w-1/4"></div>
+                    <div className="h-4 bg-[var(--bg-surface-hover)] rounded w-3/4"></div>
+                    <div className="h-3 bg-[var(--bg-surface-hover)] rounded w-1/4"></div>
                   </div>
                 </div>
               ))
@@ -140,7 +140,7 @@ export default function CustomerDashboard() {
               ACTIVITY.map((item, idx) => (
                 <div key={item.id} className="flex gap-4 relative group">
                   {idx !== ACTIVITY.length - 1 && (
-                    <div className="absolute left-5 top-10 bottom-[-24px] w-px bg-white/5 group-hover:bg-indigo-500/20 transition-colors"></div>
+                    <div className="absolute left-5 top-10 bottom-[-24px] w-px bg-[var(--bg-surface-hover)] group-hover:bg-indigo-500/20 transition-colors"></div>
                   )}
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 z-10 border ${
                     item.status === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' :
@@ -150,8 +150,8 @@ export default function CustomerDashboard() {
                     <item.icon size={18} />
                   </div>
                   <div className="pt-2">
-                    <p className="text-slate-200 text-sm font-medium">{item.action}</p>
-                    <p className="text-slate-500 text-xs mt-1">{item.time}</p>
+                    <p className="text-[var(--text-secondary)] text-sm font-medium">{item.action}</p>
+                    <p className="text-[var(--text-muted)] text-xs mt-1">{item.time}</p>
                   </div>
                 </div>
               ))
@@ -169,11 +169,11 @@ export default function CustomerDashboard() {
           <div className="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 mb-4 border border-indigo-500/30">
             <Activity size={24} />
           </div>
-          <h3 className="text-lg font-semibold text-white mb-2">Need assistance?</h3>
-          <p className="text-slate-300 text-sm mb-6 flex-1">
+          <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">Need assistance?</h3>
+          <p className="text-[var(--text-secondary)] text-sm mb-6 flex-1">
             Our support team is online and ready to help you with your projects, billing, or any questions you might have.
           </p>
-          <button className="w-full py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl text-sm font-medium transition-all text-center">
+          <button className="w-full py-3 bg-[var(--bg-surface-active)] hover:bg-white/20 border border-[var(--border-strong)] text-[var(--text-primary)] rounded-xl text-sm font-medium transition-all text-center">
             Open Support Chat
           </button>
         </motion.div>
@@ -181,4 +181,5 @@ export default function CustomerDashboard() {
     </div>
   );
 }
+
 

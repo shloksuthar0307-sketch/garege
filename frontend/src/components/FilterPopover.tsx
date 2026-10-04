@@ -33,14 +33,14 @@ export function FilterPopover({ filters, onFilterChange, activeFilters }: Filter
     <div className="relative" ref={popoverRef}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center space-x-2 px-4 py-3 border rounded-xl text-white transition-colors ${isOpen || hasActiveFilters ? 'bg-[#35D07F]/10 border-[#35D07F]/50 text-[#35D07F]' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
+        className={`flex items-center space-x-2 px-4 py-3 border rounded-xl text-[var(--text-primary)] transition-colors ${isOpen || hasActiveFilters ? 'bg-[#35D07F]/10 border-[#35D07F]/50 text-[#35D07F]' : 'bg-[var(--bg-surface-hover)] border-[var(--border-default)] hover:bg-[var(--bg-surface-active)]'}`}
       >
         <Filter size={16} />
         <span className="text-xs uppercase tracking-widest font-bold">Filter</span>
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-[#1A1A1B] border border-white/10 rounded-2xl shadow-2xl p-4 z-50 animate-in fade-in slide-in-from-top-2">
+        <div className="absolute right-0 mt-2 w-64 bg-[#1A1A1B] border border-[var(--border-default)] rounded-2xl shadow-2xl p-4 z-50 animate-in fade-in slide-in-from-top-2">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xs font-bold tracking-widest uppercase text-white/50">Apply Filters</h3>
             {hasActiveFilters && (
@@ -49,7 +49,7 @@ export function FilterPopover({ filters, onFilterChange, activeFilters }: Filter
                   const cleared = Object.keys(activeFilters).reduce((acc, key) => ({...acc, [key]: ''}), {});
                   onFilterChange(cleared);
                 }}
-                className="text-[10px] text-white/30 hover:text-white uppercase tracking-wider"
+                className="text-[10px] text-white/30 hover:text-[var(--text-primary)] uppercase tracking-wider"
               >
                 Clear All
               </button>
@@ -63,7 +63,7 @@ export function FilterPopover({ filters, onFilterChange, activeFilters }: Filter
                 <select
                   value={activeFilters[filter.key] || ''}
                   onChange={(e) => onFilterChange({ ...activeFilters, [filter.key]: e.target.value })}
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#35D07F]"
+                  className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-3 py-2 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F]"
                 >
                   <option value="">All {filter.label}</option>
                   {filter.options.map(opt => (
@@ -78,4 +78,5 @@ export function FilterPopover({ filters, onFilterChange, activeFilters }: Filter
     </div>
   );
 }
+
 

@@ -9,7 +9,8 @@ from .views_manager import (
     ManagerCustomerViewSet,
     ManagerInvoiceViewSet,
     ManagerTechnicianViewSet,
-    ManagerInventoryViewSet
+    ManagerInventoryViewSet,
+    invite_staff
 )
 
 router = DefaultRouter()
@@ -24,5 +25,6 @@ router.register(r'inventory', ManagerInventoryViewSet, basename='manager-invento
 urlpatterns = [
     path('dashboard/kpis/', manager_dashboard_kpis, name='manager-kpis'),
     path('dashboard/alerts/', manager_alerts, name='manager-alerts'),
+    path('staff/invite/', invite_staff, name='manager-invite-staff'),
     path('', include(router.urls)),
 ]

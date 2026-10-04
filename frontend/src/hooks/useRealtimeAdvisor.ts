@@ -33,11 +33,35 @@ export function useRealtimeAdvisor() {
         }
 
         // Invalidate queries to refresh data across the dashboard
-        if (data.type?.startsWith('SERVICE_ORDER_') || data.type === 'DAMAGE_ADDED') {
+        if (data.type?.startsWith('SERVICE_ORDER_') || data.type === 'DAMAGE_ADDED' || data.type === 'APPOINTMENT_BOOKED' || data.type === 'INVOICE_STATUS_CHANGED') {
           queryClient.invalidateQueries({ queryKey: ['advisor-active-services'] });
           queryClient.invalidateQueries({ queryKey: ['advisor-stats'] });
+          queryClient.invalidateQueries({ queryKey: ['admin-analytics'] });
+          queryClient.invalidateQueries({ queryKey: ['admin-bookings'] });
+          queryClient.invalidateQueries({ queryKey: ['admin-repairs'] });
+          queryClient.invalidateQueries({ queryKey: ['branch-dashboard'] });
+          queryClient.invalidateQueries({ queryKey: ['admin-invoices'] });
         }
-        
+        if (data.type === 'SERVICE_HISTORY_UPDATED') {
+          queryClient.invalidateQueries({ queryKey: ['vehicle-service-history'] });
+          queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
+        }
+        if (data.type === 'TECHNICIAN_ASSIGNED') {
+          queryClient.invalidateQueries({ queryKey: ['technician-assignments'] });
+          queryClient.invalidateQueries({ queryKey: ['technician-dashboard'] });
+          queryClient.invalidateQueries({ queryKey: ['vehicle-details'] });
+        }
+        if (data.type === 'CUSTOMER_REGISTERED') {
+          queryClient.invalidateQueries({ queryKey: ['admin-analytics'] });
+          queryClient.invalidateQueries({ queryKey: ['admin-customers'] });
+          window.dispatchEvent(new Event('REFRESH_CUSTOMERS'));
+        }
+        if (data.type === 'VEHICLE_REGISTERED') {
+          queryClient.invalidateQueries({ queryKey: ['admin-vehicles'] });
+          queryClient.invalidateQueries({ queryKey: ['admin-analytics'] });
+          window.dispatchEvent(new Event('REFRESH_VEHICLES'));
+        }
+
         if (data.type === 'NEW_MESSAGE') {
           queryClient.invalidateQueries({ queryKey: ['advisor-conversations'] });
           queryClient.invalidateQueries({ queryKey: ['advisor-messages'] });

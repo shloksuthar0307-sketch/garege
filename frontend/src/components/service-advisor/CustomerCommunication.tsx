@@ -39,9 +39,9 @@ export default function CustomerCommunication({ serviceOrder }: { serviceOrder: 
   };
 
   return (
-    <div className="bg-[#111112] border border-white/5 rounded-xl flex flex-col h-[500px]">
-      <div className="p-4 border-b border-white/5 shrink-0 bg-white/[0.02]">
-        <h3 className="text-sm font-bold text-white uppercase tracking-widest flex items-center gap-2">
+    <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-xl flex flex-col h-[500px]">
+      <div className="p-4 border-b border-[var(--border-subtle)] shrink-0 bg-white/[0.02]">
+        <h3 className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-widest flex items-center gap-2">
           Chat with Customer
         </h3>
       </div>
@@ -51,18 +51,18 @@ export default function CustomerCommunication({ serviceOrder }: { serviceOrder: 
           <div key={msg.id} className={`flex flex-col ${msg.isCustomer ? 'items-start' : 'items-end'}`}>
             {msg.type === 'event' ? (
               <div className="w-full flex justify-center my-4">
-                <span className="bg-white/5 text-slate-400 text-[10px] uppercase tracking-widest px-3 py-1 rounded-full">
+                <span className="bg-[var(--bg-surface-hover)] text-[var(--text-muted)] text-[10px] uppercase tracking-widest px-3 py-1 rounded-full">
                   {msg.text}
                 </span>
               </div>
             ) : (
               <div className={`max-w-[80%] rounded-2xl p-3 ${
                 msg.isCustomer 
-                  ? 'bg-white/10 text-white rounded-tl-none' 
+                  ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] rounded-tl-none' 
                   : 'bg-[#35D07F]/20 text-[#35D07F] border border-[#35D07F]/20 rounded-tr-none'
               }`}>
                 <p className="text-sm leading-relaxed">{msg.text}</p>
-                <div className={`text-[9px] mt-1 flex items-center gap-1 ${msg.isCustomer ? 'text-slate-400' : 'text-[#35D07F]/70 justify-end'}`}>
+                <div className={`text-[9px] mt-1 flex items-center gap-1 ${msg.isCustomer ? 'text-[var(--text-muted)]' : 'text-[#35D07F]/70 justify-end'}`}>
                   {msg.sender} &bull; {msg.time}
                 </div>
               </div>
@@ -71,9 +71,9 @@ export default function CustomerCommunication({ serviceOrder }: { serviceOrder: 
         ))}
       </div>
       
-      <div className="p-4 border-t border-white/5 shrink-0 bg-black/40">
+      <div className="p-4 border-t border-[var(--border-subtle)] shrink-0 bg-[var(--bg-input)]">
         <div className="flex items-center gap-2">
-          <button className="p-3 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-colors">
+          <button className="p-3 text-[var(--text-muted)] hover:text-[var(--text-primary)] bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] rounded-xl transition-colors">
             <Paperclip size={18} />
           </button>
           <input 
@@ -82,7 +82,7 @@ export default function CustomerCommunication({ serviceOrder }: { serviceOrder: 
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            className="flex-1 bg-[#111112] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-[#35D07F] focus:outline-none"
+            className="flex-1 bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-xl px-4 py-3 text-sm text-[var(--text-primary)] focus:border-[#35D07F] focus:outline-none"
           />
           <button 
             onClick={handleSend}
@@ -95,4 +95,5 @@ export default function CustomerCommunication({ serviceOrder }: { serviceOrder: 
     </div>
   );
 }
+
 

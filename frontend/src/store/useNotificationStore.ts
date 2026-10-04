@@ -18,24 +18,7 @@ interface NotificationState {
 }
 
 export const useNotificationStore = create<NotificationState>((set) => ({
-  notifications: [
-    {
-      id: '1',
-      title: 'Customer Approved',
-      message: 'John Doe approved the repair estimate for Brake Pad Replacement.',
-      type: 'success',
-      read: false,
-      timestamp: Date.now() - 1000 * 60 * 5, // 5 mins ago
-    },
-    {
-      id: '2',
-      title: 'Parts Ready',
-      message: 'Parts for Honda Civic (KA19X1234) are ready for pickup.',
-      type: 'info',
-      read: false,
-      timestamp: Date.now() - 1000 * 60 * 30, // 30 mins ago
-    }
-  ],
+  notifications: [],
   addNotification: (notification) => set((state) => ({
     notifications: [
       {

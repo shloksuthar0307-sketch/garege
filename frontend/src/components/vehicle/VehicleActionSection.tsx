@@ -18,7 +18,7 @@ export default function VehicleActionSection({ vehicleId, onViewHistory, classNa
       
       <button 
         onClick={() => setIsBookingOpen(true)}
-        className="w-full bg-black text-white text-sm font-semibold h-12 rounded-[14px] shadow-sm hover:bg-gray-800 transition-all active:scale-[0.98] flex items-center justify-center"
+        className="w-full bg-black text-[var(--text-primary)] text-sm font-semibold h-12 rounded-[14px] shadow-sm hover:bg-gray-800 transition-all active:scale-[0.98] flex items-center justify-center"
       >
         Book Service
       </button>
@@ -52,4 +52,5 @@ export default function VehicleActionSection({ vehicleId, onViewHistory, classNa
     </div>
   );
 }
+
 

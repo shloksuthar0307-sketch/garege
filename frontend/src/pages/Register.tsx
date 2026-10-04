@@ -1,6 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+
+interface Branch {
+  id: string;
+  name: string;
+  organization_name: string;
+}
 
 export default function Register() {
   const navigate = useNavigate();
@@ -11,15 +17,36 @@ export default function Register() {
     phone: '',
     username: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    branchId: ''
   });
+  const [branches, setBranches] = useState<Branch[]>([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    const fetchBranches = async () => {
+      try {
+        const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+        const res = await fetch(`${apiBaseUrl}/auth/branches/`);
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setBranches(data);
+          if (data.length > 0) {
+            setFormData(prev => ({ ...prev, branchId: data[0].id }));
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load branches", err);
+      }
+    };
+    fetchBranches();
+  }, []);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,19 +62,23 @@ export default function Register() {
     try {
       const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
       // Register customer using api
+      const payload: any = { 
+        username: formData.username, 
+        password: formData.password,
+        confirm_password: formData.confirmPassword,
+        email: formData.email,
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        phone_number: formData.phone,
+        role: 'CUSTOMER'
+      };
+      if (formData.branchId) {
+          payload.branch_id = formData.branchId;
+      }
       const response = await fetch(`${apiBaseUrl}/auth/register/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          username: formData.username, 
-          password: formData.password,
-          confirm_password: formData.confirmPassword,
-          email: formData.email,
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          phone_number: formData.phone,
-          role: 'CUSTOMER'
-        })
+        body: JSON.stringify(payload)
       });
       
       const data = await response.json();
@@ -84,11 +115,8 @@ export default function Register() {
         setError(errMsg);
       }
     } catch (err) {
-      console.warn('API Error, simulating success for frontend demo:', err);
-      setSuccess(true);
-      setTimeout(() => {
-        navigate('/login');
-      }, 2000);
+      console.error('API Error:', err);
+      setError('A network error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -101,13 +129,13 @@ export default function Register() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-white/5 border border-white/10 p-8 rounded-2xl backdrop-blur-xl"
+          className="bg-[var(--bg-surface-hover)] border border-[var(--border-default)] p-8 rounded-2xl backdrop-blur-xl"
         >
           <div className="flex justify-center mb-6">
              <img src="/images/logo.png" alt="TR Logo" className="w-16 h-16 drop-shadow-2xl" />
           </div>
           
-          <h2 className="text-2xl font-light text-white text-center mb-6 tracking-wide">
+          <h2 className="text-2xl font-light text-[var(--text-primary)] text-center mb-6 tracking-wide">
             CUSTOMER REGISTRATION
           </h2>
           
@@ -132,7 +160,7 @@ export default function Register() {
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleChange}
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors font-light"
+                  className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors font-light"
                   required
                 />
               </div>
@@ -143,7 +171,7 @@ export default function Register() {
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleChange}
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors font-light"
+                  className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors font-light"
                   required
                 />
               </div>
@@ -156,9 +184,25 @@ export default function Register() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors font-light"
+                className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors font-light"
                 required
               />
+            </div>
+            
+            <div>
+              <label className="block text-[10px] tracking-[0.2em] text-white/50 uppercase mb-2">Service Branch (Optional)</label>
+              <select 
+                name="branchId"
+                value={formData.branchId}
+                onChange={handleChange}
+                className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors font-light appearance-none"
+              >
+                <option value="">No preferred branch</option>
+                {branches.length === 0 && <option disabled>Loading branches...</option>}
+                {branches.map(b => (
+                  <option key={b.id} value={b.id}>{b.name} ({b.organization_name})</option>
+                ))}
+              </select>
             </div>
             
             <div>
@@ -168,7 +212,7 @@ export default function Register() {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors font-light"
+                className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors font-light"
               />
             </div>
             
@@ -179,7 +223,7 @@ export default function Register() {
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
-                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors font-light"
+                className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors font-light"
                 required
               />
             </div>
@@ -191,7 +235,7 @@ export default function Register() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors font-light"
+                className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors font-light"
                 required
               />
             </div>
@@ -203,7 +247,7 @@ export default function Register() {
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#35D07F] transition-colors font-light"
+                className="w-full bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:border-[#35D07F] transition-colors font-light"
                 required
               />
             </div>
@@ -231,4 +275,5 @@ export default function Register() {
     </div>
   );
 }
+
 

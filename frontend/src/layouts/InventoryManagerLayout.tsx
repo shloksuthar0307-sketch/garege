@@ -38,21 +38,21 @@ export default function InventoryManagerLayout() {
   };
 
   return (
-    <div className="flex h-screen bg-[#020202] text-white overflow-hidden selection:bg-[#35D07F] selection:text-black">
+    <div className="flex h-screen bg-[var(--bg-root)] text-[var(--text-primary)] overflow-hidden selection:bg-[#35D07F] selection:text-black">
       {/* Sidebar */}
       <aside className={`
-        fixed inset-y-0 left-0 z-50 w-72 bg-[#0A0A0A] border-r border-white/5 
+        fixed inset-y-0 left-0 z-50 w-72 bg-[#0A0A0A] border-r border-[var(--border-subtle)] 
         transform transition-transform duration-300 ease-in-out
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
         lg:relative lg:translate-x-0 flex flex-col
       `}>
-        <div className="p-6 border-b border-white/5 flex items-center justify-between">
+        <div className="p-6 border-b border-[var(--border-subtle)] flex items-center justify-between">
           <div>
             <h1 className="text-xl font-light tracking-widest uppercase">RepairTrace</h1>
             <p className="text-[#35D07F] text-xs font-bold tracking-widest uppercase mt-1">Inventory Manager</p>
           </div>
           <button 
-            className="lg:hidden text-white/50 hover:text-white"
+            className="lg:hidden text-white/50 hover:text-[var(--text-primary)]"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             <X size={24} />
@@ -67,8 +67,8 @@ export default function InventoryManagerLayout() {
               className={({ isActive }) => `
                 flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300
                 ${isActive 
-                  ? 'bg-white/10 text-white border border-white/10' 
-                  : 'text-white/50 hover:text-white hover:bg-white/5 border border-transparent'}
+                  ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] border border-[var(--border-default)]' 
+                  : 'text-white/50 hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] border border-transparent'}
               `}
             >
               <item.icon size={20} className={location.pathname === item.path ? "text-[#35D07F]" : ""} />
@@ -77,16 +77,16 @@ export default function InventoryManagerLayout() {
           ))}
         </nav>
 
-        <div className="p-4 border-t border-white/5">
+        <div className="p-4 border-t border-[var(--border-subtle)]">
           <div 
             onClick={() => navigate('/inventory-manager/profile')}
-            className={`flex items-center space-x-3 px-2 py-3 mb-2 rounded-xl cursor-pointer transition-colors ${location.pathname.includes('/profile') ? 'bg-white/10 border border-white/10' : 'hover:bg-white/5 border border-transparent'}`}
+            className={`flex items-center space-x-3 px-2 py-3 mb-2 rounded-xl cursor-pointer transition-colors ${location.pathname.includes('/profile') ? 'bg-[var(--bg-surface-active)] border border-[var(--border-default)]' : 'hover:bg-[var(--bg-surface-hover)] border border-transparent'}`}
           >
-            <div className="w-10 h-10 rounded-full bg-[#1A1A1A] flex items-center justify-center border border-white/10 text-white font-medium">
+            <div className="w-10 h-10 rounded-full bg-[#1A1A1A] flex items-center justify-center border border-[var(--border-default)] text-[var(--text-primary)] font-medium">
               {user?.full_name?.charAt(0) || 'I'}
             </div>
             <div>
-              <p className="text-sm font-semibold text-white tracking-wide">{user?.full_name || 'Inventory Manager'}</p>
+              <p className="text-sm font-semibold text-[var(--text-primary)] tracking-wide">{user?.full_name || 'Inventory Manager'}</p>
               <p className="text-[11px] text-white/40 font-medium tracking-wider">{user?.branch_name || 'Central Branch'}</p>
             </div>
           </div>
@@ -103,10 +103,10 @@ export default function InventoryManagerLayout() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Topbar */}
-        <header className="h-20 bg-[#020202] border-b border-white/5 flex items-center justify-between px-8 shrink-0">
+        <header className="h-20 bg-[var(--bg-root)] border-b border-[var(--border-subtle)] flex items-center justify-between px-8 shrink-0">
           <div className="flex items-center">
             <button 
-              className="lg:hidden text-white/50 hover:text-white mr-4"
+              className="lg:hidden text-white/50 hover:text-[var(--text-primary)] mr-4"
               onClick={() => setIsMobileMenuOpen(true)}
             >
               <Menu size={24} />
@@ -122,18 +122,18 @@ export default function InventoryManagerLayout() {
               <input 
                 type="text" 
                 placeholder="Ctrl + K to search" 
-                className="w-64 bg-white/5 border border-white/10 rounded-full py-2 pl-10 pr-4 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#35D07F]/50 focus:bg-white/10 transition-all"
+                className="w-64 bg-[var(--bg-surface-hover)] border border-[var(--border-default)] rounded-full py-2 pl-10 pr-4 text-sm text-[var(--text-primary)] placeholder-white/30 focus:outline-none focus:border-[#35D07F]/50 focus:bg-[var(--bg-surface-active)] transition-all"
               />
             </div>
-            <button className="relative text-white/50 hover:text-white transition-colors">
+            <button className="relative text-white/50 hover:text-[var(--text-primary)] transition-colors">
               <Bell size={20} />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[9px] font-bold flex items-center justify-center text-white border border-[#020202]">
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[9px] font-bold flex items-center justify-center text-[var(--text-primary)] border border-[#020202]">
                 3
               </span>
             </button>
             <button 
               onClick={() => navigate('/inventory-manager/settings')}
-              className={`transition-colors ${location.pathname.includes('/settings') ? 'text-[#35D07F]' : 'text-white/50 hover:text-white'}`}
+              className={`transition-colors ${location.pathname.includes('/settings') ? 'text-[#35D07F]' : 'text-white/50 hover:text-[var(--text-primary)]'}`}
             >
               <Settings size={20} />
             </button>
@@ -151,4 +151,5 @@ export default function InventoryManagerLayout() {
     </div>
   );
 }
+
 
