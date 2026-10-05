@@ -1,3 +1,4 @@
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../lib/auth';
 import { Navigate, Outlet } from 'react-router-dom';
 
 interface ProtectedRouteProps {
@@ -5,7 +6,7 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
-  const token = localStorage.getItem('accessToken');
+  const token = getAccessToken();
   
   if (!token) {
     return <Navigate to="/login" replace />;
@@ -13,6 +14,12 @@ export default function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
   
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
+    
+    if (payload.exp && payload.exp * 1000 < Date.now()) {
+      clearTokens();
+      return <Navigate to="/login" replace />;
+    }
+    
     const userRole = payload.user?.role;
     
     if (allowedRoles && !allowedRoles.includes(userRole)) {
@@ -26,9 +33,8 @@ export default function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
     return <Outlet />;
   } catch (e) {
     // Invalid token
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    return <Navigate to="/login" replace />;
+    clearTokens();
+return <Navigate to="/login" replace />;
   }
 }
 

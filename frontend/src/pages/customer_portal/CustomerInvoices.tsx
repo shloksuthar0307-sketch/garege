@@ -1,3 +1,5 @@
+import { API_BASE_URL, WS_BASE_URL } from '../../lib/config';
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../../lib/auth';
 import React, { useState, useEffect } from 'react';
 import { api } from '../../lib/api';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -561,9 +563,9 @@ export default function CustomerInvoices() {
 
     try {
       toast.loading('Generating PDF...', { id: 'pdf-gen' });
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1'}/customer/invoices/${id}/download/`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || API_BASE_URL + '/api/v1'}/customer/invoices/${id}/download/`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+          'Authorization': `Bearer ${getAccessToken()}`
         }
       });
       

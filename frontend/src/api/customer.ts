@@ -1,14 +1,14 @@
-import { API_BASE_URL, getAuthHeaders } from './client';
+import { API_URL, getAuthHeaders } from './client';
 
 export const customerApi = {
   getAppointments: async () => {
-    const response = await fetch(`${API_BASE_URL}/appointments/`, { headers: getAuthHeaders() });
+    const response = await fetch(`${API_URL}/appointments/`, { headers: getAuthHeaders() });
     if (!response.ok) throw new Error('Failed to fetch appointments');
     return response.json();
   },
   
   createAppointment: async (data: any) => {
-    const response = await fetch(`${API_BASE_URL}/appointments/`, {
+    const response = await fetch(`${API_URL}/appointments/`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify(data),
@@ -18,31 +18,31 @@ export const customerApi = {
   },
 
   getServiceHistory: async () => {
-    const response = await fetch(`${API_BASE_URL}/service-orders/`, { headers: getAuthHeaders() });
+    const response = await fetch(`${API_URL}/service-orders/`, { headers: getAuthHeaders() });
     if (!response.ok) throw new Error('Failed to fetch service history');
     return response.json();
   },
 
   getVehicles: async () => {
-    const response = await fetch(`${API_BASE_URL}/vehicles/`, { headers: getAuthHeaders() });
+    const response = await fetch(`${API_URL}/vehicles/`, { headers: getAuthHeaders() });
     if (!response.ok) throw new Error('Failed to fetch vehicles');
     return response.json();
   },
 
   getInvoices: async () => {
-    const response = await fetch(`${API_BASE_URL}/customer/invoices/`, { headers: getAuthHeaders() });
+    const response = await fetch(`${API_URL}/customer/invoices/`, { headers: getAuthHeaders() });
     if (!response.ok) throw new Error('Failed to fetch invoices');
     return response.json();
   },
 
   getNotifications: async () => {
-    const response = await fetch(`${API_BASE_URL}/customer/notifications/`, { headers: getAuthHeaders() });
+    const response = await fetch(`${API_URL}/customer/notifications/`, { headers: getAuthHeaders() });
     if (!response.ok) throw new Error('Failed to fetch notifications');
     return response.json();
   },
 
   markNotificationRead: async (id: string) => {
-    const response = await fetch(`${API_BASE_URL}/customer/notifications/${id}/`, {
+    const response = await fetch(`${API_URL}/customer/notifications/${id}/`, {
       method: 'PATCH',
       headers: getAuthHeaders(),
       body: JSON.stringify({ is_read: true }),
@@ -52,7 +52,7 @@ export const customerApi = {
   },
 
   markAllNotificationsRead: async () => {
-    const response = await fetch(`${API_BASE_URL}/customer/notifications/mark_all_read/`, {
+    const response = await fetch(`${API_URL}/customer/notifications/mark_all_read/`, {
       method: 'POST',
       headers: getAuthHeaders(),
     });
@@ -61,13 +61,13 @@ export const customerApi = {
   },
 
   getEstimates: async () => {
-    const response = await fetch(`${API_BASE_URL}/customer/estimates/`, { headers: getAuthHeaders() });
+    const response = await fetch(`${API_URL}/customer/estimates/`, { headers: getAuthHeaders() });
     if (!response.ok) throw new Error('Failed to fetch estimates');
     return response.json();
   },
 
   approveEstimate: async (id: string) => {
-    const response = await fetch(`${API_BASE_URL}/customer/estimates/${id}/approve/`, {
+    const response = await fetch(`${API_URL}/customer/estimates/${id}/approve/`, {
       method: 'POST',
       headers: getAuthHeaders(),
     });
@@ -76,7 +76,7 @@ export const customerApi = {
   },
 
   declineEstimate: async (id: string) => {
-    const response = await fetch(`${API_BASE_URL}/customer/estimates/${id}/decline/`, {
+    const response = await fetch(`${API_URL}/customer/estimates/${id}/decline/`, {
       method: 'POST',
       headers: getAuthHeaders(),
     });

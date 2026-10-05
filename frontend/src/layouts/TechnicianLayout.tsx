@@ -1,3 +1,4 @@
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../lib/auth';
 import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -66,9 +67,8 @@ export default function TechnicianLayout() {
   }, [location.pathname]);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
-    navigate('/login');
+    clearTokens();
+navigate('/login');
   };
 
   return (

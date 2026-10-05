@@ -1,3 +1,5 @@
+import { API_BASE_URL, WS_BASE_URL } from '../lib/config';
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../lib/auth';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -57,10 +59,10 @@ export default function TechnicianRepair() {
       formData.append('vehicle_area', 'After Repair');
       
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1'}/technician/work-orders/${id}/photos/`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || API_BASE_URL + '/api/v1'}/technician/work-orders/${id}/photos/`, {
             method: 'POST',
             headers: {
-              'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+              'Authorization': `Bearer ${getAccessToken()}`
             },
             body: formData
         });

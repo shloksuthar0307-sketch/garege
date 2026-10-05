@@ -1,3 +1,5 @@
+import { API_BASE_URL, WS_BASE_URL } from '../lib/config';
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../lib/auth';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -50,8 +52,8 @@ export default function TechnicianInspection() {
       formData.append('vehicle_area', 'Auto-detect');
       
       try {
-        const token = localStorage.getItem('accessToken');
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1'}/technician/inspections/${id}/ai-analyze/`, {
+        const token = getAccessToken();
+        const response = await fetch(`${import.meta.env.VITE_API_URL || API_BASE_URL + '/api/v1'}/technician/inspections/${id}/ai-analyze/`, {
           method: 'POST',
           headers: token ? { 'Authorization': `Bearer ${token}` } : {},
           body: formData
@@ -73,10 +75,10 @@ export default function TechnicianInspection() {
 
   const handleConfirmAi = async (findingId: string) => {
     try {
-      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1'}/technician/ai-findings/${findingId}/confirm/`, {
+      await fetch(`${import.meta.env.VITE_API_URL || API_BASE_URL + '/api/v1'}/technician/ai-findings/${findingId}/confirm/`, {
         method: 'POST',
         headers: { 
-          'Authorization': `Bearer ${localStorage.getItem('accessToken') || ''}`,
+          'Authorization': `Bearer ${getAccessToken() || ''}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({})
@@ -102,10 +104,10 @@ export default function TechnicianInspection() {
           formData.append('file_type', file.type.startsWith('video/') ? 'video' : 'image');
           formData.append('description', 'Technician evidence');
           
-          await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1'}/technician/issues/${issueResponse.id}/evidence/`, {
+          await fetch(`${import.meta.env.VITE_API_URL || API_BASE_URL + '/api/v1'}/technician/issues/${issueResponse.id}/evidence/`, {
             method: 'POST',
             headers: {
-              'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+              'Authorization': `Bearer ${getAccessToken()}`
             },
             body: formData
           });

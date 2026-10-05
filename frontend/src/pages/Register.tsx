@@ -1,3 +1,5 @@
+import { API_BASE_URL, WS_BASE_URL } from '../lib/config';
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../lib/auth';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -32,7 +34,7 @@ export default function Register() {
   useEffect(() => {
     const fetchBranches = async () => {
       try {
-        const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+        const apiBaseUrl = import.meta.env.VITE_API_URL || API_BASE_URL + '/api/v1';
         const res = await fetch(`${apiBaseUrl}/auth/branches/`);
         const data = await res.json();
         if (Array.isArray(data)) {
@@ -60,7 +62,7 @@ export default function Register() {
     }
     
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+      const apiBaseUrl = import.meta.env.VITE_API_URL || API_BASE_URL + '/api/v1';
       // Register customer using api
       const payload: any = { 
         username: formData.username, 
@@ -88,8 +90,7 @@ export default function Register() {
         
         // Save tokens for auto-login
         if (data.access && data.refresh) {
-          localStorage.setItem('accessToken', data.access);
-          localStorage.setItem('refreshToken', data.refresh);
+          setTokens(data.access, data.refresh);
         }
         
         setTimeout(() => {

@@ -1,3 +1,5 @@
+import { API_BASE_URL, WS_BASE_URL } from '../lib/config';
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../lib/auth';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -24,8 +26,8 @@ export default function AdminCustomers() {
   React.useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
-        const token = localStorage.getItem('accessToken');
+        const apiBaseUrl = import.meta.env.VITE_API_URL || API_BASE_URL + '/api/v1';
+        const token = getAccessToken();
         const res = await fetch(`${apiBaseUrl}/customers/`, {
           headers: {
             'Authorization': `Bearer ${token}`

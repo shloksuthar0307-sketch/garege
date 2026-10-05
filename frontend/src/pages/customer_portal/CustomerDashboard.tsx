@@ -1,3 +1,4 @@
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../../lib/auth';
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -19,7 +20,7 @@ import QuickActionsShortcuts from './components/QuickActionsShortcuts';
 // Derive user name from JWT token
 function getUserName(): string {
   try {
-    const token = localStorage.getItem('accessToken');
+    const token = getAccessToken();
     if (token) {
       const d = JSON.parse(atob(token.split('.')[1]));
       return d.user?.first_name || d.first_name || d.user?.username || 'Customer';

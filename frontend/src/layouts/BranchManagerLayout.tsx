@@ -1,3 +1,4 @@
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../lib/auth';
 import React, { useState, useEffect } from 'react';
 import { useRealtimeAdvisor } from '../hooks/useRealtimeAdvisor';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
@@ -73,9 +74,8 @@ export default function BranchManagerLayout() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    navigate('/login');
+    clearTokens();
+navigate('/login');
   };
 
   return (

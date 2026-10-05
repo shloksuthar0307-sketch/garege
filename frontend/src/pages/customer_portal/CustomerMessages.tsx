@@ -1,3 +1,5 @@
+import { API_BASE_URL, WS_BASE_URL } from '../../lib/config';
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../../lib/auth';
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, Search, User, HeadphonesIcon, Send, Paperclip, Circle } from 'lucide-react';
@@ -38,7 +40,7 @@ export default function CustomerMessages() {
   const wsRef = useRef<WebSocket | null>(null);
 
   // Get user ID from token
-  const token = localStorage.getItem('accessToken');
+  const token = getAccessToken();
   let userId = null;
   if (token) {
     try {
@@ -91,9 +93,9 @@ export default function CustomerMessages() {
     if (!userId) return;
 
     const connectWs = () => {
-      const wsBase = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace('http', 'ws').replace('/api/v1', '');
+      const wsBase = (import.meta.env.VITE_API_URL || API_BASE_URL).replace('http', 'ws').replace('/api/v1', '');
       const wsUrl = `${wsBase}/ws/customer/${userId}/`;
-      const token = localStorage.getItem('accessToken');
+      const token = getAccessToken();
       const ws = new WebSocket(`${wsUrl}?token=${token}`);
 
       ws.onopen = () => {
@@ -306,7 +308,7 @@ export default function CustomerMessages() {
                             {msg.content}
                           </div>
                           {msg.attachment && (
-                            <a href={`${(import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1').replace('/api/v1', '')}${msg.attachment}`} target="_blank" rel="noopener noreferrer" className="mt-2 text-[10px] text-blue-400 uppercase tracking-widest flex items-center gap-1 hover:text-blue-300">
+                            <a href={`${(import.meta.env.VITE_API_URL || API_BASE_URL + '/api/v1').replace('/api/v1', '')}${msg.attachment}`} target="_blank" rel="noopener noreferrer" className="mt-2 text-[10px] text-blue-400 uppercase tracking-widest flex items-center gap-1 hover:text-blue-300">
                               <Paperclip size={12} /> View Attachment
                             </a>
                           )}

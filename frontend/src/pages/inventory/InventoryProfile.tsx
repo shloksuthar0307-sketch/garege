@@ -1,3 +1,4 @@
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../../lib/auth';
 import { useState } from 'react';
 import { Save, User, Mail, Phone, MapPin, KeyRound, Building, ShieldCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -6,7 +7,7 @@ export default function InventoryProfile() {
   const [loading, setLoading] = useState(false);
 
   // Retrieve user data from JWT token (mocked fallback)
-  const token = localStorage.getItem('accessToken');
+  const token = getAccessToken();
   let user: any = {};
   if (token) {
     try {

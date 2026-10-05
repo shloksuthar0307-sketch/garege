@@ -1,3 +1,4 @@
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../lib/auth';
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -52,7 +53,7 @@ export default function CustomerPortalLayout() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const token = localStorage.getItem('accessToken');
+  const token = getAccessToken();
   let userId = '';
   if (token) {
     try {

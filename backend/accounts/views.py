@@ -7,6 +7,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     and performs custom validation (checking active status).
     """
     serializer_class = CustomTokenObtainPairSerializer
+    throttle_scope = 'login'
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -23,6 +24,7 @@ class BranchListView(APIView):
 
 class CustomerRegisterView(APIView):
     permission_classes = [AllowAny]
+    throttle_scope = 'register'
 
     def post(self, request):
         serializer = CustomerRegistrationSerializer(data=request.data)

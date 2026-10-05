@@ -1,3 +1,4 @@
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../lib/auth';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -75,9 +76,8 @@ export default function CustomerProfile() {
             <div className="mt-8 pt-8 border-t border-[var(--border-default)]">
               <button
                 onClick={() => {
-                  localStorage.removeItem('accessToken');
-                  localStorage.removeItem('refreshToken');
-                  window.location.href = '/login';
+                  clearTokens();
+window.location.href = '/login';
                 }}
                 className="w-full text-left px-6 py-4 text-xs font-sans tracking-[0.2em] uppercase transition-all duration-500 rounded-lg border border-red-500/20 text-red-500/80 hover:bg-red-500/10 hover:text-red-400"
               >

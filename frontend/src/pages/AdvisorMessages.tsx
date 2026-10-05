@@ -1,3 +1,5 @@
+import { API_BASE_URL, WS_BASE_URL } from '../lib/config';
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../lib/auth';
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, Send, Paperclip, MoreVertical, Phone, User, Trash2, Ban, Plus, X } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -130,9 +132,9 @@ export default function AdvisorMessages() {
   // WebSocket Connection for Advisor
   useEffect(() => {
     const connectWs = () => {
-      const wsBase = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace('http', 'ws').replace('/api/v1', '');
+      const wsBase = (import.meta.env.VITE_API_URL || API_BASE_URL).replace('http', 'ws').replace('/api/v1', '');
       const wsUrl = `${wsBase}/ws/advisor/`;
-      const token = localStorage.getItem('accessToken');
+      const token = getAccessToken();
       const ws = new WebSocket(`${wsUrl}?token=${token}`);
 
       ws.onopen = () => {
@@ -370,7 +372,7 @@ export default function AdvisorMessages() {
                         
                         {msg.attachment && (
                           <div className="mt-1 pb-[10px]">
-                            <a href={`${(import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1').replace('/api/v1', '')}${msg.attachment}`} target="_blank" rel="noopener noreferrer" className="text-xs underline flex items-center gap-1 opacity-90 hover:opacity-100">
+                            <a href={`${(import.meta.env.VITE_API_URL || API_BASE_URL + '/api/v1').replace('/api/v1', '')}${msg.attachment}`} target="_blank" rel="noopener noreferrer" className="text-xs underline flex items-center gap-1 opacity-90 hover:opacity-100">
                               <Paperclip size={12} /> View Attachment
                             </a>
                           </div>

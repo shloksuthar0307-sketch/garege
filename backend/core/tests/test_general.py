@@ -43,7 +43,7 @@ class RBACTests(TestCase):
         # The advisor endpoint relies on IsServiceAdvisor and get_scoped_queryset
         response = self.client.get('/api/v1/advisor/service-orders/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(len(response.data['results']), 3)
 
     def test_org_admin_access(self):
         self.client.force_authenticate(user=self.org_admin)
@@ -51,7 +51,7 @@ class RBACTests(TestCase):
         # Org admin should see all service orders in org 1 (branch 1 and 2), which is so1 and so2. Length = 2.
         response = self.client.get('/api/v1/advisor/service-orders/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data['results']), 2)
 
     def test_branch_manager_access(self):
         self.client.force_authenticate(user=self.branch_mgr)
@@ -59,8 +59,8 @@ class RBACTests(TestCase):
         # Branch manager 1 should see only so1
         response = self.client.get('/api/v1/advisor/service-orders/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]['order_number'], "SO-001")
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(response.data['results'][0]['order_number'], "SO-001")
 
     def test_customer_denied_advisor_endpoint(self):
         self.client.force_authenticate(user=self.customer1)
@@ -75,4 +75,4 @@ class RBACTests(TestCase):
         # Customer hitting customer endpoint should see their own orders (so1, so2)
         response = self.client.get('/api/v1/customer/service-orders/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data['results']), 2)

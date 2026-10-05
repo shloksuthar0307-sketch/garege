@@ -673,16 +673,56 @@ def admin_dashboard_kpis(request):
 import os
 import mimetypes
 from django.conf import settings
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, FileResponse
+from django.utils._os import safe_join
+from django.core.exceptions import SuspiciousFileOperation
+from rest_framework import permissions
+from rest_framework.decorators import api_view, permission_classes
+from core.models import VehicleDocument, IssueEvidence, GeneratedDocument, TechnicianPhoto, Message
+from core.utils import get_scoped_queryset
 
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
 def secure_media_serve(request, path):
-    file_path = os.path.join(settings.MEDIA_ROOT, path)
+    try:
+        file_path = safe_join(settings.MEDIA_ROOT, path)
+    except SuspiciousFileOperation:
+        raise Http404("File not found")
+        
     if not os.path.exists(file_path):
         raise Http404("File not found")
-    
+        
+    user = request.user
+    if user.role != 'SUPER_ADMIN':
+        authorized = False
+        
+        if VehicleDocument.objects.filter(file=path).exists():
+            qs = get_scoped_queryset(VehicleDocument.objects.all(), user, branch_lookup='vehicle__service_orders__branch', customer_lookup='vehicle__owner')
+            if qs.filter(file=path).exists():
+                authorized = True
+                
+        elif IssueEvidence.objects.filter(file=path).exists():
+            qs = get_scoped_queryset(IssueEvidence.objects.all(), user, branch_lookup='issue__service_order__branch', customer_lookup='issue__service_order__vehicle__owner')
+            if qs.filter(file=path).exists():
+                authorized = True
+                
+        elif GeneratedDocument.objects.filter(file=path).exists():
+            qs = get_scoped_queryset(GeneratedDocument.objects.all(), user, branch_lookup='estimate__service_order__branch', customer_lookup='estimate__service_order__vehicle__owner')
+            if qs.filter(file=path).exists():
+                authorized = True
+                
+        elif TechnicianPhoto.objects.filter(image=path).exists():
+            qs = get_scoped_queryset(TechnicianPhoto.objects.all(), user, branch_lookup='vehicle__service_orders__branch', customer_lookup='vehicle__owner')
+            if qs.filter(image=path).exists():
+                authorized = True
+
+        elif Message.objects.filter(attachment=path).exists():
+            qs = get_scoped_queryset(Message.objects.all(), user, branch_lookup='conversation__service_order__branch', customer_lookup='conversation__customer')
+            if qs.filter(attachment=path).exists():
+                authorized = True
+                
+        if not authorized:
+            raise Http404("File not found")
+
     content_type, _ = mimetypes.guess_type(file_path)
-    
-    with open(file_path, 'rb') as f:
-        return HttpResponse(f.read(), content_type=content_type or 'application/octet-stream')
+    return FileResponse(open(file_path, 'rb'), content_type=content_type or 'application/octet-stream')

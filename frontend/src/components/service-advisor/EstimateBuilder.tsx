@@ -1,3 +1,4 @@
+import { API_BASE_URL, WS_BASE_URL } from '../../lib/config';
 import React, { useState } from 'react';
 import { Plus, Trash2, Send, FileSignature } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -150,7 +151,7 @@ export default function EstimateBuilder({ serviceOrder }: { serviceOrder: any })
         
         <div className="flex gap-3">
           <a 
-            href={`http://localhost:8000/api/v1/advisor/service-orders/${serviceOrder?.id || 'mock-id'}/export_pdf/`}
+            href={`${API_BASE_URL}/api/v1/advisor/service-orders/${serviceOrder?.id || 'mock-id'}/export_pdf/`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 flex items-center justify-center px-4 py-2 bg-[var(--bg-surface-hover)] hover:bg-[var(--bg-surface-active)] text-[var(--text-primary)] rounded-xl text-xs font-bold uppercase tracking-widest transition-colors"

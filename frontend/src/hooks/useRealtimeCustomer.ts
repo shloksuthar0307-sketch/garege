@@ -1,3 +1,5 @@
+import { API_BASE_URL, WS_BASE_URL } from '../lib/config';
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../lib/auth';
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -10,12 +12,12 @@ export function useRealtimeCustomer(customerId: string | undefined) {
     
     // In a production app, the WebSocket URL would depend on env vars and wss://
     const getWsUrl = () => {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+      const apiUrl = import.meta.env.VITE_API_URL || API_BASE_URL + '/api/v1';
       const url = new URL(apiUrl.replace('/api/v1', `/ws/customer/${customerId}/`));
       url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
       return url.toString();
     };
-    const token = localStorage.getItem('accessToken');
+    const token = getAccessToken();
     const ws = new WebSocket(`${getWsUrl()}?token=${token}`);
 
     ws.onopen = () => {

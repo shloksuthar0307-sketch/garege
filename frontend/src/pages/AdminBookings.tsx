@@ -1,3 +1,5 @@
+import { API_BASE_URL, WS_BASE_URL } from '../lib/config';
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../lib/auth';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
@@ -35,7 +37,7 @@ export default function AdminBookings() {
   // Read role from JWT and fetch bookings
   useEffect(() => {
     try {
-      const token = localStorage.getItem('accessToken');
+      const token = getAccessToken();
       if (token) {
         const payload = JSON.parse(atob(token.split('.')[1]));
         setUserRole(payload.user?.role || payload.role || '');
@@ -48,9 +50,9 @@ export default function AdminBookings() {
   const fetchBookings = async () => {
     setIsLoading(true);
     try {
-      const token = localStorage.getItem('accessToken');
+      const token = getAccessToken();
       if (!token) return;
-      const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+      const apiBaseUrl = import.meta.env.VITE_API_URL || API_BASE_URL + '/api/v1';
       const res = await fetch(`${apiBaseUrl}/advisor/appointments/`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });

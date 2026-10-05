@@ -1,7 +1,9 @@
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+import { API_BASE_URL, WS_BASE_URL } from '../lib/config';
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../lib/auth';
+export const API_URL = `${API_BASE_URL}/api/v1`;
 
 async function request(endpoint: string, options: RequestInit = {}) {
-  const token = localStorage.getItem('accessToken');
+  const token = getAccessToken();
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...((options.headers as Record<string, string>) || {}),
@@ -11,7 +13,7 @@ async function request(endpoint: string, options: RequestInit = {}) {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers,
   });
@@ -28,10 +30,10 @@ export const api = {
   get: (endpoint: string) => request(endpoint),
   post: (endpoint: string, data: any) => request(endpoint, { method: 'POST', body: JSON.stringify(data) }),
   upload: async (endpoint: string, formData: FormData) => {
-    const token = localStorage.getItem('accessToken');
+    const token = getAccessToken();
     const headers: Record<string, string> = {};
     if (token) headers['Authorization'] = `Bearer ${token}`;
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const response = await fetch(`${API_URL}${endpoint}`, {
       method: 'POST',
       headers,
       body: formData,

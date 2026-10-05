@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.11.0-slim
 
 WORKDIR /app
 
@@ -18,3 +18,5 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copy project
 COPY . .
+
+CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "core_config.asgi:application"]

@@ -1,3 +1,4 @@
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../lib/auth';
 import React from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { 
@@ -23,7 +24,7 @@ export default function InventoryManagerLayout() {
   const navigate = useNavigate();
 
   // Basic JWT parse
-  const token = localStorage.getItem('accessToken');
+  const token = getAccessToken();
   let user = null;
   if (token) {
     try {
@@ -32,9 +33,8 @@ export default function InventoryManagerLayout() {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    navigate('/login');
+    clearTokens();
+navigate('/login');
   };
 
   return (

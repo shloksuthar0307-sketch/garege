@@ -4,8 +4,8 @@ set -o errexit
 
 pip install -r requirements.txt
 
-if [ "$RESET_DB_ON_DEPLOY" = "true" ]; then
-    echo "⚠️ RESET_DB_ON_DEPLOY is set to true. Wiping the database schema..."
+if [ "$RESET_DB_ON_DEPLOY" = "true" ] && [ "$ENVIRONMENT" != "production" ] && [ "$CONFIRM_DB_WIPE" = "yes-delete-everything" ]; then
+    echo "⚠️ RESET_DB_ON_DEPLOY is set. Wiping the database schema..."
     python manage.py shell -c "from django.db import connection; cursor = connection.cursor(); cursor.execute('DROP SCHEMA public CASCADE; CREATE SCHEMA public;')"
     echo "Database schema wiped cleanly!"
 fi

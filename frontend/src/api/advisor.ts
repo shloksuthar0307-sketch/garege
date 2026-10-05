@@ -1,7 +1,9 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+import { API_BASE_URL, WS_BASE_URL } from '../lib/config';
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../lib/auth';
+const BASE_URL = import.meta.env.VITE_API_URL || API_BASE_URL + '/api/v1';
 
 const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
-  const token = localStorage.getItem('accessToken');
+  const token = getAccessToken();
   
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
